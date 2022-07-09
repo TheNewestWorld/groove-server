@@ -1,5 +1,6 @@
 package org.bogus.groove_auth.endpoint;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -68,6 +69,27 @@ class AuthControllerTest extends BaseIntegrationTest {
                 status().isOk(),
                 jsonPath("data.accessToken").isString()
             )
+        ;
+    }
+
+    @Test
+    public void 로그아웃_토큰_무효화() throws Exception {
+        var loginResult = authService.login(userInfo.getEmail());
+
+        mvc.perform(
+                post("/api/auth/logout")
+                    .header(HttpHeaders.AUTHORIZATION, loginResult.getAccessToken())
+            )
+            .andDo(print())
+            .andExpect(status().isOk())
+        ;
+
+        mvc.perform(
+                get("/api/users/self")
+                    .header(HttpHeaders.AUTHORIZATION, loginResult.getAccessToken())
+            )
+            .andDo(print())
+            .andExpect(status().isUnauthorized())
         ;
     }
 }
