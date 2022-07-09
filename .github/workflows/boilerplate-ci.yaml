@@ -1,0 +1,42 @@
+name: Groove CI with Gradle
+
+on:
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      checks: write
+      issues: read
+      pull-requests: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup JDK 11
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Grant execute permission for ./gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Test with Gradle
+        run: ./gradlew --info test
+
+      - name: Publish unit test result
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()  
+        with:
+          files: |
+            groove-api/build/test-results/**/*.xml
+            common/build/test-results/**/*.xml
+            storage/build/test-results/**/*.xml

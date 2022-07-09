@@ -1,0 +1,17 @@
+name: Checkstyle with Gradle
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Java Linter with Gradle
+        run: ./gradlew check --parallel

@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: groove-auth-api
+  config:
+    import:
+      - auth.yaml

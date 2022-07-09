@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: groove-api
+  config:
+    import:
+      - storage.yaml
+      - auth-api.yaml
+
+springdoc:
+  api-docs:
+    path: /api-docs
+    groups:
+      enabled: true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    doc-expansion: none
+  group-configs:
+    - group: v1
+      paths-to-match: /api/**
