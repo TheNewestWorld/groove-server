@@ -4,8 +4,8 @@ spring:
 
 authentication:
   auth-key: MjVHxjrKDMe8uTA66pIKmgnzUbmakXItJ0o7Sd5s5gZzfzOE0IeC1CMXT3Z6pkveGErsZFc8LD9qhAEZGZIS9M4gi9h7ru8wNQvCJbq4ByUJTnXOJbEUNEiJ1PDXC5cqBlpBGzmi62JhUmpY74IdQIQt0iWMR6sdOVMUsWmV1AP60Pfv5Tm0TptQpEB42YQaj9N5BfhnaBFekuc3UzfYUxKuPSC7IjVQXL0x1VPt053tIQHCEiLrVSPL3d8RE1m5
-  access-expiration: 3600
-  refresh-expiration: 604800
+  access-expiration: 1h
+  refresh-expiration: 10d
 
 ---
 

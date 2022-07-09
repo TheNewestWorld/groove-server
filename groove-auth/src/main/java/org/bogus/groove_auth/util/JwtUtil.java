@@ -46,7 +46,7 @@ public class JwtUtil {
             .withIssuedAt(new Date(currentTimeMillis))
             .withSubject("access")
             .withClaim(userIdKey, userId)
-            .withExpiresAt(new Date(currentTimeMillis + authProperty.getAccessExpiration()))
+            .withExpiresAt(new Date(currentTimeMillis + authProperty.getAccessExpiration().toMillis()))
             .sign(signing);
     }
 
@@ -58,7 +58,7 @@ public class JwtUtil {
             .withIssuedAt(new Date(currentTimeMillis))
             .withSubject("refresh")
             .withClaim(userIdKey, userId)
-            .withExpiresAt(new Date(currentTimeMillis + authProperty.getRefreshExpiration()))
+            .withExpiresAt(new Date(currentTimeMillis + authProperty.getRefreshExpiration().toMillis()))
             .sign(signing);
     }
 }
