@@ -27,12 +27,12 @@ public class UserTokenEntity extends BaseEntity {
     private String refreshToken;
 
     @Setter
-    @Column(name = "expiredAt")
-    private LocalDateTime expiredAt;
+    @Column(name = "expiresAt")
+    private LocalDateTime expiresAt;
 
-    public UserTokenEntity(Long userId, String refreshToken, LocalDateTime expiredAt) {
+    public UserTokenEntity(Long userId, String refreshToken, LocalDateTime expiresAt) {
         this.userId = userId;
         this.refreshToken = refreshToken;
-        this.expiredAt = expiredAt;
+        this.expiresAt = expiresAt;
     }
 }

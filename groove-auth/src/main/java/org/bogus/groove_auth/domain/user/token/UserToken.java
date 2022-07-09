@@ -9,10 +9,10 @@ import org.bogus.groove_auth.storage.UserTokenEntity;
 @RequiredArgsConstructor
 public class UserToken {
     private final String token;
-    private final LocalDateTime expiredAt;
+    private final LocalDateTime expiresAt;
 
     public UserToken(UserTokenEntity entity) {
         this.token = entity.getRefreshToken();
-        this.expiredAt = entity.getExpiredAt();
+        this.expiresAt = entity.getExpiresAt();
     }
 }

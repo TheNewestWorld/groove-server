@@ -26,4 +26,8 @@ public class AuthService {
         tokenValidator.validateRefreshing(userId, refreshToken);
         return tokenGenerator.generateAccessToken(userId);
     }
+
+    public void logout(String token) {
+        tokenValidator.invalidate(token);
+    }
 }

@@ -28,4 +28,12 @@ public class AuthController {
         var result = authService.refresh(accessToken, request.getRefreshToken());
         return CommonResponse.success(new TokenRefreshResponse(result));
     }
+
+    @PostMapping("/api/auth/logout")
+    public CommonResponse<Void> logout(
+        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String accessToken
+    ) {
+        authService.logout(accessToken);
+        return CommonResponse.success();
+    }
 }

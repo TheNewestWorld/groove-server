@@ -6,6 +6,7 @@ import org.bogus.groove.common.UserInfo;
 import org.bogus.groove.common.enumeration.Authority;
 import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove_auth.domain.user.authority.UserAuthorityUpdater;
+import org.bogus.groove_auth.domain.user.token.TokenValidator;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,6 +15,7 @@ public class UserService {
     private final UserCreator userCreator;
     private final UserAuthorityUpdater userAuthorityUpdater;
     private final UserInfoFinder userInfoFinder;
+    private final TokenValidator tokenValidator;
 
     @Transactional
     public UserInfo register(String email) {
@@ -28,6 +30,7 @@ public class UserService {
     }
 
     public UserInfo getSelf(String token) {
+        tokenValidator.validate(token);
         return userInfoFinder.find(token);
     }
 
