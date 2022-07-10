@@ -38,5 +38,6 @@ jobs:
         with:
           files: |
             groove-api/build/test-results/**/*.xml
+            groove-auth-api/build/test-results/**/*.xml
             common/build/test-results/**/*.xml
             storage/build/test-results/**/*.xml
