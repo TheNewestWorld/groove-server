@@ -14,4 +14,4 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Java Linter with Gradle
-        run: ./gradlew check --parallel
+        run: ./gradlew check
