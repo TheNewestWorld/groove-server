@@ -1,6 +1,5 @@
 package org.bogus.groove_auth.domain.user.token;
 
-import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove_auth.util.JwtUtil;
@@ -13,14 +12,13 @@ public class TokenGenerator {
     private final UserTokenUpdater userTokenUpdater;
 
     public String generateAccessToken(Long userId) {
-        return jwtUtil.generateAccessToken(userId);
+        return jwtUtil.generateAccessToken(userId).getToken();
     }
 
     @Transactional
     public String generateRefreshToken(Long userId) {
-        String refreshToken = jwtUtil.generateRefreshToken(userId);
-        LocalDateTime expiresAt = jwtUtil.getExpiryByToken(refreshToken);
-        userTokenUpdater.upsert(userId, refreshToken, expiresAt);
-        return refreshToken;
+        UserToken token = jwtUtil.generateRefreshToken(userId);
+        userTokenUpdater.upsert(userId, token.getToken(), token.getExpiresAt());
+        return token.getToken();
     }
 }
