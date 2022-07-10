@@ -17,14 +17,17 @@ import org.springframework.stereotype.Component;
 public class TokenValidator {
     private final JwtUtil jwtUtil;
     private final UserTokenReader userTokenReader;
+    private final UserTokenUpdater userTokenUpdater;
     private final RedisTemplate<String, Object> redisTemplate;
 
-    public void validateRefreshing(Long userId, String token) {
-        UserToken refreshToken = userTokenReader.readUserTokenByUserId(userId);
+    public void validateRefreshable(Long userId, String token) {
         validate(token);
-        validate(refreshToken.getToken());
+        UserToken refreshToken = userTokenReader.readUserTokenByUserId(userId);
         if (!token.equals(refreshToken.getToken())) {
             throw new AppException(ErrorType.UNAUTHORIZED_INVALID_TOKEN);
+        }
+        if (Duration.between(LocalDateTime.now(), refreshToken.getExpiresAt()).isNegative()) {
+            throw new AppException(ErrorType.UNAUTHORIZED_TOKEN_EXPIRED);
         }
     }
 
