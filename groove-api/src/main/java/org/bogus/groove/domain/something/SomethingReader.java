@@ -2,7 +2,7 @@ package org.bogus.groove.domain.something;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.error.AppException;
+import org.bogus.groove.common.NotFoundException;
 import org.bogus.groove.error.ErrorType;
 import org.bogus.groove.storage.repository.SomethingRepository;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ public class SomethingReader {
     private final SomethingRepository somethingRepository;
 
     public Something read(Long somethingId) {
-        return readOrNull(somethingId).orElseThrow(() -> new AppException(ErrorType.NOT_FOUND_SOMETHING));
+        return readOrNull(somethingId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_SOMETHING));
     }
 
     public Optional<Something> readOrNull(Long somethingId) {

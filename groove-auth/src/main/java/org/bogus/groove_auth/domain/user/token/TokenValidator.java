@@ -3,7 +3,7 @@ package org.bogus.groove_auth.domain.user.token;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove_auth.error.AppException;
+import org.bogus.groove.common.UnauthorizedException;
 import org.bogus.groove_auth.error.ErrorType;
 import org.bogus.groove_auth.util.JwtUtil;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class TokenValidator {
         validate(token);
         validate(refreshToken.getToken());
         if (!token.equals(refreshToken.getToken())) {
-            throw new AppException(ErrorType.UNAUTHORIZED_INVALID_TOKEN);
+            throw new UnauthorizedException(ErrorType.UNAUTHORIZED_INVALID_TOKEN);
         }
     }
 
@@ -28,9 +28,9 @@ public class TokenValidator {
             jwtUtil.verify(token);
         } catch (JWTVerificationException e) {
             if (e instanceof TokenExpiredException) {
-                throw new AppException(ErrorType.UNAUTHORIZED_TOKEN_EXPIRED);
+                throw new UnauthorizedException(ErrorType.UNAUTHORIZED_TOKEN_EXPIRED);
             } else {
-                throw new AppException(ErrorType.UNAUTHORIZED_INVALID_TOKEN);
+                throw new UnauthorizedException(ErrorType.UNAUTHORIZED_INVALID_TOKEN);
             }
         }
     }

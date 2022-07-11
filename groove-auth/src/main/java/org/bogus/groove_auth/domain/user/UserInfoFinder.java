@@ -1,10 +1,10 @@
 package org.bogus.groove_auth.domain.user;
 
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.common.NotFoundException;
 import org.bogus.groove.common.UserInfo;
 import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove_auth.domain.user.authority.UserAuthorityReader;
-import org.bogus.groove_auth.error.AppException;
 import org.bogus.groove_auth.error.ErrorType;
 import org.bogus.groove_auth.util.JwtUtil;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ public class UserInfoFinder {
     }
 
     public UserInfo find(String email, UserType userType) {
-        var user = userReader.readOrNull(email, userType).orElseThrow(() -> new AppException(ErrorType.NOT_FOUND_USER));
+        var user = userReader.readOrNull(email, userType).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
 
         var authorities = userAuthorityReader.readAll(user.getId());
 
