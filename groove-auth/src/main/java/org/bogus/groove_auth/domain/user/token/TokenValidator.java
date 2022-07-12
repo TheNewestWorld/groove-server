@@ -6,7 +6,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove_auth.error.AppException;
+import org.bogus.groove.common.UnauthorizedException;
 import org.bogus.groove_auth.error.ErrorType;
 import org.bogus.groove_auth.util.JwtUtil;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,7 +24,7 @@ public class TokenValidator {
         validate(token);
         UserToken refreshToken = userTokenReader.readUserTokenByUserId(userId);
         if (!token.equals(refreshToken.getToken())) {
-            throw new AppException(ErrorType.UNAUTHORIZED_INVALID_TOKEN);
+            throw new UnauthorizedException(ErrorType.UNAUTHORIZED_INVALID_TOKEN);
         }
         if (Duration.between(LocalDateTime.now(), refreshToken.getExpiresAt()).isNegative()) {
             throw new AppException(ErrorType.UNAUTHORIZED_TOKEN_EXPIRED);
@@ -39,9 +39,9 @@ public class TokenValidator {
             jwtUtil.verify(token);
         } catch (JWTVerificationException e) {
             if (e instanceof TokenExpiredException) {
-                throw new AppException(ErrorType.UNAUTHORIZED_TOKEN_EXPIRED);
+                throw new UnauthorizedException(ErrorType.UNAUTHORIZED_TOKEN_EXPIRED);
             } else {
-                throw new AppException(ErrorType.UNAUTHORIZED_INVALID_TOKEN);
+                throw new UnauthorizedException(ErrorType.UNAUTHORIZED_INVALID_TOKEN);
             }
         }
     }
