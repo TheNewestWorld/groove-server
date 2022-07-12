@@ -27,13 +27,13 @@ public class TokenValidator {
             throw new UnauthorizedException(ErrorType.UNAUTHORIZED_INVALID_TOKEN);
         }
         if (Duration.between(LocalDateTime.now(), refreshToken.getExpiresAt()).isNegative()) {
-            throw new AppException(ErrorType.UNAUTHORIZED_TOKEN_EXPIRED);
+            throw new UnauthorizedException(ErrorType.UNAUTHORIZED_TOKEN_EXPIRED);
         }
     }
 
     public void validate(String token) {
         if (Boolean.TRUE.equals(redisTemplate.hasKey(token))) {
-            throw new AppException(ErrorType.UNAUTHORIZED_TOKEN_EXPIRED);
+            throw new UnauthorizedException(ErrorType.UNAUTHORIZED_TOKEN_EXPIRED);
         }
         try {
             jwtUtil.verify(token);
