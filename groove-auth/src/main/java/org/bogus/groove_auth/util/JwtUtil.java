@@ -5,7 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
+import org.bogus.groove_auth.domain.user.token.UserToken;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -38,27 +38,33 @@ public class JwtUtil {
         return LocalDateTime.ofInstant(decodedJwt.getExpiresAt().toInstant(), ZoneId.systemDefault());
     }
 
-    public String generateAccessToken(Long userId) {
-        long currentTimeMillis = System.currentTimeMillis();
+    public UserToken generateAccessToken(Long userId) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expiresAt = now.plus(authProperty.getAccessExpiration());
 
-        return JWT.create()
+        String token = JWT.create()
             .withIssuer(appProperty.getName())
-            .withIssuedAt(new Date(currentTimeMillis))
+            .withIssuedAt(now.atZone(ZoneId.systemDefault()).toInstant())
             .withSubject("access")
             .withClaim(userIdKey, userId)
-            .withExpiresAt(new Date(currentTimeMillis + authProperty.getAccessExpiration()))
+            .withExpiresAt(expiresAt.atZone(ZoneId.systemDefault()).toInstant())
             .sign(signing);
+
+        return new UserToken(token, LocalDateTime.from(expiresAt));
     }
 
-    public String generateRefreshToken(Long userId) {
-        long currentTimeMillis = System.currentTimeMillis();
+    public UserToken generateRefreshToken(Long userId) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime expiresAt = now.plus(authProperty.getRefreshExpiration());
 
-        return JWT.create()
+        String token = JWT.create()
             .withIssuer(appProperty.getName())
-            .withIssuedAt(new Date(currentTimeMillis))
+            .withIssuedAt(now.atZone(ZoneId.systemDefault()).toInstant())
             .withSubject("refresh")
             .withClaim(userIdKey, userId)
-            .withExpiresAt(new Date(currentTimeMillis + authProperty.getRefreshExpiration()))
+            .withExpiresAt(expiresAt.atZone(ZoneId.systemDefault()).toInstant())
             .sign(signing);
+
+        return new UserToken(token, LocalDateTime.from(expiresAt));
     }
 }

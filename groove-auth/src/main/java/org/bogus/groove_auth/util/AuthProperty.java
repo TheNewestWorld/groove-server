@@ -1,5 +1,6 @@
 package org.bogus.groove_auth.util;
 
+import java.time.Duration;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -13,6 +14,6 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @ToString
 public class AuthProperty {
     private final String authKey;
-    private final Long accessExpiration;
-    private final Long refreshExpiration;
+    private final Duration accessExpiration;
+    private final Duration refreshExpiration;
 }

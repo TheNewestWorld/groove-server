@@ -23,7 +23,11 @@ public class AuthService {
 
     public String refresh(String accessToken, String refreshToken) {
         var userId = userInfoFinder.find(accessToken).getId();
-        tokenValidator.validateRefreshing(userId, refreshToken);
+        tokenValidator.validateRefreshable(userId, refreshToken);
         return tokenGenerator.generateAccessToken(userId);
+    }
+
+    public void logout(String token) {
+        tokenValidator.invalidate(token);
     }
 }
