@@ -22,6 +22,7 @@ public class ReCommentEntity extends BaseEntity {
   private Long commentId;
 
   public ReCommentEntity(String content, Long userId, Long commentId) {
+    super();
     this.content = content;
     this.userId = userId;
     this.commentId = commentId;

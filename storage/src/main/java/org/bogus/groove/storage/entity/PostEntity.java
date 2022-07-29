@@ -30,7 +30,8 @@ public class PostEntity extends BaseEntity {
   @Column(name = "ref_category_id")
   private Long categoryId;
 
-  public PostEntity(String title, String content, Integer likeCount, boolean isTemporary, Long userId, Long categoryId) {
+  public PostEntity(String title, String content, Integer likeCount, boolean isTemporary,
+      Long userId, Long categoryId) {
     this.title = title;
     this.content = content;
     this.likeCount = likeCount;
