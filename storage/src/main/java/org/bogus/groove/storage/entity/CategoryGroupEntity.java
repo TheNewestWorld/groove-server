@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CategoryGroupEntity extends BaseEntity {
 
-  @Column(name = "name")
-  private String name;
+    @Column(name = "name")
+    private String name;
 
-  public CategoryGroupEntity(String name) {
-    this.name = name;
-  }
+    public CategoryGroupEntity(String name) {
+        this.name = name;
+    }
 }

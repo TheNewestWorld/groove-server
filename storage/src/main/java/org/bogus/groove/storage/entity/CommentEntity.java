@@ -12,18 +12,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentEntity extends BaseEntity {
 
-  @Column(name = "content")
-  private String content;
+    @Column(name = "content")
+    private String content;
 
-  @Column(name = "ref_user_id")
-  private Long userId;
+    @Column(name = "ref_user_id")
+    private Long userId;
 
-  @Column(name = "ref_post_id")
-  private Long postId;
+    @Column(name = "ref_post_id")
+    private Long postId;
 
-  public CommentEntity(String content, Long userId, Long postId) {
-    this.content = content;
-    this.userId = userId;
-    this.postId = postId;
-  }
+    public CommentEntity(String content, Long userId, Long postId) {
+        this.content = content;
+        this.userId = userId;
+        this.postId = postId;
+    }
 }

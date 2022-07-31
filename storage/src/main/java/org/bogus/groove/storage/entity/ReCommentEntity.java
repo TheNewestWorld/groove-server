@@ -12,19 +12,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReCommentEntity extends BaseEntity {
 
-  @Column(name = "content")
-  private String content;
+    @Column(name = "content")
+    private String content;
 
-  @Column(name = "user_id")
-  private Long userId;
+    @Column(name = "user_id")
+    private Long userId;
 
-  @Column(name = "ref_comment_id")
-  private Long commentId;
+    @Column(name = "ref_comment_id")
+    private Long commentId;
 
-  public ReCommentEntity(String content, Long userId, Long commentId) {
-    super();
-    this.content = content;
-    this.userId = userId;
-    this.commentId = commentId;
-  }
+    public ReCommentEntity(String content, Long userId, Long commentId) {
+        super();
+        this.content = content;
+        this.userId = userId;
+        this.commentId = commentId;
+    }
 }

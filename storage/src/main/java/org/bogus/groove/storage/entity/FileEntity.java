@@ -15,23 +15,23 @@ import org.bogus.groove.common.enumeration.FileType;
 @NoArgsConstructor
 public class FileEntity extends BaseEntity {
 
-  @Column(name = "path")
-  private String path;
+    @Column(name = "path")
+    private String path;
 
-  @Column(name = "size")
-  private Integer size;
+    @Column(name = "size")
+    private Integer size;
 
-  @Column(name = "extension")
-  private String extension;
+    @Column(name = "extension")
+    private String extension;
 
-  @Column(name = "type")
-  @Enumerated(EnumType.STRING)
-  private FileType fileType;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private FileType fileType;
 
-  public FileEntity(String path, Integer size, String extension, FileType fileType) {
-    this.path = path;
-    this.size = size;
-    this.extension = extension;
-    this.fileType = fileType;
-  }
+    public FileEntity(String path, Integer size, String extension, FileType fileType) {
+        this.path = path;
+        this.size = size;
+        this.extension = extension;
+        this.fileType = fileType;
+    }
 }

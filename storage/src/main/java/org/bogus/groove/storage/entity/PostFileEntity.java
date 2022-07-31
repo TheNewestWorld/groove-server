@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostFileEntity extends BaseEntity {
 
-  @Column(name = "ref_post_id")
-  private Long postId;
+    @Column(name = "ref_post_id")
+    private Long postId;
 
-  @Column(name = "ref_file_id")
-  private Long fileId;
+    @Column(name = "ref_file_id")
+    private Long fileId;
 
-  public PostFileEntity(Long postId, Long fileId) {
-    this.postId = postId;
-    this.fileId = fileId;
-  }
+    public PostFileEntity(Long postId, Long fileId) {
+        this.postId = postId;
+        this.fileId = fileId;
+    }
 }

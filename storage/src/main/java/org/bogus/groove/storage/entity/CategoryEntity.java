@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CategoryEntity extends BaseEntity {
 
-  @Column(name = "name")
-  private String name;
+    @Column(name = "name")
+    private String name;
 
-  @Column(name = "ref_category_group_id")
-  private Long categoryGroupId;
+    @Column(name = "ref_category_group_id")
+    private Long categoryGroupId;
 
-  public CategoryEntity(String name, Long categoryGroupId) {
-    this.name = name;
-    this.categoryGroupId = categoryGroupId;
-  }
+    public CategoryEntity(String name, Long categoryGroupId) {
+        this.name = name;
+        this.categoryGroupId = categoryGroupId;
+    }
 }
