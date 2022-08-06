@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bogus.groove.common.enumeration.UserType;
+import org.bogus.groove_auth.domain.user.UserType;
 
 @Entity
 @Table(
@@ -20,6 +20,9 @@ import org.bogus.groove.common.enumeration.UserType;
 public class UserEntity extends BaseEntity {
     @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)

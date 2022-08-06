@@ -1,7 +1,6 @@
 package org.bogus.groove_auth.domain.user;
 
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove_auth.domain.user.token.TokenGenerator;
 import org.bogus.groove_auth.domain.user.token.TokenValidator;
 import org.springframework.stereotype.Component;

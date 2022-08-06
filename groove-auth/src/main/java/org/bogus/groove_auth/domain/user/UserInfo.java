@@ -1,9 +1,9 @@
-package org.bogus.groove.domain.user;
+package org.bogus.groove_auth.domain.user;
 
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.enumeration.Authority;
+import org.bogus.groove_auth.domain.user.authority.Authority;
 
 @Getter
 @RequiredArgsConstructor

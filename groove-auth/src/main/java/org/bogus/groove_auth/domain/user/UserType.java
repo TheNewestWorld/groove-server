@@ -1,4 +1,4 @@
-package org.bogus.groove.common.enumeration;
+package org.bogus.groove_auth.domain.user;
 
 public enum UserType {
     GROOVE,

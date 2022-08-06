@@ -6,8 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.bogus.groove.common.UserInfo;
 import org.bogus.groove_auth.domain.user.AuthService;
+import org.bogus.groove_auth.domain.user.UserInfo;
 import org.bogus.groove_auth.domain.user.UserService;
 import org.bogus.groove_auth.endpoint.auth.LoginRequest;
 import org.bogus.groove_auth.endpoint.auth.TokenRefreshRequest;

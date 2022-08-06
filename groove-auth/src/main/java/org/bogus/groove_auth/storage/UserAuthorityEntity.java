@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bogus.groove.common.enumeration.Authority;
+import org.bogus.groove_auth.domain.user.authority.Authority;
 
 @Entity
 @Table(

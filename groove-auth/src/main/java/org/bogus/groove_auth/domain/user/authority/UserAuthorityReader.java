@@ -3,7 +3,6 @@ package org.bogus.groove_auth.domain.user.authority;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.enumeration.Authority;
 import org.bogus.groove_auth.storage.UserAuthorityEntity;
 import org.bogus.groove_auth.storage.UserAuthorityRepository;
 import org.springframework.stereotype.Component;

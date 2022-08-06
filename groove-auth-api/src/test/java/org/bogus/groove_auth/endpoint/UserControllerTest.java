@@ -7,10 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.bogus.groove.common.UserInfo;
-import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove_auth.domain.user.AuthService;
+import org.bogus.groove_auth.domain.user.UserInfo;
 import org.bogus.groove_auth.domain.user.UserService;
+import org.bogus.groove_auth.domain.user.UserType;
 import org.bogus.groove_auth.endpoint.auth.RegisterRequest;
 import org.bogus.groove_auth.storage.UserRepository;
 import org.junit.jupiter.api.BeforeEach;

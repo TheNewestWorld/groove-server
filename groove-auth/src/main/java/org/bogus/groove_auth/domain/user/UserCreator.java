@@ -1,7 +1,6 @@
 package org.bogus.groove_auth.domain.user;
 
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove_auth.storage.UserEntity;
 import org.bogus.groove_auth.storage.UserRepository;
 import org.springframework.stereotype.Component;

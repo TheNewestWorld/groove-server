@@ -3,7 +3,6 @@ package org.bogus.groove_auth.domain.user;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.NotFoundException;
-import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove_auth.error.ErrorType;
 import org.bogus.groove_auth.storage.UserRepository;
 import org.springframework.stereotype.Component;

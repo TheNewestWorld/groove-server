@@ -2,8 +2,6 @@ package org.bogus.groove_auth.domain.user;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.NotFoundException;
-import org.bogus.groove.common.UserInfo;
-import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove_auth.domain.user.authority.UserAuthorityReader;
 import org.bogus.groove_auth.error.ErrorType;
 import org.bogus.groove_auth.util.JwtUtil;

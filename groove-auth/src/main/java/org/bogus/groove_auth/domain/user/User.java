@@ -2,7 +2,6 @@ package org.bogus.groove_auth.domain.user;
 
 import java.time.LocalDateTime;
 import lombok.Getter;
-import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove_auth.storage.UserEntity;
 
 @Getter

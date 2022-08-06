@@ -2,7 +2,6 @@ package org.bogus.groove_auth.domain.user;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.UserInfo;
 
 @RequiredArgsConstructor
 @Getter

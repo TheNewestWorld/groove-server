@@ -1,10 +1,9 @@
 package org.bogus.groove_auth.domain.user;
 
+import java.util.List;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.UserInfo;
-import org.bogus.groove.common.enumeration.Authority;
-import org.bogus.groove.common.enumeration.UserType;
+import org.bogus.groove_auth.domain.user.authority.Authority;
 import org.bogus.groove_auth.domain.user.authority.UserAuthorityUpdater;
 import org.bogus.groove_auth.domain.user.token.TokenValidator;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,7 @@ public class UserService {
     @Transactional
     public UserInfo register(String email) {
         var user = userCreator.create(email, UserType.DEFAULT);
-        var authorities = userAuthorityUpdater.update(user.getId(), Authority.DEFAULT);
+        var authorities = userAuthorityUpdater.update(user.getId(), List.of(Authority.USER));
         return new UserInfo(
             user.getId(),
             user.getEmail(),
