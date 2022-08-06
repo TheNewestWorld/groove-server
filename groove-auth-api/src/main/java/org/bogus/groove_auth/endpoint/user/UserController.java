@@ -1,10 +1,10 @@
 package org.bogus.groove_auth.endpoint.user;
 
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove_auth.domain.user.UserInfo;
 import org.bogus.groove_auth.domain.user.UserService;
-import org.bogus.groove_auth.domain.user.authority.Authority;
 import org.bogus.groove_auth.endpoint.auth.RegisterRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +30,12 @@ public class UserController {
     ) {
         var result = userService.getSelf(accessToken);
         return CommonResponse.success(
-            new UserInfoGetResponse(result.getId(), result.getEmail(), result.getType(), result.getAuthorities()));
+            new UserInfoGetResponse(
+                result.getId(),
+                result.getEmail(),
+                result.getType().name(),
+                result.getAuthorities().stream().map(Enum::name).collect(Collectors.toList())
+            )
+        );
     }
 }

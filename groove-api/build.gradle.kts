@@ -8,7 +8,7 @@ dependencies {
 
     implementation(project(":storage"))
     implementation(project(":common"))
-    implementation(project(":groove-auth-api"))
+    implementation(project(":client:auth"))
 }
 
 tasks.getByName<Test>("test") {

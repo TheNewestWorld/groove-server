@@ -4,11 +4,11 @@ import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.client.auth.AuthClient;
+import org.bogus.groove.client.auth.UserInfo;
 import org.bogus.groove.common.ForbiddenException;
 import org.bogus.groove.common.UnauthorizedException;
 import org.bogus.groove.error.ErrorType;
-import org.bogus.groove_auth.endpoint.user.UserController;
-import org.bogus.groove_auth.endpoint.user.UserInfoGetResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
@@ -17,7 +17,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Component
 @RequiredArgsConstructor
 public class AuthInterceptor implements HandlerInterceptor {
-    private final UserController userController;
+    private final AuthClient authClient;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -34,7 +34,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             throw new UnauthorizedException(ErrorType.UNAUTHORIZED_NOT_FOUND_TOKEN);
         }
 
-        UserInfoGetResponse userInfo = userController.getSelfInfo(accessToken).getData();
+        UserInfo userInfo = authClient.getUserInfo(accessToken);
         if (!userInfo.getAuthorities().containsAll(Arrays.asList(authorized.value()))) {
             throw new ForbiddenException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
         }
