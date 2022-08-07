@@ -1,0 +1,57 @@
+package org.bogus.groove_auth.endpoint.support;
+
+import javax.naming.AuthenticationException;
+import org.bogus.groove.common.AppException;
+import org.bogus.groove.common.BadRequestException;
+import org.bogus.groove.common.CommonResponse;
+import org.bogus.groove.common.ForbiddenException;
+import org.bogus.groove.common.InternalServerException;
+import org.bogus.groove.common.NotFoundException;
+import org.bogus.groove.common.UnauthorizedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ExceptionTranslator {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    public HttpStatus translateToHttpStatus(Exception e) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+        if (e instanceof NotFoundException) {
+            status = HttpStatus.NOT_FOUND;
+            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
+        } else if (e instanceof BadRequestException) {
+            status = HttpStatus.BAD_REQUEST;
+            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
+        } else if (e instanceof UnauthorizedException || e instanceof AuthenticationException) {
+            status = HttpStatus.UNAUTHORIZED;
+            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
+        } else if (e instanceof ForbiddenException || e instanceof AccessDeniedException) {
+            status = HttpStatus.FORBIDDEN;
+            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
+        } else if (e instanceof InternalServerException) {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            logger.error("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
+        }
+
+        return status;
+    }
+
+    public CommonResponse<Void> translateToCommonResponse(Exception e) {
+        if (e instanceof AppException) {
+            return CommonResponse.error(
+                ((AppException) e).getError().code(),
+                e.getMessage()
+            );
+        } else {
+            return CommonResponse.error(
+                e.getClass().getSimpleName(),
+                e.getMessage()
+            );
+        }
+    }
+}
