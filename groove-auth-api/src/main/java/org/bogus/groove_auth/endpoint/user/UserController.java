@@ -20,7 +20,7 @@ public class UserController {
 
     @PostMapping("/api/users/register")
     public CommonResponse<UserInfo> register(@RequestBody RegisterRequest request) {
-        var result = userService.register(request.getEmail());
+        var result = userService.register(request.toParam());
         return CommonResponse.success(result);
     }
 

@@ -17,8 +17,8 @@ public class UserService {
     private final TokenValidator tokenValidator;
 
     @Transactional
-    public UserInfo register(String email) {
-        var user = userCreator.create(email, UserType.DEFAULT);
+    public UserInfo register(UserRegisterParam param) {
+        var user = userCreator.create(param, UserType.GROOVE);
         var authorities = userAuthorityUpdater.update(user.getId(), List.of(Authority.USER));
         return new UserInfo(
             user.getId(),

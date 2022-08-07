@@ -28,8 +28,9 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserType type;
 
-    public UserEntity(String email, UserType type) {
+    public UserEntity(String email, String password, UserType type) {
         this.email = email;
+        this.password = password;
         this.type = type;
     }
 }

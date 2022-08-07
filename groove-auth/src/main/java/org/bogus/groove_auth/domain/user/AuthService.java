@@ -13,7 +13,7 @@ public class AuthService {
     private final TokenValidator tokenValidator;
 
     public LoginResult login(String email) {
-        var userInfo = userInfoFinder.find(email, UserType.DEFAULT);
+        var userInfo = userInfoFinder.find(email, UserType.GROOVE);
         var accessToken = tokenGenerator.generateAccessToken(userInfo.getId());
         var refreshToken = tokenGenerator.generateRefreshToken(userInfo.getId());
 

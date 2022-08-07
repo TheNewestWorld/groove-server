@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.bogus.groove_auth.domain.user.AuthService;
 import org.bogus.groove_auth.domain.user.UserInfo;
+import org.bogus.groove_auth.domain.user.UserRegisterParam;
 import org.bogus.groove_auth.domain.user.UserService;
 import org.bogus.groove_auth.endpoint.auth.LoginRequest;
 import org.bogus.groove_auth.endpoint.auth.TokenRefreshRequest;
@@ -32,12 +33,12 @@ class AuthControllerTest extends BaseIntegrationTest {
 
     @BeforeEach
     public void setup() {
-        userInfo = userService.register("jig7357@naver.com");
+        userInfo = userService.register(new UserRegisterParam("jig7357@naver.com", "password"));
     }
 
     @Test
     public void 로그인() throws Exception {
-        var loginRequest = new LoginRequest(userInfo.getEmail());
+        var loginRequest = new LoginRequest(userInfo.getEmail(), "password");
 
         mvc.perform(
                 post("/api/auth/login")

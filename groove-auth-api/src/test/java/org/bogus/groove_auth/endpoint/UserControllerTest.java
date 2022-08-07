@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.bogus.groove_auth.domain.user.AuthService;
 import org.bogus.groove_auth.domain.user.UserInfo;
+import org.bogus.groove_auth.domain.user.UserRegisterParam;
 import org.bogus.groove_auth.domain.user.UserService;
 import org.bogus.groove_auth.domain.user.UserType;
 import org.bogus.groove_auth.endpoint.auth.RegisterRequest;
@@ -34,14 +35,14 @@ class UserControllerTest extends BaseIntegrationTest {
 
     @BeforeEach
     public void setup() {
-        userInfo = userService.register("jig7357@naver.com");
+        userInfo = userService.register(new UserRegisterParam("jig7357@naver.com", "password"));
         accessToken = authService.login(userInfo.getEmail()).getAccessToken();
     }
 
     @Test
     public void 회원가입() throws Exception {
         String email = "jig7357@google.com";
-        var registerRequest = new RegisterRequest(email);
+        var registerRequest = new RegisterRequest("jig7357@naver.com", "password");
 
         mvc.perform(
                 post("/api/users/register")
@@ -51,7 +52,7 @@ class UserControllerTest extends BaseIntegrationTest {
             .andDo(print())
             .andExpect(status().isOk())
         ;
-        assertTrue(userRepository.findByEmailAndType(email, UserType.DEFAULT).isPresent());
+        assertTrue(userRepository.findByEmailAndType(email, UserType.GROOVE).isPresent());
     }
 
     @Test

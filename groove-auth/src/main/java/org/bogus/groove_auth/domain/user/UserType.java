@@ -5,6 +5,4 @@ public enum UserType {
     KAKAO,
     NAVER,
     GOOGLE;
-
-    public static final UserType DEFAULT = GROOVE;
 }
