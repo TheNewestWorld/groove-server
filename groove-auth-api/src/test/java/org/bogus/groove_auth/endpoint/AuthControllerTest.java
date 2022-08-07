@@ -6,12 +6,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.nio.charset.StandardCharsets;
 import org.bogus.groove_auth.domain.user.AuthService;
-import org.bogus.groove_auth.domain.user.UserInfo;
 import org.bogus.groove_auth.domain.user.UserRegisterParam;
 import org.bogus.groove_auth.domain.user.UserService;
+import org.bogus.groove_auth.domain.user.UserType;
+import org.bogus.groove_auth.domain.user.token.TokenGenerator;
 import org.bogus.groove_auth.endpoint.auth.LoginRequest;
 import org.bogus.groove_auth.endpoint.auth.TokenRefreshRequest;
+import org.bogus.groove_auth.storage.UserEntity;
 import org.bogus.groove_auth.storage.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,20 +32,33 @@ class AuthControllerTest extends BaseIntegrationTest {
     @Autowired
     UserRepository userRepository;
 
-    private UserInfo userInfo;
+    @Autowired
+    TokenGenerator tokenGenerator;
+
+    String email = "jig7357@naver.com";
+    String password = "password";
+    UserEntity userEntity;
+    String accessToken;
+    String refreshToken;
 
     @BeforeEach
     public void setup() {
-        userInfo = userService.register(new UserRegisterParam("jig7357@naver.com", "password"));
+        String email = "jig7357@naver.com";
+        String password = "password";
+        userService.register(new UserRegisterParam(email, password));
+        userEntity = userRepository.findByEmailAndType(email, UserType.GROOVE).get();
+        accessToken = tokenGenerator.generateAccessToken(userEntity.getId());
+        refreshToken = tokenGenerator.generateRefreshToken(userEntity.getId());
     }
 
     @Test
     public void 로그인() throws Exception {
-        var loginRequest = new LoginRequest(userInfo.getEmail(), "password");
+        var loginRequest = new LoginRequest(email, password);
 
         mvc.perform(
                 post("/api/auth/login")
                     .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding(StandardCharsets.UTF_8)
                     .content(mapper.writeValueAsString(loginRequest))
             )
             .andDo(print())
@@ -56,13 +72,12 @@ class AuthControllerTest extends BaseIntegrationTest {
 
     @Test
     public void 토큰_리프레쉬() throws Exception {
-        var loginResult = authService.login(userInfo.getEmail());
-        var refreshRequest = new TokenRefreshRequest(loginResult.getRefreshToken());
+        var refreshRequest = new TokenRefreshRequest(refreshToken);
 
         mvc.perform(
                 post("/api/auth/refresh")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header(HttpHeaders.AUTHORIZATION, loginResult.getAccessToken())
+                    .header(HttpHeaders.AUTHORIZATION, accessToken)
                     .content(mapper.writeValueAsString(refreshRequest))
             )
             .andDo(print())
@@ -75,11 +90,9 @@ class AuthControllerTest extends BaseIntegrationTest {
 
     @Test
     public void 로그아웃_토큰_무효화() throws Exception {
-        var loginResult = authService.login(userInfo.getEmail());
-
         mvc.perform(
                 post("/api/auth/logout")
-                    .header(HttpHeaders.AUTHORIZATION, loginResult.getAccessToken())
+                    .header(HttpHeaders.AUTHORIZATION, accessToken)
             )
             .andDo(print())
             .andExpect(status().isOk())
@@ -87,7 +100,7 @@ class AuthControllerTest extends BaseIntegrationTest {
 
         mvc.perform(
                 get("/api/users/self")
-                    .header(HttpHeaders.AUTHORIZATION, loginResult.getAccessToken())
+                    .header(HttpHeaders.AUTHORIZATION, accessToken)
             )
             .andDo(print())
             .andExpect(status().isUnauthorized())

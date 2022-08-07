@@ -8,11 +8,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.bogus.groove_auth.domain.user.AuthService;
-import org.bogus.groove_auth.domain.user.UserInfo;
 import org.bogus.groove_auth.domain.user.UserRegisterParam;
 import org.bogus.groove_auth.domain.user.UserService;
 import org.bogus.groove_auth.domain.user.UserType;
+import org.bogus.groove_auth.domain.user.token.TokenGenerator;
 import org.bogus.groove_auth.endpoint.auth.RegisterRequest;
+import org.bogus.groove_auth.storage.UserEntity;
 import org.bogus.groove_auth.storage.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,19 +31,26 @@ class UserControllerTest extends BaseIntegrationTest {
     @Autowired
     UserRepository userRepository;
 
-    UserInfo userInfo;
+    @Autowired
+    TokenGenerator tokenGenerator;
+
+    UserEntity userEntity;
     String accessToken;
 
     @BeforeEach
     public void setup() {
-        userInfo = userService.register(new UserRegisterParam("jig7357@naver.com", "password"));
-        accessToken = authService.login(userInfo.getEmail()).getAccessToken();
+        String email = "jig7357@naver.com";
+        String password = "password";
+        userService.register(new UserRegisterParam(email, password));
+        userEntity = userRepository.findByEmailAndType(email, UserType.GROOVE).get();
+        accessToken = tokenGenerator.generateAccessToken(userEntity.getId());
     }
 
     @Test
     public void 회원가입() throws Exception {
         String email = "jig7357@google.com";
-        var registerRequest = new RegisterRequest("jig7357@naver.com", "password");
+        String password = "password";
+        var registerRequest = new RegisterRequest(email, password);
 
         mvc.perform(
                 post("/api/users/register")
@@ -65,7 +73,7 @@ class UserControllerTest extends BaseIntegrationTest {
             .andDo(print())
             .andExpectAll(
                 status().isOk(),
-                jsonPath("data.id").value(userInfo.getId())
+                jsonPath("data.id").value(userEntity.getId())
             )
         ;
     }
