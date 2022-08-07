@@ -12,14 +12,6 @@ public class AuthService {
     private final TokenGenerator tokenGenerator;
     private final TokenValidator tokenValidator;
 
-    public LoginResult login(String email) {
-        var userInfo = userInfoFinder.find(email, UserType.GROOVE);
-        var accessToken = tokenGenerator.generateAccessToken(userInfo.getId());
-        var refreshToken = tokenGenerator.generateRefreshToken(userInfo.getId());
-
-        return new LoginResult(userInfo, accessToken, refreshToken);
-    }
-
     public String refresh(String accessToken, String refreshToken) {
         var userId = userInfoFinder.find(accessToken).getId();
         tokenValidator.validateRefreshable(userId, refreshToken);

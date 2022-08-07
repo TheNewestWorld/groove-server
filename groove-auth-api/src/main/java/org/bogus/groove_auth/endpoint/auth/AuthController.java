@@ -14,12 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/api/auth/login")
-    public CommonResponse<LoginResponse> login(@RequestBody LoginRequest request) {
-        var result = authService.login(request.getEmail());
-        return CommonResponse.success(new LoginResponse(result.getAccessToken(), result.getRefreshToken()));
-    }
-
     @PostMapping("/api/auth/refresh")
     public CommonResponse<TokenRefreshResponse> refresh(
         @RequestHeader(value = HttpHeaders.AUTHORIZATION) String accessToken,
