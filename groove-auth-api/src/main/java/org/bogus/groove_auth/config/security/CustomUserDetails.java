@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove_auth.domain.user.UserInfo;
 import org.bogus.groove_auth.domain.user.UserType;
 import org.bogus.groove_auth.domain.user.authority.Authority;
 import org.bogus.groove_auth.storage.UserAuthorityEntity;
@@ -20,6 +21,13 @@ public class CustomUserDetails implements UserDetails {
     private final UserType type;
     private final List<Authority> authorities;
     private String password;
+
+    public CustomUserDetails(UserInfo userInfo) {
+        this.userId = userInfo.getId();
+        this.email = userInfo.getEmail();
+        this.type = userInfo.getType();
+        this.authorities = userInfo.getAuthorities();
+    }
 
     public CustomUserDetails(UserEntity userEntity, Collection<UserAuthorityEntity> userAuthorityEntities) {
         this.userId = userEntity.getId();

@@ -8,12 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class AuthService {
-    private final UserInfoFinder userInfoFinder;
     private final TokenGenerator tokenGenerator;
     private final TokenValidator tokenValidator;
 
-    public String refresh(String accessToken, String refreshToken) {
-        var userId = userInfoFinder.find(accessToken).getId();
+    public String refresh(long userId, String refreshToken) {
         tokenValidator.validateRefreshable(userId, refreshToken);
         return tokenGenerator.generateAccessToken(userId);
     }

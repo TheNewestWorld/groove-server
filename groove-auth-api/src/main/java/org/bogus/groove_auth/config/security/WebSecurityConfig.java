@@ -2,26 +2,38 @@ package org.bogus.groove_auth.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove_auth.domain.user.UserInfoFinder;
 import org.bogus.groove_auth.domain.user.token.TokenGenerator;
+import org.bogus.groove_auth.domain.user.token.TokenValidator;
+import org.bogus.groove_auth.endpoint.support.ExceptionTranslator;
 import org.bogus.groove_auth.storage.UserAuthorityRepository;
 import org.bogus.groove_auth.storage.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserRepository userRepository;
     private final UserAuthorityRepository userAuthorityRepository;
     private final TokenGenerator tokenGenerator;
+    private final TokenValidator tokenValidator;
+    private final UserInfoFinder userInfoFinder;
     private final ObjectMapper mapper;
     private final PasswordEncoder passwordEncoder;
+    private final ExceptionTranslator exceptionTranslator;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -30,8 +42,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        var securityFailureHandler = new SecurityFilterExceptionHandler(mapper);
-
         http
             .csrf().disable()
             .formLogin().disable()
@@ -44,12 +54,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest()
             .permitAll()
             .and()
-            .exceptionHandling()
-            .accessDeniedHandler(securityFailureHandler)
         ;
 
         http
-            .addFilterAt(getRestfulAuthenticationFilter(securityFailureHandler), UsernamePasswordAuthenticationFilter.class)
+            .addFilterAt(getRestfulAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(getJwtAuthorizationFilter(), AuthorizationFilter.class)
+            .addFilterBefore(securityFilterExceptionHandler(), CorsFilter.class)
         ;
 
     }
@@ -65,11 +75,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationProvider;
     }
 
-    private RestfulAuthenticationFilter getRestfulAuthenticationFilter(SecurityFilterExceptionHandler failureHandler) throws Exception {
-        var authFilter = new RestfulAuthenticationFilter("/api/auth/login", mapper);
+    private RestfulAuthenticationFilter getRestfulAuthenticationFilter() throws Exception {
+        var authFilter = new RestfulAuthenticationFilter(new AntPathRequestMatcher("/api/auth/login", HttpMethod.POST.name()), mapper);
         authFilter.setAuthenticationManager(authenticationManagerBean());
         authFilter.setAuthenticationSuccessHandler(new RestfulAuthenticationSuccessHandler(tokenGenerator, mapper));
-        authFilter.setAuthenticationFailureHandler(failureHandler);
         return authFilter;
+    }
+
+    private JwtAuthorizationFilter getJwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter(tokenValidator, userInfoFinder);
+    }
+
+    private FilterChainExceptionHandlingFilter securityFilterExceptionHandler() {
+        return new FilterChainExceptionHandlingFilter(mapper, exceptionTranslator);
     }
 }

@@ -5,7 +5,6 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove_auth.domain.user.authority.Authority;
 import org.bogus.groove_auth.domain.user.authority.UserAuthorityUpdater;
-import org.bogus.groove_auth.domain.user.token.TokenValidator;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +13,6 @@ public class UserService {
     private final UserCreator userCreator;
     private final UserAuthorityUpdater userAuthorityUpdater;
     private final UserInfoFinder userInfoFinder;
-    private final TokenValidator tokenValidator;
 
     @Transactional
     public UserInfo register(UserRegisterParam param) {
@@ -26,11 +24,6 @@ public class UserService {
             user.getType(),
             authorities
         );
-    }
-
-    public UserInfo getSelf(String token) {
-        tokenValidator.validate(token);
-        return userInfoFinder.find(token);
     }
 
     public UserInfo getUserInfo(Long userId) {
