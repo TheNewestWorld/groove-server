@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class CommunityCreator {
     private final PostRepository postRepository;
 
-    public Post createPost(String title, String content, Integer likeCount, boolean isTemporary, Long userId, Long categoryId){
+    public Post create(String title, String content, Integer likeCount, boolean isTemporary, Long userId, Long categoryId) {
         var entity = postRepository.save(new PostEntity(title, content, likeCount, isTemporary, userId, categoryId));
         return new Post(
             entity.getId(),
