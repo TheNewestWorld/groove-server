@@ -11,7 +11,7 @@ public class PostCreateRequest {
 
     private Integer likeCount;
 
-    private boolean isTemporary;
+    private boolean isDeleted;
 
     private Long userId;
 

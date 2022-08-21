@@ -8,7 +8,5 @@ public class PostUpdateRequest {
 
     private String content;
 
-    private boolean isTemporary;
-
     private Long categoryId;
 }

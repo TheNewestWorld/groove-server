@@ -13,11 +13,10 @@ public class CommunityUpdater {
     private final PostRepository postRepository;
 
     @Transactional
-    public void updatePost(Long postId, String title, String content, boolean isTemporary, Long categoryId) {
+    public void updatePost(Long postId, String title, String content, Long categoryId) {
         var entity = postRepository.findById(postId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_POST));
         entity.setTitle(title);
         entity.setContent(content);
-        entity.setTemporary(isTemporary);
         entity.setCategoryId(categoryId);
     }
 }

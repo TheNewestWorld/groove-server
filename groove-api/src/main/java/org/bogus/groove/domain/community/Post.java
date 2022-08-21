@@ -16,7 +16,7 @@ public class Post {
 
     private Integer likeCount;
 
-    private boolean isTemporary;
+    private boolean isDeleted;
 
     private Long userId;
 

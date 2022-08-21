@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 public class CommunityReader {
     private final PostRepository postRepository;
 
-    public Post read(Long postId) {
+    public Post readPost(Long postId) {
         return readOrNull(postId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_POST));
     }
 
     public Optional<Post> readOrNull(Long postId) {
         return postRepository.findById(postId).map(
-            entity -> new Post(entity.getId(), entity.getTitle(), entity.getContent(), entity.getLikeCount(), entity.isTemporary(),
+            entity -> new Post(entity.getId(), entity.getTitle(), entity.getContent(), entity.getLikeCount(), entity.isDeleted(),
                 entity.getUserId(),
                 entity.getCategoryId()));
     }

@@ -11,19 +11,19 @@ public class CommunityService {
     private final CommunityUpdater communityUpdater;
     private final CommunityDeleter communityDeleter;
 
-    public Post create(String title, String content, Integer likeCount, boolean isTemporary, Long userId, Long categoryId) {
-        return communityCreator.create(title, content, likeCount, isTemporary, userId, categoryId);
+    public Post createPost(String title, String content, Integer likeCount, Long userId, Long categoryId) {
+        return communityCreator.createPost(title, content, likeCount, userId, categoryId);
     }
 
-    public Post get(Long postId) {
-        return communityReader.read(postId);
+    public Post getPost(Long postId) {
+        return communityReader.readPost(postId);
     }
 
-    public void updatePost(Long postId, String title, String content, boolean isTemporary, Long categoryId) {
-        communityUpdater.updatePost(postId, title, content, isTemporary, categoryId);
+    public void updatePost(Long postId, String title, String content, Long categoryId) {
+        communityUpdater.updatePost(postId, title, content, categoryId);
     }
 
-    public void delete(Long postId) {
-        communityDeleter.delete(postId);
+    public void deletePost(Long postId) {
+        communityDeleter.deletePost(postId);
     }
 }
