@@ -7,13 +7,13 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bogus.groove.common.enumeration.FileType;
+import org.bogus.groove.common.enumeration.AttachmentType;
 
 @Entity
-@Table(name = "file")
+@Table(name = "attachment")
 @Getter
 @NoArgsConstructor
-public class FileEntity extends BaseEntity {
+public class AttachmentEntity extends BaseEntity {
 
     @Column(name = "path")
     private String path;
@@ -26,12 +26,12 @@ public class FileEntity extends BaseEntity {
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private FileType fileType;
+    private AttachmentType attachmentType;
 
-    public FileEntity(String path, Integer size, String extension, FileType fileType) {
+    public AttachmentEntity(String path, Integer size, String extension, AttachmentType attachmentType) {
         this.path = path;
         this.size = size;
         this.extension = extension;
-        this.fileType = fileType;
+        this.attachmentType = attachmentType;
     }
 }
