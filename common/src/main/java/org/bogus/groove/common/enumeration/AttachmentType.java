@@ -1,6 +1,6 @@
 package org.bogus.groove.common.enumeration;
 
-public enum FileType {
+public enum AttachmentType {
   IMG,
   VOICE,
   VIDEO;

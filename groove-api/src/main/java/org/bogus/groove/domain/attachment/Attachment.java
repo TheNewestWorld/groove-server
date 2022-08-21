@@ -1,14 +1,14 @@
-package org.bogus.groove.domain.file;
+package org.bogus.groove.domain.attachment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
-import org.bogus.groove.common.enumeration.FileType;
+import org.bogus.groove.common.enumeration.AttachmentType;
 
 @Getter
 @AllArgsConstructor
 @ToString
-public class File {
+public class Attachment {
     private Long id;
 
     private String path;
@@ -17,5 +17,5 @@ public class File {
 
     private String extension;
 
-    private FileType fileType;
+    private AttachmentType fileType;
 }
