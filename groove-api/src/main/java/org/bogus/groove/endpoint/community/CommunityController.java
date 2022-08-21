@@ -21,7 +21,8 @@ public class CommunityController {
 
     @PostMapping("/api/community/post")
     public CommonResponse<Void> createPost(@RequestBody PostCreateRequest request) {
-        communityService.createPost(request.getTitle(), request.getContent(), request.getLikeCount(), request.getUserId(), request.getCategoryId());
+        communityService.createPost(request.getTitle(), request.getContent(), request.getLikeCount(), request.getUserId(),
+            request.getCategoryId());
         return CommonResponse.success();
     }
 
