@@ -1,4 +1,4 @@
-package org.bogus.groove.domain.community;
+package org.bogus.groove.domain.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,18 +7,10 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @ToString
-public class Post {
+public class Comment {
     private Long id;
-
-    private String title;
-
     private String content;
-
-    private Integer likeCount;
-
     private boolean isDeleted;
-
     private Long userId;
-
-    private Long categoryId;
+    private Long postId;
 }

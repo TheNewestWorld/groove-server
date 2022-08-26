@@ -20,5 +20,7 @@ springdoc:
     display-query-params-without-oauth2: true
     doc-expansion: none
   group-configs:
+    - group: community
+      paths-to-match: /api/community/**
     - group: v1
       paths-to-match: /api/**

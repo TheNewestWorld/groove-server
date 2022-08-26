@@ -7,7 +7,8 @@ public enum ErrorType {
     NOT_FOUND("정보를 찾을 수 없습니다."),
     NOT_FOUND_USER("유저 정보를 찾을 수 없습니다."),
     NOT_FOUND_POST("해당 게시글을 찾을 수 없습니다."),
-
+    NOT_FOUND_COMMENT("해당 댓글을 찾을 수 없습니다."),
+    NOT_FOUND_RECOMMENT("해당 대댓글을 찾을 수 없습니다."),
     UNAUTHORIZED_NOT_FOUND_USER_TOKEN("인증 정보를 찾을 수 없습니다."),
     UNAUTHORIZED_INVALID_TOKEN("잘못된 인증 정보입니다."),
     UNAUTHORIZED_TOKEN_EXPIRED("인증이 만료되었습니다."),

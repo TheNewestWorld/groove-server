@@ -1,4 +1,4 @@
-package org.bogus.groove.domain.community;
+package org.bogus.groove.domain.post;
 
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +9,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CommunityDeleter {
+public class PostUpdater {
     private final PostRepository postRepository;
 
     @Transactional
-    public void deletePost(Long postId) {
+    public void updatePost(Long postId, String title, String content, Long categoryId) {
         var entity = postRepository.findById(postId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_POST));
-        entity.setDeleted(true);
+        entity.setTitle(title);
+        entity.setContent(content);
+        entity.setCategoryId(categoryId);
     }
 }

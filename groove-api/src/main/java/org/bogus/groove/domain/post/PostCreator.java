@@ -1,4 +1,4 @@
-package org.bogus.groove.domain.community;
+package org.bogus.groove.domain.post;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.storage.entity.PostEntity;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CommunityCreator {
+public class PostCreator {
     private final PostRepository postRepository;
 
     public Post createPost(String title, String content, Integer likeCount, Long userId, Long categoryId) {

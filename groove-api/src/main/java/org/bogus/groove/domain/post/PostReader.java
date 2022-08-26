@@ -1,6 +1,8 @@
-package org.bogus.groove.domain.community;
+package org.bogus.groove.domain.post;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.ErrorType;
 import org.bogus.groove.common.NotFoundException;
@@ -9,8 +11,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CommunityReader {
+public class PostReader {
     private final PostRepository postRepository;
+
+    public List<Post> readAllPost() {
+        return postRepository.findAll().stream().map(
+            entity -> new Post(entity.getId(), entity.getTitle(), entity.getContent(), entity.getLikeCount(), entity.isDeleted(),
+                entity.getUserId(), entity.getCategoryId())).collect(Collectors.toList());
+    }
 
     public Post readPost(Long postId) {
         return readOrNull(postId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_POST));
@@ -22,4 +30,5 @@ public class CommunityReader {
                 entity.getUserId(),
                 entity.getCategoryId()));
     }
+
 }
