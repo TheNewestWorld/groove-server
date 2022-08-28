@@ -3,19 +3,19 @@ package org.bogus.groove.common;
 import java.util.Map;
 
 public class NotFoundException extends AppException {
-    public NotFoundException(AppError error) {
+    public NotFoundException(ErrorType error) {
         super(error, null, null);
     }
 
-    public NotFoundException(AppError error, String extraMessage) {
+    public NotFoundException(ErrorType error, String extraMessage) {
         super(error, extraMessage, null);
     }
 
-    public NotFoundException(AppError error, String extraMessage, Map<String, Object> extraData) {
+    public NotFoundException(ErrorType error, String extraMessage, Map<String, Object> extraData) {
         super(error, extraMessage, extraData);
     }
 
-    public NotFoundException(AppError error, Map<String, Object> extraData) {
+    public NotFoundException(ErrorType error, Map<String, Object> extraData) {
         super(error, null, extraData);
     }
 }

@@ -4,7 +4,8 @@ spring:
   config:
     import:
       - storage.yaml
-      - auth-api.yaml
+      - groove-security.yaml
+      - groove-auth-api.yaml
 
 springdoc:
   api-docs:
