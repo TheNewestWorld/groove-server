@@ -1,15 +1,18 @@
 package org.bogus.groove;
 
 import java.nio.charset.StandardCharsets;
+import org.bogus.groove.common.UnauthorizedException;
 import org.bogus.groove.domain.user.AuthService;
 import org.bogus.groove.domain.user.UserRegisterParam;
 import org.bogus.groove.domain.user.UserService;
 import org.bogus.groove.domain.user.UserType;
 import org.bogus.groove.domain.user.token.TokenGenerator;
+import org.bogus.groove.domain.user.token.TokenValidator;
 import org.bogus.groove.endpoint.auth.LoginRequest;
 import org.bogus.groove.endpoint.auth.TokenRefreshRequest;
 import org.bogus.groove.storage.UserEntity;
 import org.bogus.groove.storage.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,9 @@ class AuthControllerTest extends BaseIntegrationTest {
 
     @Autowired
     TokenGenerator tokenGenerator;
+
+    @Autowired
+    TokenValidator tokenValidator;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -97,12 +103,6 @@ class AuthControllerTest extends BaseIntegrationTest {
             .andExpect(MockMvcResultMatchers.status().isOk())
         ;
 
-        mvc.perform(
-                MockMvcRequestBuilders.get("/api/users/self")
-                    .header(HttpHeaders.AUTHORIZATION, accessToken)
-            )
-            .andDo(MockMvcResultHandlers.print())
-            .andExpect(MockMvcResultMatchers.status().isUnauthorized())
-        ;
+        Assertions.assertThrows(UnauthorizedException.class, () -> tokenValidator.validate(accessToken));
     }
 }
