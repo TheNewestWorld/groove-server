@@ -1,4 +1,4 @@
-package org.bogus.groove.config;
+package org.bogus.groove.config.authentication;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

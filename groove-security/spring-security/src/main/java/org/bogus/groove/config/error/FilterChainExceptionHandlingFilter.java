@@ -1,4 +1,4 @@
-package org.bogus.groove.config;
+package org.bogus.groove.config.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

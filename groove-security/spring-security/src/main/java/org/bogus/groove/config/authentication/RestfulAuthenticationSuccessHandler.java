@@ -1,4 +1,4 @@
-package org.bogus.groove.config;
+package org.bogus.groove.config.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
+import org.bogus.groove.config.CustomUserDetails;
 import org.bogus.groove.domain.user.token.TokenGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

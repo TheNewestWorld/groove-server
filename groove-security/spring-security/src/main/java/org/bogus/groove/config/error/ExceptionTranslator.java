@@ -1,4 +1,4 @@
-package org.bogus.groove.config;
+package org.bogus.groove.config.error;
 
 import org.bogus.groove.common.AppException;
 import org.bogus.groove.common.BadRequestException;
