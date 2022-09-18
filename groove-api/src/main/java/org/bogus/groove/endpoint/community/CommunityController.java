@@ -2,6 +2,7 @@ package org.bogus.groove.endpoint.community;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
+import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.community.CommunityService;
 import org.bogus.groove.domain.community.Post;
 import org.springframework.security.access.annotation.Secured;
@@ -30,7 +31,7 @@ public class CommunityController {
         return CommonResponse.success(communityService.getPost(postId));
     }
 
-    @Secured("ROLE_USER")
+    @Secured(SecurityCode.USER)
     @PutMapping("/api/community/post/{postId}")
     public CommonResponse<Void> updatePost(
         @RequestBody PostUpdateRequest request,
@@ -40,7 +41,7 @@ public class CommunityController {
         return CommonResponse.success();
     }
 
-    @Secured("ROLE_USER")
+    @Secured(SecurityCode.USER)
     @DeleteMapping("/api/community/{postId}")
     public CommonResponse<Void> deletePost(@PathVariable Long postId) {
         communityService.deletePost(postId);

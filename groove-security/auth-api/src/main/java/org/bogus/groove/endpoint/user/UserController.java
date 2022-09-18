@@ -3,6 +3,7 @@ package org.bogus.groove.endpoint.user;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.user.UserInfo;
 import org.bogus.groove.domain.user.UserRegisterParam;
 import org.bogus.groove.domain.user.UserService;
@@ -31,7 +32,7 @@ public class UserController {
         return CommonResponse.success(result);
     }
 
-    @Secured("ROLE_USER")
+    @Secured(SecurityCode.USER)
     @GetMapping("/api/users/self")
     public CommonResponse<UserInfoGetResponse> getSelfInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
         var result = userService.getUserInfo(userDetails.getUserId());
