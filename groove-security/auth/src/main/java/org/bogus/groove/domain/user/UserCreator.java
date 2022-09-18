@@ -10,14 +10,8 @@ import org.springframework.stereotype.Component;
 public class UserCreator {
     private final UserRepository userRepository;
 
-    public User create(UserRegisterParam param, UserType userType) {
-        var entity = userRepository.save(
-            new UserEntity(
-                param.getEmail(),
-                param.getPassword(),
-                userType
-            )
-        );
+    public User create(String email, String password, UserType userType) {
+        var entity = userRepository.save(new UserEntity(email, password, userType));
         return new User(entity);
     }
 }
