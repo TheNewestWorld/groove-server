@@ -3,19 +3,19 @@ package org.bogus.groove.common;
 import java.util.Map;
 
 public class UnauthorizedException extends AppException {
-    public UnauthorizedException(AppError error) {
+    public UnauthorizedException(ErrorType error) {
         super(error, null, null);
     }
 
-    public UnauthorizedException(AppError error, String extraMessage) {
+    public UnauthorizedException(ErrorType error, String extraMessage) {
         super(error, extraMessage, null);
     }
 
-    public UnauthorizedException(AppError error, String extraMessage, Map<String, Object> extraData) {
+    public UnauthorizedException(ErrorType error, String extraMessage, Map<String, Object> extraData) {
         super(error, extraMessage, extraData);
     }
 
-    public UnauthorizedException(AppError error, Map<String, Object> extraData) {
+    public UnauthorizedException(ErrorType error, Map<String, Object> extraData) {
         super(error, null, extraData);
     }
 }

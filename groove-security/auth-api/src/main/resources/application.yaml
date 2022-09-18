@@ -1,0 +1,5 @@
+spring:
+  config:
+    import:
+      - groove-auth-api.yaml
+      - groove-security.yaml

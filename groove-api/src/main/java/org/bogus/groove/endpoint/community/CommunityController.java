@@ -2,10 +2,9 @@ package org.bogus.groove.endpoint.community;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
-import org.bogus.groove.common.enumeration.Authority;
 import org.bogus.groove.domain.community.CommunityService;
 import org.bogus.groove.domain.community.Post;
-import org.bogus.groove.endpoint.middleware.Authorized;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +30,7 @@ public class CommunityController {
         return CommonResponse.success(communityService.getPost(postId));
     }
 
-    @Authorized({Authority.USER})
+    @Secured("ROLE_USER")
     @PutMapping("/api/community/post/{postId}")
     public CommonResponse<Void> updatePost(
         @RequestBody PostUpdateRequest request,
@@ -41,7 +40,7 @@ public class CommunityController {
         return CommonResponse.success();
     }
 
-    @Authorized({Authority.USER})
+    @Secured("ROLE_USER")
     @DeleteMapping("/api/community/{postId}")
     public CommonResponse<Void> deletePost(@PathVariable Long postId) {
         communityService.deletePost(postId);

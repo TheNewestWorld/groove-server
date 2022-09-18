@@ -4,10 +4,12 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
-import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import redis.embedded.RedisServer;
 
-@TestConfiguration
+@Profile({"test", "local"})
+@Configuration
 @EnableAutoConfiguration
 public class TestRedisConfig {
     private final RedisServer redisServer;

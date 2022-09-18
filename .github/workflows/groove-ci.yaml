@@ -38,6 +38,9 @@ jobs:
         with:
           files: |
             groove-api/build/test-results/**/*.xml
-            groove-auth-api/build/test-results/**/*.xml
+            groove-security/auth/build/test-results/**/*.xml
+            groove-security/auth-api/build/test-results/**/*.xml
+            groove-security/spring-security/build/test-results/**/*.xml
             common/build/test-results/**/*.xml
             storage/build/test-results/**/*.xml
+            redis/build/test-results/**/*.xml

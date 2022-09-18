@@ -254,14 +254,14 @@
             <property name="lineWrappingIndentation" value="4"/>
             <property name="arrayInitIndent" value="2"/>
         </module>
-        <module name="AbbreviationAsWordInName">
-            <property name="ignoreFinal" value="false"/>
-            <property name="allowedAbbreviationLength" value="0"/>
-            <property name="tokens"
-                      value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF, ANNOTATION_FIELD_DEF,
-                    PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF, PATTERN_VARIABLE_DEF, RECORD_DEF,
-                    RECORD_COMPONENT_DEF"/>
-        </module>
+<!--        <module name="AbbreviationAsWordInName">-->
+<!--            <property name="ignoreFinal" value="false"/>-->
+<!--            <property name="allowedAbbreviationLength" value="0"/>-->
+<!--            <property name="tokens"-->
+<!--                      value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF, ANNOTATION_FIELD_DEF,-->
+<!--                    PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF, PATTERN_VARIABLE_DEF, RECORD_DEF,-->
+<!--                    RECORD_COMPONENT_DEF"/>-->
+<!--        </module>-->
         <module name="NoWhitespaceBeforeCaseDefaultColon"/>
         <module name="OverloadMethodsDeclarationOrder"/>
         <module name="VariableDeclarationUsageDistance"/>
@@ -352,9 +352,9 @@
         <module name="EmptyCatchBlock">
             <property name="exceptionVariableName" value="expected"/>
         </module>
-        <module name="CommentsIndentation">
-            <property name="tokens" value="SINGLE_LINE_COMMENT, BLOCK_COMMENT_BEGIN"/>
-        </module>
+<!--        <module name="CommentsIndentation">-->
+<!--            <property name="tokens" value="SINGLE_LINE_COMMENT, BLOCK_COMMENT_BEGIN"/>-->
+<!--        </module>-->
         <!-- https://checkstyle.org/config_filters.html#SuppressionXpathFilter -->
         <module name="SuppressionXpathFilter">
             <property name="file" value="${org.checkstyle.google.suppressionxpathfilter.config}"

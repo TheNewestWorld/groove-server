@@ -1,0 +1,14 @@
+spring:
+  config:
+    import:
+      - groove-auth.yaml
+
+  security:
+    oauth2.client:
+      registration:
+        google:
+          clientId: 358893190394-s11gtnk8kctiqdt8nm9o527m1p7nfqvv.apps.googleusercontent.com
+          clientSecret: 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
+          scope:
+            - email
+            - profile
