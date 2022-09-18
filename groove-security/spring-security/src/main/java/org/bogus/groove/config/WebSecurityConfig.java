@@ -2,7 +2,15 @@ package org.bogus.groove.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.config.authentication.CustomDaoAuthenticationProvider;
+import org.bogus.groove.config.authentication.RestfulAuthenticationFilter;
+import org.bogus.groove.config.authentication.RestfulAuthenticationSuccessHandler;
+import org.bogus.groove.config.authorization.JwtAuthorizationFilter;
+import org.bogus.groove.config.error.ExceptionTranslator;
+import org.bogus.groove.config.error.FilterChainExceptionHandlingFilter;
+import org.bogus.groove.config.oauth.OAuth2AuthenticationSuccessHandler;
 import org.bogus.groove.domain.user.UserInfoFinder;
+import org.bogus.groove.domain.user.UserRegister;
 import org.bogus.groove.domain.user.token.TokenGenerator;
 import org.bogus.groove.domain.user.token.TokenValidator;
 import org.bogus.groove.storage.UserAuthorityRepository;
@@ -27,6 +35,7 @@ import org.springframework.web.filter.CorsFilter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserRepository userRepository;
     private final UserAuthorityRepository userAuthorityRepository;
+    private final UserRegister userRegister;
     private final TokenGenerator tokenGenerator;
     private final TokenValidator tokenValidator;
     private final UserInfoFinder userInfoFinder;
@@ -60,6 +69,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .addFilterBefore(securityFilterExceptionHandler(), CorsFilter.class)
         ;
 
+        http.oauth2Login()
+            .successHandler(new OAuth2AuthenticationSuccessHandler(userRegister, userInfoFinder, tokenGenerator))
+        ;
     }
 
     @Override

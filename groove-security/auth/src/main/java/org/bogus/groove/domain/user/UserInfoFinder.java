@@ -1,5 +1,6 @@
 package org.bogus.groove.domain.user;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.ErrorType;
 import org.bogus.groove.common.NotFoundException;
@@ -32,5 +33,13 @@ public class UserInfoFinder {
         var authorities = userAuthorityReader.readAll(user.getId());
 
         return new UserInfo(user.getId(), user.getEmail(), user.getType(), authorities);
+    }
+
+    public Optional<UserInfo> findOrNull(String email, UserType userType) {
+        try {
+            return Optional.of(find(email, userType));
+        } catch (Throwable throwable) {
+            return Optional.empty();
+        }
     }
 }
