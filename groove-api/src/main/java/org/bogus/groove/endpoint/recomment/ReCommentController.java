@@ -27,7 +27,7 @@ public class ReCommentController {
 
     @Operation(summary = "대댓글 작성")
     @PostMapping("/comment/{commentId}/reComment")
-    public CommonResponse<Void> createReComment(@RequestBody ReCommentCreaetRequest request) {
+    public CommonResponse<Void> createReComment(@RequestBody ReCommentCreateRequest request) {
         reCommentService.createReComment(request.getContent(), request.getUserId(), request.getCommentId());
         return CommonResponse.success();
     }

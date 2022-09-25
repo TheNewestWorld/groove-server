@@ -23,7 +23,7 @@ public class PostService {
 
     public List<PostResponse> getPostList(Pageable pageable) {
         List<PostResponse> postList = postReader.readAllPost(pageable).stream().map(
-            post -> new PostResponse(post, commentReader.countComment(post.getId()))).collect(Collectors.toList());
+            post -> new PostResponse(post, commentReader.countPostComment(post.getId()))).collect(Collectors.toList());
         return postList;
     }
 
