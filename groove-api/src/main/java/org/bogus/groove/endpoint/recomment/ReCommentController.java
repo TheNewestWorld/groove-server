@@ -5,10 +5,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
-import org.bogus.groove.common.enumeration.Authority;
+import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.recomment.ReComment;
 import org.bogus.groove.domain.recomment.ReCommentService;
-import org.bogus.groove.endpoint.middleware.Authorized;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,8 +38,8 @@ public class ReCommentController {
         return CommonResponse.success(reCommentService.getReCommentList(commentId));
     }
 
+    @Secured(SecurityCode.USER)
     @Operation(summary = "대댓글 수정")
-    @Authorized({Authority.USER})
     @PutMapping("/reComment/{reCommentId}")
     public CommonResponse<Void> updateReComment(
         @RequestBody ReCommentUpdateRequest request,
@@ -49,8 +49,8 @@ public class ReCommentController {
         return CommonResponse.success();
     }
 
+    @Secured(SecurityCode.USER)
     @Operation(summary = "대댓글 삭제")
-    @Authorized({Authority.USER})
     @DeleteMapping("/reComment/{reCommentId}")
     public CommonResponse<Void> deleteReComment(@PathVariable Long reCommentId) {
         reCommentService.deleteReComment(reCommentId);

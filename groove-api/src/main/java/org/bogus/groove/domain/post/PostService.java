@@ -31,11 +31,11 @@ public class PostService {
         return postReader.readPost(postId);
     }
 
-    public void updatePost(Long postId, String title, String content, Long categoryId) {
-        postUpdater.updatePost(postId, title, content, categoryId);
+    public void updatePost(Long userId, Long postId, String title, String content, Long categoryId) {
+        postUpdater.updatePost(userId, postId, title, content, categoryId);
     }
 
-    public void deletePost(Long postId) {
-        postDeleter.deletePost(postId);
+    public void deletePost(Long userId, Long postId) {
+        postDeleter.deletePost(userId, postId);
     }
 }

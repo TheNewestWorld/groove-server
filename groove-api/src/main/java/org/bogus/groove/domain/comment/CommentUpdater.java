@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.ErrorType;
 import org.bogus.groove.common.NotFoundException;
+import org.bogus.groove.common.UnauthorizedException;
 import org.bogus.groove.storage.repository.CommentRepository;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +14,12 @@ public class CommentUpdater {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public void updateComment(Long commentId, String content) {
+    public void updateComment(Long userId, Long commentId, String content) {
         var entity = commentRepository.findById(commentId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_COMMENT));
-        entity.setContent(content);
+        if (entity.getUserId() == userId) {
+            entity.setContent(content);
+        } else {
+            throw new UnauthorizedException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
+        }
     }
 }

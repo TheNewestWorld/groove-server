@@ -5,10 +5,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
-import org.bogus.groove.common.enumeration.Authority;
+import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.comment.Comment;
 import org.bogus.groove.domain.comment.CommentService;
-import org.bogus.groove.endpoint.middleware.Authorized;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,22 +40,23 @@ public class CommentController {
         return CommonResponse.success(communityService.getCommentList(postId));
     }
 
+    @Secured(SecurityCode.USER)
     @Operation(summary = "댓글 수정")
-    @Authorized({Authority.USER})
     @PutMapping("/comment/{contentId}")
     public CommonResponse<Void> updateComment(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody CommentUpdateRequest request,
         @PathVariable Long contentId
     ) {
-        communityService.updateComment(contentId, request.getContent());
+        communityService.updateComment(userDetails.getUserId(), contentId, request.getContent());
         return CommonResponse.success();
     }
 
+    @Secured(SecurityCode.USER)
     @Operation(summary = "댓글 삭제")
-    @Authorized({Authority.USER})
     @DeleteMapping("/comment/{contentId}")
-    public CommonResponse<Void> deleteComment(@PathVariable Long contentId) {
-        communityService.deleteComment(contentId);
+    public CommonResponse<Void> deleteComment(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long contentId) {
+        communityService.deleteComment(userDetails.getUserId(), contentId);
         return CommonResponse.success();
     }
 }

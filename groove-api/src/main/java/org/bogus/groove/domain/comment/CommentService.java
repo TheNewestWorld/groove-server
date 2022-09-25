@@ -20,11 +20,11 @@ public class CommentService {
         return commentReader.readAllComment(postId);
     }
 
-    public void updateComment(Long commentId, String content) {
-        commentUpdater.updateComment(commentId, content);
+    public void updateComment(Long userId, Long commentId, String content) {
+        commentUpdater.updateComment(userId, commentId, content);
     }
 
-    public void deleteComment(Long commentId) {
-        commentDeleter.deleteComment(commentId);
+    public void deleteComment(Long userId, Long commentId) {
+        commentDeleter.deleteComment(userId, commentId);
     }
 }

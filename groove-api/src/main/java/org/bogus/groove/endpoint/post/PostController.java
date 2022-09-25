@@ -5,15 +5,18 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
+import org.bogus.groove.config.CustomUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.springframework.security.access.annotation.Secured;
 import org.bogus.groove.domain.post.Post;
 import org.bogus.groove.domain.post.PostService;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,19 +51,21 @@ public class PostController {
 
     @Secured(SecurityCode.USER)
     @Operation(summary = "게시글 수정")
+    @PutMapping("/{postId}")
     public CommonResponse<Void> updatePost(
+        @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody PostUpdateRequest request,
         @PathVariable Long postId
     ) {
-        postService.updatePost(postId, request.getTitle(), request.getContent(), request.getCategoryId());
+        postService.updatePost(userDetails.getUserId(), postId, request.getTitle(), request.getContent(), request.getCategoryId());
         return CommonResponse.success();
     }
 
     @Secured(SecurityCode.USER)
     @Operation(summary = "게시글 삭제")
     @DeleteMapping("/{postId}")
-    public CommonResponse<Void> deletePost(@PathVariable Long postId) {
-        postService.deletePost(postId);
+    public CommonResponse<Void> deletePost(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long postId) {
+        postService.deletePost(userDetails.getUserId(), postId);
         return CommonResponse.success();
     }
 }
