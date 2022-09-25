@@ -9,6 +9,7 @@ import org.bogus.groove.config.SecurityCode;
 import org.springframework.security.access.annotation.Secured;
 import org.bogus.groove.domain.post.Post;
 import org.bogus.groove.domain.post.PostService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +36,8 @@ public class PostController {
 
     @Operation(summary = "게시글 리스트 조회")
     @GetMapping
-    public CommonResponse<List<Post>> getPostList() {
-        return CommonResponse.success(postService.getPostList());
+    public CommonResponse<List<PostResponse>> getPostList(Pageable pageable) {
+        return CommonResponse.success(postService.getPostList(pageable));
     }
 
     @Operation(summary = "게시글 상세 조회")

@@ -16,4 +16,8 @@ public class CommentReader {
                 entity -> new Comment(entity.getId(), entity.getContent(), entity.isDeleted(), entity.getUserId(), entity.getPostId()))
             .collect(Collectors.toList());
     }
+
+    public Integer countComment(Long postId) {
+        return commentRepository.countByPostId(postId);
+    }
 }

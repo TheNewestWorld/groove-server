@@ -3,6 +3,7 @@ package org.bogus.groove.domain.post;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
+import org.bogus.groove.storage.entity.PostEntity;
 
 @Getter
 @AllArgsConstructor
@@ -15,4 +16,14 @@ public class Post {
     private boolean isDeleted;
     private Long userId;
     private Long categoryId;
+
+    public Post(PostEntity entity) {
+        this.id = entity.getId();
+        this.title = entity.getTitle();
+        this.content = entity.getContent();
+        this.likeCount = entity.getLikeCount();
+        this.isDeleted = entity.isDeleted();
+        this.userId = entity.getUserId();
+        this.categoryId = entity.getCategoryId();
+    }
 }
