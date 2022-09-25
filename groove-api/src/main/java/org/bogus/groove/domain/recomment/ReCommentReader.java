@@ -13,7 +13,6 @@ public class ReCommentReader {
 
     public List<ReComment> readAllReComment(Long commentId) {
         return reCommentRepository.findAllByCommentId(commentId).stream().map(
-                entity -> new ReComment(entity.getId(), entity.getContent(), entity.isDeleted(), entity.getUserId(), entity.getCommentId()))
-            .collect(Collectors.toList());
+                entity -> new ReComment(entity)).collect(Collectors.toList());
     }
 }

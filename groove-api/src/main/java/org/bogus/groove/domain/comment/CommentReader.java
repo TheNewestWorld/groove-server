@@ -13,8 +13,7 @@ public class CommentReader {
 
     public List<Comment> readAllComment(Long postId) {
         return commentRepository.findAllByPostId(postId).stream().map(
-                entity -> new Comment(entity.getId(), entity.getContent(), entity.isDeleted(), entity.getUserId(), entity.getPostId()))
-            .collect(Collectors.toList());
+                entity -> new Comment(entity)).collect(Collectors.toList());
     }
 
     public Integer countComment(Long postId) {

@@ -12,14 +12,6 @@ public class PostCreator {
 
     public Post createPost(String title, String content, Integer likeCount, Long userId, Long categoryId) {
         var entity = postRepository.save(new PostEntity(title, content, likeCount, false, userId, categoryId));
-        return new Post(
-            entity.getId(),
-            entity.getTitle(),
-            entity.getContent(),
-            entity.getLikeCount(),
-            entity.isDeleted(),
-            entity.getUserId(),
-            entity.getCategoryId()
-        );
+        return new Post(entity);
     }
 }

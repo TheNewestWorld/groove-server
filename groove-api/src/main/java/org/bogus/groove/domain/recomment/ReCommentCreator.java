@@ -12,12 +12,6 @@ public class ReCommentCreator {
 
     public ReComment createReComment(String content, Long userId, Long commentId) {
         var entity = reCommentRepository.save(new ReCommentEntity(content, false, userId, commentId));
-        return new ReComment(
-            entity.getId(),
-            entity.getContent(),
-            entity.isDeleted(),
-            entity.getUserId(),
-            entity.getCommentId()
-        );
+        return new ReComment(entity);
     }
 }

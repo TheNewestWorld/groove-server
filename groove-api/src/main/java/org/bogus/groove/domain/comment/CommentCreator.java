@@ -12,12 +12,6 @@ public class CommentCreator {
 
     public Comment createComment(String content, Long userId, Long postId) {
         var entity = commentRepository.save(new CommentEntity(content, false, userId, postId));
-        return new Comment(
-            entity.getId(),
-            entity.getContent(),
-            entity.isDeleted(),
-            entity.getUserId(),
-            entity.getPostId()
-        );
+        return new Comment(entity);
     }
 }
