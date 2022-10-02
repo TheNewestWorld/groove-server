@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.config.CustomUserDetails;
 import org.bogus.groove.config.SecurityCode;
-import org.bogus.groove.domain.comment.Comment;
 import org.bogus.groove.domain.comment.CommentService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
