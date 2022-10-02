@@ -13,12 +13,6 @@ public class CommentReader {
     private final CommentRepository commentRepository;
     private final PostReader postReader;
 
-    public List<Comment> readAllComment(Long postId) {
-        checkPostIsExist(postId);
-        return commentRepository.findAllByPostId(postId).stream().map(
-            entity -> new Comment(entity)).collect(Collectors.toList());
-    }
-
     public List<Comment> readAllPostComment(Long postId) {
         checkPostIsExist(postId);
         return commentRepository.findAllByPostId(postId).stream().filter(entity -> entity.getId() == entity.getParentId()).map(
