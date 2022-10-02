@@ -3,11 +3,13 @@ package org.bogus.groove.storage.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "record")
 @NoArgsConstructor
+@Getter
 public class RecordEntity extends BaseEntity {
     @Column(name = "ref_user_id")
     private long userId;

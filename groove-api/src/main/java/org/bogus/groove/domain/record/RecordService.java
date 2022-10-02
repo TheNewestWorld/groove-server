@@ -3,8 +3,12 @@ package org.bogus.groove.domain.record;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
+import org.bogus.groove.domain.attachment.Attachment;
 import org.bogus.groove.domain.attachment.AttachmentCreator;
+import org.bogus.groove.domain.attachment.AttachmentReader;
 import org.bogus.groove.domain.object.ObjectStorage;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +19,8 @@ public class RecordService {
     private final ObjectStorage objectStorage;
     private final AttachmentCreator attachmentCreator;
     private final RecordCreator recordCreator;
+    private final RecordReader recordReader;
+    private final AttachmentReader attachmentReader;
 
     @Transactional
     public void upload(long userId, MultipartFile record) throws IOException {
@@ -24,7 +30,23 @@ public class RecordService {
         recordCreator.create(userId, attachment.getId());
     }
 
-    public void getAll(long userId) {
+    public Slice<RecordGetResult> getAll(long userId, int page, int size) {
+        var records = recordReader.findAll(userId, page, size);
 
+        return new SliceImpl<>(
+            records.map((record) ->
+                new RecordGetResult(
+                    record.getId(),
+                    findName(record),
+                    record.getCreatedAt()
+                )
+            ).toList(),
+            records.getPageable(),
+            records.hasNext()
+        );
+    }
+
+    private String findName(Record record) {
+        return attachmentReader.readOrNull(record.getAttachmentId()).map(Attachment::getName).orElse(null);
     }
 }
