@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.config.CustomUserDetails;
 import org.bogus.groove.config.SecurityCode;
-import org.bogus.groove.domain.post.Post;
 import org.bogus.groove.domain.post.PostService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
