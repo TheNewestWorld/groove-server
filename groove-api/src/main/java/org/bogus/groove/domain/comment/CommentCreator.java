@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 public class CommentCreator {
     private final CommentRepository commentRepository;
 
-    public Comment createComment(String content, Long userId, Long postId) {
+    public Comment createComment(String content, Long parentId, Long userId, Long postId) {
         try {
-            var entity = commentRepository.save(new CommentEntity(content, false, userId, postId));
+            var entity = commentRepository.save(new CommentEntity(content, false, parentId, userId, postId));
             return new Comment(entity);
         } catch (IllegalArgumentException e) {
             throw new InternalServerException(ErrorType.FAILED_TO_CREATE_COMMENT);

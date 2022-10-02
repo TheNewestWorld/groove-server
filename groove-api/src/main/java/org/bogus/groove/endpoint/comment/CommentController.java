@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.config.CustomUserDetails;
 import org.bogus.groove.config.SecurityCode;
-import org.bogus.groove.domain.comment.Comment;
 import org.bogus.groove.domain.comment.CommentService;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,19 +24,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class CommentController {
-    private final CommentService communityService;
+    private final CommentService commentService;
 
     @Operation(summary = "댓글 작성")
     @PostMapping("/post/{postId}/comment")
     public CommonResponse<Void> createComment(@RequestBody CommentCreateRequest request) {
-        communityService.createComment(request.getContent(), request.getUserId(), request.getPostId());
+        commentService.createComment(request.getContent(), request.getParentId(), request.getUserId(), request.getPostId());
         return CommonResponse.success();
     }
 
     @Operation(summary = "댓글 리스트 조회")
     @GetMapping("/post/{postId}/comment")
-    public CommonResponse<List<Comment>> getCommentList(@PathVariable Long postId) {
-        return CommonResponse.success(communityService.getCommentList(postId));
+    public CommonResponse<List<CommentResponse>> getCommentList(@PathVariable Long postId) {
+        return CommonResponse.success(commentService.getCommentList(postId));
     }
 
     @Secured(SecurityCode.USER)
@@ -48,7 +47,7 @@ public class CommentController {
         @RequestBody CommentUpdateRequest request,
         @PathVariable Long contentId
     ) {
-        communityService.updateComment(userDetails.getUserId(), contentId, request.getContent());
+        commentService.updateComment(userDetails.getUserId(), contentId, request.getContent());
         return CommonResponse.success();
     }
 
@@ -56,7 +55,7 @@ public class CommentController {
     @Operation(summary = "댓글 삭제")
     @DeleteMapping("/comment/{contentId}")
     public CommonResponse<Void> deleteComment(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long contentId) {
-        communityService.deleteComment(userDetails.getUserId(), contentId);
+        commentService.deleteComment(userDetails.getUserId(), contentId);
         return CommonResponse.success();
     }
 }

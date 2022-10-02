@@ -21,15 +21,19 @@ public class CommentEntity extends BaseEntity {
     @Setter
     private boolean isDeleted;
 
+    @Column(name = "parent_id")
+    private Long parentId;
+
     @Column(name = "ref_user_id")
     private Long userId;
 
     @Column(name = "ref_post_id")
     private Long postId;
 
-    public CommentEntity(String content, Boolean isDeleted, Long userId, Long postId) {
+    public CommentEntity(String content, Boolean isDeleted, Long parentId, Long userId, Long postId) {
         this.content = content;
         this.isDeleted = isDeleted;
+        this.parentId = parentId;
         this.userId = userId;
         this.postId = postId;
     }
