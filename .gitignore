@@ -39,3 +39,6 @@ out/
 .DS_Store
 
 mysql/data/
+
+### test files ###
+upload/
