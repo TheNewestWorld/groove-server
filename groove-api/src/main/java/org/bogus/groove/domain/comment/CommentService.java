@@ -12,8 +12,8 @@ public class CommentService {
     private final CommentUpdater commentUpdater;
     private final CommentDeleter commentDeleter;
 
-    public Comment createComment(String content, Long userId, Long postId) {
-        return commentCreator.createComment(content, userId, postId);
+    public Comment createComment(String content, Long parentId, Long userId, Long postId) {
+        return commentCreator.createComment(content, parentId, userId, postId);
     }
 
     public List<Comment> getCommentList(Long postId) {

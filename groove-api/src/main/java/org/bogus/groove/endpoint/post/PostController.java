@@ -45,7 +45,7 @@ public class PostController {
 
     @Operation(summary = "게시글 상세 조회")
     @GetMapping("/{postId}")
-    public CommonResponse<Post> getPost(@PathVariable Long postId) {
+    public CommonResponse<PostDetailResponse> getPost(@PathVariable Long postId) {
         return CommonResponse.success(postService.getPost(postId));
     }
 

@@ -30,7 +30,7 @@ public class CommentController {
     @Operation(summary = "댓글 작성")
     @PostMapping("/post/{postId}/comment")
     public CommonResponse<Void> createComment(@RequestBody CommentCreateRequest request) {
-        communityService.createComment(request.getContent(), request.getUserId(), request.getPostId());
+        communityService.createComment(request.getContent(), request.getParentId(), request.getUserId(), request.getPostId());
         return CommonResponse.success();
     }
 
