@@ -1,7 +1,7 @@
 package org.bogus.groove;
 
 import java.nio.charset.StandardCharsets;
-import org.bogus.groove.common.UnauthorizedException;
+import org.bogus.groove.common.exception.UnauthorizedException;
 import org.bogus.groove.domain.user.AuthService;
 import org.bogus.groove.domain.user.UserRegisterParam;
 import org.bogus.groove.domain.user.UserService;

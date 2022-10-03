@@ -1,9 +1,9 @@
 package org.bogus.groove.domain.like;
 
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.ErrorType;
-import org.bogus.groove.common.NotFoundException;
-import org.bogus.groove.common.UnauthorizedException;
+import org.bogus.groove.common.exception.ErrorType;
+import org.bogus.groove.common.exception.NotFoundException;
+import org.bogus.groove.common.exception.UnauthorizedException;
 import org.bogus.groove.storage.repository.LikeRepository;
 import org.springframework.stereotype.Component;
 

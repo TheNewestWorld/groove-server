@@ -1,8 +1,8 @@
 package org.bogus.groove.domain.record;
 
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.ErrorType;
-import org.bogus.groove.common.NotFoundException;
+import org.bogus.groove.common.exception.ErrorType;
+import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.storage.repository.RecordRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;

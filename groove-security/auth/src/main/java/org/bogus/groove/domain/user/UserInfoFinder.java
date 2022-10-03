@@ -2,8 +2,8 @@ package org.bogus.groove.domain.user;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.ErrorType;
-import org.bogus.groove.common.NotFoundException;
+import org.bogus.groove.common.exception.ErrorType;
+import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.domain.user.authority.UserAuthorityReader;
 import org.bogus.groove.util.JwtUtil;
 import org.springframework.stereotype.Component;
