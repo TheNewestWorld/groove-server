@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
     Page<PostEntity> findAllByIsDeletedFalseOrderByCreatedAtDesc(Pageable pageable);
+
+    Page<PostEntity> findByCategoryIdAndIsDeletedFalseOrderByCreatedAtDesc(Long categoryId, Pageable pageable);
 }

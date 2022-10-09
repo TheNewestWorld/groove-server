@@ -17,14 +17,16 @@ import org.springframework.stereotype.Component;
 public class PostReader {
     private final PostRepository postRepository;
 
-    public List<Post> readAllPost(Pageable pageable) {
-        Page<PostEntity> posts = readLatestPosts(pageable);
+    public List<Post> readAllPosts(Pageable pageable) {
+        Page<PostEntity> posts = postRepository.findAllByIsDeletedFalseOrderByCreatedAtDesc(pageable);
         return posts.stream().map(
             entity -> new Post(entity)).collect(Collectors.toList());
     }
 
-    private Page<PostEntity> readLatestPosts(Pageable pageable) {
-        return postRepository.findAllByIsDeletedFalseOrderByCreatedAtDesc(pageable);
+    public List<Post> readAllPosts(Long categoryId, Pageable pageable) {
+        Page<PostEntity> posts = postRepository.findByCategoryIdAndIsDeletedFalseOrderByCreatedAtDesc(categoryId, pageable);
+        return posts.stream().map(
+            entity -> new Post(entity)).collect(Collectors.toList());
     }
 
     public Post readPost(Long postId) {
