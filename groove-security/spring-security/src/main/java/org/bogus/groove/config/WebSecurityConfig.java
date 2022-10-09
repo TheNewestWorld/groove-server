@@ -3,14 +3,13 @@ package org.bogus.groove.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.config.authentication.CustomDaoAuthenticationProvider;
+import org.bogus.groove.config.authentication.RestfulAuthenticationFailureHandler;
 import org.bogus.groove.config.authentication.RestfulAuthenticationFilter;
 import org.bogus.groove.config.authentication.RestfulAuthenticationSuccessHandler;
 import org.bogus.groove.config.authorization.JwtAuthorizationFilter;
 import org.bogus.groove.config.error.ExceptionTranslator;
 import org.bogus.groove.config.error.FilterChainExceptionHandlingFilter;
-import org.bogus.groove.config.oauth.OAuth2AuthenticationSuccessHandler;
 import org.bogus.groove.domain.user.UserInfoFinder;
-import org.bogus.groove.domain.user.UserRegister;
 import org.bogus.groove.domain.user.token.TokenGenerator;
 import org.bogus.groove.domain.user.token.TokenValidator;
 import org.bogus.groove.storage.UserAuthorityRepository;
@@ -26,8 +25,8 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -35,7 +34,6 @@ import org.springframework.web.filter.CorsFilter;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserRepository userRepository;
     private final UserAuthorityRepository userAuthorityRepository;
-    private final UserRegister userRegister;
     private final TokenGenerator tokenGenerator;
     private final TokenValidator tokenValidator;
     private final UserInfoFinder userInfoFinder;
@@ -64,14 +62,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         ;
 
         http
-            .addFilterAt(getRestfulAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(getRestfulAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(getJwtAuthorizationFilter(), AuthorizationFilter.class)
-            .addFilterBefore(securityFilterExceptionHandler(), CorsFilter.class)
+            .addFilterBefore(securityFilterExceptionHandler(), LogoutFilter.class)
         ;
 
-        http.oauth2Login()
-            .successHandler(new OAuth2AuthenticationSuccessHandler(userRegister, userInfoFinder, tokenGenerator))
-        ;
+//        http.oauth2Login()
+//            .successHandler(new OAuth2AuthenticationSuccessHandler(userRegister, userInfoFinder, tokenGenerator))
+//        ;
     }
 
     @Override
@@ -89,6 +87,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         var authFilter = new RestfulAuthenticationFilter(new AntPathRequestMatcher("/api/auth/login", HttpMethod.POST.name()), mapper);
         authFilter.setAuthenticationManager(authenticationManagerBean());
         authFilter.setAuthenticationSuccessHandler(new RestfulAuthenticationSuccessHandler(tokenGenerator, mapper));
+        authFilter.setAuthenticationFailureHandler(new RestfulAuthenticationFailureHandler());
         return authFilter;
     }
 
