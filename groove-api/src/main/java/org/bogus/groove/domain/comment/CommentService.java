@@ -3,7 +3,6 @@ package org.bogus.groove.domain.comment;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.endpoint.comment.CommentResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,10 +17,10 @@ public class CommentService {
         return commentCreator.createComment(content, parentId, userId, postId);
     }
 
-    public List<CommentResponse> getCommentList(Long postId) {
+    public List<CommentGetResult> getCommentList(Long postId) {
         return commentReader.readAllPostComment(postId).stream()
-            .map(comment -> new CommentResponse(comment, commentReader.readAllPostReComment(
-                comment.getId()).stream().map(recomment -> new CommentResponse(recomment)).collect(Collectors.toList()))).collect(
+            .map(comment -> new CommentGetResult(comment, commentReader.readAllPostReComment(
+                comment.getId()))).collect(
                 Collectors.toList());
     }
 

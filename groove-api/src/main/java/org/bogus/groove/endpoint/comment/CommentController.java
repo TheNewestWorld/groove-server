@@ -3,6 +3,7 @@ package org.bogus.groove.endpoint.comment;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.config.CustomUserDetails;
@@ -36,7 +37,8 @@ public class CommentController {
     @Operation(summary = "댓글 리스트 조회")
     @GetMapping("/post/{postId}/comment")
     public CommonResponse<List<CommentResponse>> getCommentList(@PathVariable Long postId) {
-        return CommonResponse.success(commentService.getCommentList(postId));
+        return CommonResponse.success(commentService.getCommentList(postId).stream().map(comment -> new CommentResponse(comment)).collect(
+            Collectors.toList()));
     }
 
     @Secured(SecurityCode.USER)
