@@ -30,6 +30,9 @@ public enum ErrorType {
     FAILED_TO_LIKE_POST("게시글 좋아요를 실패하였습니다."),
     FAILED_TO_CONVERT_TEMPLATE("템플릿 변환을 실패하였습니다."),
     ALREADY_LIKE_POST("이미 좋아요를 한 게시글 입니다."),
+
+    NOT_FOUNT_COACHING_INFO("코칭 신청 정보를 찾을 수 없습니다."),
+
     UNAUTHORIZED_NOT_FOUND_USER_TOKEN("인증 정보를 찾을 수 없습니다."),
     UNAUTHORIZED_INVALID_TOKEN("잘못된 인증 정보입니다."),
     UNAUTHORIZED_TOKEN_EXPIRED("인증이 만료되었습니다."),
