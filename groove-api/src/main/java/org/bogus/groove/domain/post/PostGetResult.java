@@ -1,12 +1,9 @@
-package org.bogus.groove.endpoint.post;
+package org.bogus.groove.domain.post;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.bogus.groove.domain.post.PostGetResult;
 
 @Getter
-@AllArgsConstructor
-public class PostResponse {
+public class PostGetResult {
     private Long id;
     private String title;
     private String content;
@@ -16,7 +13,7 @@ public class PostResponse {
     private Long categoryId;
     private Integer commentCount;
 
-    public PostResponse(PostGetResult post) {
+    public PostGetResult(Post post, Integer commentCount) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
@@ -24,6 +21,6 @@ public class PostResponse {
         this.isDeleted = post.isDeleted();
         this.userId = post.getUserId();
         this.categoryId = post.getCategoryId();
-        this.commentCount = post.getCommentCount();
+        this.commentCount = commentCount;
     }
 }

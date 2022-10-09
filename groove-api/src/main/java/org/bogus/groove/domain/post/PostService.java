@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.domain.comment.CommentReader;
-import org.bogus.groove.endpoint.comment.CommentResponse;
-import org.bogus.groove.endpoint.post.PostDetailResponse;
-import org.bogus.groove.endpoint.post.PostResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -23,29 +20,22 @@ public class PostService {
         return postCreator.createPost(title, content, likeCount, userId, categoryId);
     }
 
-    public List<PostResponse> getPostList(Pageable pageable) {
-        List<PostResponse> postList = postReader.readAllPosts(pageable).stream().map(
-            post -> new PostResponse(post, commentReader.countPostComment(post.getId()))).collect(Collectors.toList());
+    public List<PostGetResult> getPostList(Pageable pageable) {
+        List<PostGetResult> postList = postReader.readAllPosts(pageable).stream().map(
+            post -> new PostGetResult(post, commentReader.countPostComment(post.getId()))).collect(Collectors.toList());
         return postList;
     }
 
-    public List<PostResponse> getPostList(Long categoryId, Pageable pageable) {
-        List<PostResponse> postList = postReader.readAllPosts(categoryId, pageable).stream().map(
-            post -> new PostResponse(post, commentReader.countPostComment(post.getId()))).collect(Collectors.toList());
+    public List<PostGetResult> getPostList(Long categoryId, Pageable pageable) {
+        List<PostGetResult> postList = postReader.readAllPosts(categoryId, pageable).stream().map(
+            post -> new PostGetResult(post, commentReader.countPostComment(post.getId()))).collect(Collectors.toList());
         return postList;
     }
 
-    public PostDetailResponse getPost(Long postId) {
+    public PostGetDetailResult getPost(Long postId) {
         Post post = postReader.readPost(postId);
-        PostResponse postResponse = new PostResponse(post, commentReader.countPostComment(postId));
-
-        List<CommentResponse> comments =
-            commentReader.readAllPostComment(postId).stream()
-                .map(comment -> new CommentResponse(comment, commentReader.readAllPostReComment(
-                    comment.getId()).stream().map(recomment -> new CommentResponse(recomment)).collect(Collectors.toList()))).collect(
-                    Collectors.toList());
-
-        PostDetailResponse postDetail = new PostDetailResponse(postResponse, comments);
+        PostGetResult result = new PostGetResult(post, commentReader.countPostComment(postId));
+        PostGetDetailResult postDetail = new PostGetDetailResult(result);
         return postDetail;
     }
 

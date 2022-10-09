@@ -3,6 +3,7 @@ package org.bogus.groove.endpoint.post;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.config.CustomUserDetails;
@@ -39,19 +40,21 @@ public class PostController {
     @Operation(summary = "게시글 리스트 조회")
     @GetMapping
     public CommonResponse<List<PostResponse>> getPostList(Pageable pageable) {
-        return CommonResponse.success(postService.getPostList(pageable));
+        return CommonResponse.success(postService.getPostList(pageable).stream().map(post -> new PostResponse(post)).collect(
+            Collectors.toList()));
     }
 
     @Operation(summary = "카테고리 별 게시글 리스트 조회")
     @GetMapping("/category/{categoryId}")
     public CommonResponse<List<PostResponse>> getPostList(@PathVariable Long categoryId, Pageable pageable) {
-        return CommonResponse.success(postService.getPostList(categoryId, pageable));
+        return CommonResponse.success(postService.getPostList(categoryId, pageable).stream().map(post -> new PostResponse(post)).collect(
+            Collectors.toList()));
     }
 
     @Operation(summary = "게시글 상세 조회")
     @GetMapping("/{postId}")
     public CommonResponse<PostDetailResponse> getPost(@PathVariable Long postId) {
-        return CommonResponse.success(postService.getPost(postId));
+        return CommonResponse.success(new PostDetailResponse(postService.getPost(postId)));
     }
 
     @Secured(SecurityCode.USER)
