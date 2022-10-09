@@ -42,6 +42,12 @@ public class PostController {
         return CommonResponse.success(postService.getPostList(pageable));
     }
 
+    @Operation(summary = "카테고리 별 게시글 리스트 조회")
+    @GetMapping("/category/{categoryId}")
+    public CommonResponse<List<PostResponse>> getPostList(@PathVariable Long categoryId, Pageable pageable) {
+        return CommonResponse.success(postService.getPostList(categoryId, pageable));
+    }
+
     @Operation(summary = "게시글 상세 조회")
     @GetMapping("/{postId}")
     public CommonResponse<PostDetailResponse> getPost(@PathVariable Long postId) {

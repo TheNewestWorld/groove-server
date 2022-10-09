@@ -24,7 +24,13 @@ public class PostService {
     }
 
     public List<PostResponse> getPostList(Pageable pageable) {
-        List<PostResponse> postList = postReader.readAllPost(pageable).stream().map(
+        List<PostResponse> postList = postReader.readAllPosts(pageable).stream().map(
+            post -> new PostResponse(post, commentReader.countPostComment(post.getId()))).collect(Collectors.toList());
+        return postList;
+    }
+
+    public List<PostResponse> getPostList(Long categoryId, Pageable pageable) {
+        List<PostResponse> postList = postReader.readAllPosts(categoryId, pageable).stream().map(
             post -> new PostResponse(post, commentReader.countPostComment(post.getId()))).collect(Collectors.toList());
         return postList;
     }
