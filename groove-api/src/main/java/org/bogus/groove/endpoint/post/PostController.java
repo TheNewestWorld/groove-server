@@ -32,7 +32,7 @@ public class PostController {
     @Operation(summary = "게시글 작성")
     @PostMapping
     public CommonResponse<Void> createPost(@RequestBody PostCreateRequest request) {
-        postService.createPost(request.getTitle(), request.getContent(), request.getLikeCount(), request.getUserId(),
+        postService.createPost(request.getTitle(), request.getContent(), request.getUserId(),
             request.getCategoryId());
         return CommonResponse.success();
     }

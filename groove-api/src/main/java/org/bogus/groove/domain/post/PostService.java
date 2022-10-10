@@ -16,8 +16,8 @@ public class PostService {
     private final PostDeleter postDeleter;
     private final CommentReader commentReader;
 
-    public Post createPost(String title, String content, Integer likeCount, Long userId, Long categoryId) {
-        return postCreator.createPost(title, content, likeCount, userId, categoryId);
+    public Post createPost(String title, String content, Long userId, Long categoryId) {
+        return postCreator.createPost(title, content, userId, categoryId);
     }
 
     public List<PostGetResult> getPostList(Pageable pageable) {

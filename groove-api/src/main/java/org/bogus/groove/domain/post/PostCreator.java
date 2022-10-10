@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 public class PostCreator {
     private final PostRepository postRepository;
 
-    public Post createPost(String title, String content, Integer likeCount, Long userId, Long categoryId) {
+    public Post createPost(String title, String content, Long userId, Long categoryId) {
         try {
-            var entity = postRepository.save(new PostEntity(title, content, likeCount, false, userId, categoryId));
+            var entity = postRepository.save(new PostEntity(title, content, false, userId, categoryId));
             return new Post(entity);
         } catch (IllegalArgumentException e) {
             throw new InternalServerException(ErrorType.FAILED_TO_CREATE_POST);
