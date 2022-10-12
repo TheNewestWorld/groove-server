@@ -18,4 +18,9 @@ public class Like {
         this.userId = entity.getUserId();
         this.postId = entity.getPostId();
     }
+
+    public Like(Long userId, Long postId) {
+        this.userId = userId;
+        this.postId = postId;
+    }
 }
