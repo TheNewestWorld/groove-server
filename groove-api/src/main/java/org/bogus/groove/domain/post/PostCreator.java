@@ -1,8 +1,8 @@
 package org.bogus.groove.domain.post;
 
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.ErrorType;
-import org.bogus.groove.common.InternalServerException;
+import org.bogus.groove.common.exception.ErrorType;
+import org.bogus.groove.common.exception.InternalServerException;
 import org.bogus.groove.storage.entity.PostEntity;
 import org.bogus.groove.storage.repository.PostRepository;
 import org.springframework.stereotype.Component;

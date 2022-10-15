@@ -14,12 +14,17 @@ import org.bogus.groove.common.enumeration.AttachmentType;
 @Getter
 @NoArgsConstructor
 public class AttachmentEntity extends BaseEntity {
+    @Column(name = "object_key")
+    private String objectKey;
 
     @Column(name = "path")
     private String path;
 
     @Column(name = "size")
-    private Integer size;
+    private long size;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "extension")
     private String extension;
@@ -28,9 +33,11 @@ public class AttachmentEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AttachmentType attachmentType;
 
-    public AttachmentEntity(String path, Integer size, String extension, AttachmentType attachmentType) {
+    public AttachmentEntity(String objectKey, String path, long size, String name, String extension, AttachmentType attachmentType) {
+        this.objectKey = objectKey;
         this.path = path;
         this.size = size;
+        this.name = name;
         this.extension = extension;
         this.attachmentType = attachmentType;
     }

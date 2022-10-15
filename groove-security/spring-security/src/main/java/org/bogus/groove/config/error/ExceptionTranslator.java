@@ -1,12 +1,12 @@
 package org.bogus.groove.config.error;
 
-import org.bogus.groove.common.AppException;
-import org.bogus.groove.common.BadRequestException;
 import org.bogus.groove.common.CommonResponse;
-import org.bogus.groove.common.ForbiddenException;
-import org.bogus.groove.common.InternalServerException;
-import org.bogus.groove.common.NotFoundException;
-import org.bogus.groove.common.UnauthorizedException;
+import org.bogus.groove.common.exception.AppException;
+import org.bogus.groove.common.exception.BadRequestException;
+import org.bogus.groove.common.exception.ForbiddenException;
+import org.bogus.groove.common.exception.InternalServerException;
+import org.bogus.groove.common.exception.NotFoundException;
+import org.bogus.groove.common.exception.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

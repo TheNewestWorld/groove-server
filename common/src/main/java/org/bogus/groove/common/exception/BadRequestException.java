@@ -1,4 +1,4 @@
-package org.bogus.groove.common;
+package org.bogus.groove.common.exception;
 
 import java.util.Map;
 

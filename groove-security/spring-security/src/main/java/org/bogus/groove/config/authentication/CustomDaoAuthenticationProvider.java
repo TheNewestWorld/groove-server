@@ -1,7 +1,7 @@
 package org.bogus.groove.config.authentication;
 
-import org.bogus.groove.common.ErrorType;
-import org.bogus.groove.common.UnauthorizedException;
+import org.bogus.groove.common.exception.ErrorType;
+import org.bogus.groove.common.exception.UnauthorizedException;
 import org.bogus.groove.config.CustomUserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;

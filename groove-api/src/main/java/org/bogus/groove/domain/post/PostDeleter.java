@@ -2,9 +2,9 @@ package org.bogus.groove.domain.post;
 
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.ErrorType;
-import org.bogus.groove.common.NotFoundException;
-import org.bogus.groove.common.UnauthorizedException;
+import org.bogus.groove.common.exception.ErrorType;
+import org.bogus.groove.common.exception.NotFoundException;
+import org.bogus.groove.common.exception.UnauthorizedException;
 import org.bogus.groove.storage.repository.PostRepository;
 import org.springframework.stereotype.Component;
 
