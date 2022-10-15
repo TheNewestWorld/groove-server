@@ -1,6 +1,23 @@
 val springBootVersion: String by project
 val springDocVersion: String by project
 
+tasks.getByName("bootJar") {
+    version = System.getenv("VERSION") ?: project.version
+    enabled = true
+}
+
+tasks.getByName("jar") {
+    enabled = false
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
+tasks.getByName("stage") {
+    dependsOn("build", "clean")
+}
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")
@@ -15,8 +32,4 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-security:$springDocVersion")
     implementation(project(":groove-security:spring-security"))
     implementation(project(":groove-security:auth-api"))
-}
-
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
 }

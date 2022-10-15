@@ -36,4 +36,12 @@ public class AuthController {
         authService.logout(accessToken);
         return CommonResponse.success();
     }
+
+    // Swagger 를 위한 껍데기 endpoint 임 실제 로그인 요청은 필터에서 처리되고 끝남
+    @PostMapping("/api/auth/login")
+    public CommonResponse<LoginResponse> login(@RequestBody LoginRequest request) {
+        return CommonResponse.success(
+            new LoginResponse("", "")
+        );
+    }
 }
