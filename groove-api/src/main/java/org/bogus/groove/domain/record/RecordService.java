@@ -2,6 +2,8 @@ package org.bogus.groove.domain.record;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
+import org.bogus.groove.common.exception.ErrorType;
+import org.bogus.groove.common.exception.ForbiddenException;
 import org.bogus.groove.domain.attachment.Attachment;
 import org.bogus.groove.domain.attachment.AttachmentCreator;
 import org.bogus.groove.domain.attachment.AttachmentReader;
@@ -19,6 +21,7 @@ public class RecordService {
     private final AttachmentCreator attachmentCreator;
     private final RecordCreator recordCreator;
     private final RecordReader recordReader;
+    private final RecordDeleter recordDeleter;
     private final AttachmentReader attachmentReader;
 
     @Transactional
@@ -45,11 +48,7 @@ public class RecordService {
         );
     }
 
-    private String findName(Record record) {
-        return attachmentReader.readOrNull(record.getAttachmentId()).map(Attachment::getName).orElse(null);
-    }
-
-    public FileDownload download(int recordId) {
+    public FileDownload download(long recordId) {
         var record = recordReader.read(recordId);
         var attachment = attachmentReader.read(record.getAttachmentId());
 
@@ -57,5 +56,18 @@ public class RecordService {
             objectStorage.download(attachment.getPath()),
             attachment.getName()
         );
+    }
+
+    public void delete(Long recordId, long userId) {
+        var record = recordReader.read(recordId);
+        if (record.getUserId() != userId) {
+            throw new ForbiddenException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
+        }
+
+        recordDeleter.delete(recordId);
+    }
+
+    private String findName(Record record) {
+        return attachmentReader.readOrNull(record.getAttachmentId()).map(Attachment::getName).orElse(null);
     }
 }

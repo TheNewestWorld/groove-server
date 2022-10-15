@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -67,7 +68,7 @@ public class RecordController {
 
     @Secured(SecurityCode.USER)
     @GetMapping("/api/records/{recordId}")
-    public ResponseEntity<StreamingResponseBody> downloadRecord(@PathVariable int recordId) {
+    public ResponseEntity<StreamingResponseBody> downloadRecord(@PathVariable Long recordId) {
         var file = recordService.download(recordId);
 
         return ResponseEntity.ok()
@@ -76,5 +77,15 @@ public class RecordController {
                 .build()
                 .toString())
             .body(outputStream -> FileCopyUtils.copy(file.getInputStream(), outputStream));
+    }
+
+    @Secured(SecurityCode.USER)
+    @DeleteMapping("/api/records/{recordId}")
+    public CommonResponse<Void> deleteRecord(
+        @PathVariable Long recordId,
+        @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        recordService.delete(recordId, userDetails.getUserId());
+        return CommonResponse.success();
     }
 }
