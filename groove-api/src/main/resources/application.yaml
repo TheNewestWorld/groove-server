@@ -6,6 +6,13 @@ spring:
       - storage.yaml
       - groove-security.yaml
       - groove-auth-api.yaml
+  servlet:
+    multipart:
+      maxFileSize: 20MB
+      maxRequestSize: 21MB
+    encoding:
+      charset: UTF-8
+      force: true
 
 springdoc:
   api-docs:

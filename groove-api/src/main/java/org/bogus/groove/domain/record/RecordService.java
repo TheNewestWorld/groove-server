@@ -1,6 +1,5 @@
 package org.bogus.groove.domain.record;
 
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.domain.attachment.Attachment;
@@ -23,7 +22,7 @@ public class RecordService {
     private final AttachmentReader attachmentReader;
 
     @Transactional
-    public void upload(long userId, MultipartFile record) throws IOException {
+    public void upload(long userId, MultipartFile record) {
         var uploadResult = objectStorage.upload(record, AttachmentType.VOICE);
         var attachment = attachmentCreator.create(uploadResult);
 
@@ -31,7 +30,7 @@ public class RecordService {
     }
 
     public Slice<RecordGetResult> getAll(long userId, int page, int size) {
-        var records = recordReader.findAll(userId, page, size);
+        var records = recordReader.read(userId, page, size);
 
         return new SliceImpl<>(
             records.map((record) ->
@@ -48,5 +47,15 @@ public class RecordService {
 
     private String findName(Record record) {
         return attachmentReader.readOrNull(record.getAttachmentId()).map(Attachment::getName).orElse(null);
+    }
+
+    public FileDownload download(int recordId) {
+        var record = recordReader.read(recordId);
+        var attachment = attachmentReader.read(record.getAttachmentId());
+
+        return new FileDownload(
+            objectStorage.download(attachment.getPath()),
+            attachment.getName()
+        );
     }
 }
