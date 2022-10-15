@@ -14,10 +14,6 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.getByName("stage") {
-    dependsOn("build", "clean")
-}
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
     implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")

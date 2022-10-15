@@ -43,8 +43,4 @@ subprojects {
     tasks.getByName("jar") {
         enabled = true
     }
-    tasks.create("stage")
-    tasks.create("copyToLib") {
-        mustRunAfter("build")
-    }
 }
