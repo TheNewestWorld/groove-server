@@ -2,3 +2,12 @@ spring:
   redis:
     host: localhost
     port: 6379
+
+---
+
+# heroku data resource
+spring.config.activate.on-profile: dev
+
+spring:
+  redis:
+    url: ${REDIS_TLS_URL}
