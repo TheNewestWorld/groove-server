@@ -1,5 +1,6 @@
 package org.bogus.groove.endpoint.auth;
 
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.config.CustomUserDetails;
@@ -10,7 +11,6 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,9 +30,8 @@ public class AuthController {
 
     @Secured(SecurityCode.USER)
     @PostMapping("/api/auth/logout")
-    public CommonResponse<Void> logout(
-        @RequestHeader(value = HttpHeaders.AUTHORIZATION) String accessToken
-    ) {
+    public CommonResponse<Void> logout(HttpServletRequest request) {
+        var accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         authService.logout(accessToken);
         return CommonResponse.success();
     }
