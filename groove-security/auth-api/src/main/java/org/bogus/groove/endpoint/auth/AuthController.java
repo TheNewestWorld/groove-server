@@ -1,5 +1,6 @@
 package org.bogus.groove.endpoint.auth;
 
+import io.swagger.v3.oas.annotations.Operation;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
@@ -19,6 +20,7 @@ public class AuthController {
     private final AuthService authService;
 
     @Secured(SecurityCode.USER)
+    @Operation(summary = "액세스 토큰 리프레쉬")
     @PostMapping("/api/auth/refresh")
     public CommonResponse<TokenRefreshResponse> refresh(
         @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -29,6 +31,7 @@ public class AuthController {
     }
 
     @Secured(SecurityCode.USER)
+    @Operation(summary = "로그아웃")
     @PostMapping("/api/auth/logout")
     public CommonResponse<Void> logout(HttpServletRequest request) {
         var accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -37,6 +40,7 @@ public class AuthController {
     }
 
     // Swagger 를 위한 껍데기 endpoint 임 실제 로그인 요청은 필터에서 처리되고 끝남
+    @Operation(summary = "로그인")
     @PostMapping("/api/auth/login")
     public CommonResponse<LoginResponse> login(@RequestBody LoginRequest request) {
         return CommonResponse.success(

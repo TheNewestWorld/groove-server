@@ -1,5 +1,6 @@
 package org.bogus.groove.endpoint.user;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.config.CustomUserDetails;
@@ -21,6 +22,7 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
+    @Operation(summary = "게시글 수정")
     @PostMapping("/api/users/register")
     public CommonResponse<UserInfo> register(@RequestBody RegisterRequest request) {
         var result = userService.register(
@@ -33,6 +35,7 @@ public class UserController {
     }
 
     @Secured(SecurityCode.USER)
+    @Operation(summary = "로그인 유저 정보 조회")
     @GetMapping("/api/users/self")
     public CommonResponse<UserInfoGetResponse> getSelfInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
         var result = userService.getUserInfo(userDetails.getUserId());
