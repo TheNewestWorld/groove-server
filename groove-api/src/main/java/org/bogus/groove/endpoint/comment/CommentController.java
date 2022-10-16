@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController {
     private final CommentService commentService;
 
-    @Operation(summary = "댓글 작성 (parentId, postId가 동일하면 댓글 다르면 대댓글)")
+    @Operation(summary = "댓글 작성 (parentId, commentId가 동일하면 댓글 다르면 대댓글)")
     @PostMapping("/post/{postId}/comment")
     public CommonResponse<Void> createComment(@AuthenticationPrincipal CustomUserDetails userDetails,
                                               @RequestBody CommentCreateRequest request) {

@@ -15,12 +15,14 @@ public class CommentReader {
 
     public List<Comment> readAllPostComment(Long postId) {
         checkPostIsExist(postId);
-        return commentRepository.findAllByPostIdAndIsDeletedFalse(postId).stream().filter(entity -> entity.getId() == entity.getParentId()).map(
-            entity -> new Comment(entity)).collect(Collectors.toList());
+        return commentRepository.findAllByPostIdAndIsDeletedFalse(postId).stream().filter(entity -> entity.getId() == entity.getParentId())
+            .map(
+                entity -> new Comment(entity)).collect(Collectors.toList());
     }
 
     public List<Comment> readAllPostReComment(Long commentId) {
-        return commentRepository.findAllByParentIdAndIsDeletedFalse(commentId).stream().filter(entity -> entity.getId() != entity.getParentId())
+        return commentRepository.findAllByParentIdAndIsDeletedFalse(commentId).stream()
+            .filter(entity -> entity.getId() != entity.getParentId())
             .map(entity -> new Comment(entity)).collect(Collectors.toList());
     }
 
