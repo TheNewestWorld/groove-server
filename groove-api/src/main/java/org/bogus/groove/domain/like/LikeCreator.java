@@ -19,7 +19,7 @@ public class LikeCreator {
             if (entity.isPresent()) {
                 throw new InternalServerException(ErrorType.ALREADY_LIKE_POST);
             } else {
-                likeRepository.save(new LikeEntity(postId, userId));
+                likeRepository.save(new LikeEntity(userId, postId));
             }
         } catch (IllegalArgumentException e) {
             throw new InternalServerException(ErrorType.FAILED_TO_LIKE_POST);
