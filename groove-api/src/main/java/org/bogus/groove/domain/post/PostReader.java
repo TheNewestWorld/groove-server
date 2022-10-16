@@ -34,7 +34,7 @@ public class PostReader {
     }
 
     private Optional<Post> readOrNull(Long postId) {
-        return postRepository.findById(postId).map(
+        return postRepository.findByIdAndIsDeletedFalse(postId).map(
             entity -> new Post(entity));
     }
 }
