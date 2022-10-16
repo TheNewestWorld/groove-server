@@ -45,4 +45,8 @@ public class UserEntity extends BaseEntity {
         this.isAuthenticated = isAuthenticated;
         this.authenticatedAt = authenticatedAt;
     }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
 }

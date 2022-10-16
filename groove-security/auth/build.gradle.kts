@@ -5,6 +5,7 @@ val postgresqlVersion: String by project
 
 dependencies {
     api("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
+    compileOnly("org.springframework.boot:spring-boot-starter-security:$springBootVersion")
     testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     implementation("com.auth0:java-jwt:$jwtVersion")
     implementation(project(":common"))

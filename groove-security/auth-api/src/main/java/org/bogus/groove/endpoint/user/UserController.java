@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,5 +45,17 @@ public class UserController {
                 result.getAuthorities()
             )
         );
+    }
+
+    @PostMapping("/api/users/password-update-link/send")
+    public CommonResponse<Void> sendPasswordUpdateLink(@RequestBody PasswordUpdateLinkRequest request) {
+        userService.sendPasswordUpdateLink(request.getEmail());
+        return CommonResponse.success();
+    }
+
+    @PutMapping("/api/users/password")
+    public CommonResponse<Void> updatePassword(@RequestBody PasswordChangeRequest request) {
+        userService.updatePassword(request.getSessionKey(), request.getPassword());
+        return CommonResponse.success();
     }
 }

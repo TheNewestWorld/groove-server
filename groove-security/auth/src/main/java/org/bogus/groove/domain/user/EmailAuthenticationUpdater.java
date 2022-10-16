@@ -2,8 +2,8 @@ package org.bogus.groove.domain.user;
 
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.ErrorType;
-import org.bogus.groove.common.NotFoundException;
+import org.bogus.groove.common.exception.ErrorType;
+import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.storage.EmailAuthenticationEntity;
 import org.bogus.groove.storage.EmailAuthenticationRepository;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class EmailAuthenticationUpdater {
     @Transactional
     public EmailAuthentication update(String sessionKey, boolean isAuthenticated, LocalDateTime authenticatedAt) {
         EmailAuthenticationEntity entity = repository.findBySessionKey(sessionKey)
-            .orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_AUTHENTICATION_SESSION));
+            .orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_SESSION));
 
         entity.updateAuthentication(isAuthenticated, authenticatedAt);
 
