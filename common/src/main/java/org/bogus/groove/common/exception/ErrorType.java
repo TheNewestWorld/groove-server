@@ -21,6 +21,7 @@ public enum ErrorType {
     UNAUTHORIZED_TOKEN_EXPIRED("인증이 만료되었습니다."),
     UNAUTHORIZED_LOGIN_REQUEST("로그인이 실패했습니다."),
     FORBIDDEN_NOT_ENOUGH_AUTHORITY("권한이 없습니다."),
+    DUPLICATED_USER("이미 가입된 사용자입니다.")
     ;
 
     private final String message;

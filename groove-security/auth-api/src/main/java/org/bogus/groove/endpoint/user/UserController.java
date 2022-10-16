@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    @Operation(summary = "게시글 수정")
+    @Operation(summary = "회원가입")
     @PostMapping("/api/users/register")
     public CommonResponse<UserInfo> register(@RequestBody RegisterRequest request) {
         var result = userService.register(
