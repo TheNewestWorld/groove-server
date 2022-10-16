@@ -6,5 +6,5 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RecordRepository extends JpaRepository<RecordEntity, Long> {
-    Slice<RecordEntity> findAllByUserIdAndDeletedIsFalse(long userId, Pageable pageable);
+    Slice<RecordEntity> findAllByUserIdAndIsDeletedIsFalse(long userId, Pageable pageable);
 }

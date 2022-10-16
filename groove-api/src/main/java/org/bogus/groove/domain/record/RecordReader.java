@@ -14,7 +14,7 @@ public class RecordReader {
     private final RecordRepository recordRepository;
 
     public Slice<Record> read(long userId, int page, int size) {
-        return recordRepository.findAllByUserIdAndDeletedIsFalse(userId, PageRequest.of(page, size))
+        return recordRepository.findAllByUserIdAndIsDeletedIsFalse(userId, PageRequest.of(page, size))
             .map(Record::new);
     }
 
