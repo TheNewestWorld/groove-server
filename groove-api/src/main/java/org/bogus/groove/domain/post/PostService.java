@@ -26,7 +26,9 @@ public class PostService {
     public List<PostGetResult> getPostList(Long userId, Pageable pageable) {
         List<Like> likeList = likeReader.likeList(userId);
         List<PostGetResult> postList = postReader.readAllPosts(pageable).stream().map(
-            post -> new PostGetResult(post, likeList.contains(new Like(userId, post.getId())), likeReader.countPostLike(post.getId()),
+            post -> new PostGetResult(post,
+                likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
+                likeReader.countPostLike(post.getId()),
                 commentReader.countPostComment(post.getId()))).collect(Collectors.toList());
         return postList;
     }
@@ -34,7 +36,9 @@ public class PostService {
     public List<PostGetResult> getPostList(Long userId, Long categoryId, Pageable pageable) {
         List<Like> likeList = likeReader.likeList(userId);
         List<PostGetResult> postList = postReader.readAllPosts(categoryId, pageable).stream().map(
-            post -> new PostGetResult(post, likeList.contains(new Like(userId, post.getId())), likeReader.countPostLike(post.getId()),
+            post -> new PostGetResult(post,
+                likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
+                likeReader.countPostLike(post.getId()),
                 commentReader.countPostComment(post.getId()))).collect(Collectors.toList());
         return postList;
     }
