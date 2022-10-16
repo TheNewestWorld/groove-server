@@ -1,5 +1,6 @@
 package org.bogus.groove.storage;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -28,9 +29,20 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserType type;
 
+    @Column(name = "authentication_flag")
+    private boolean isAuthenticated;
+
+    @Column(name = "authenticated_at")
+    private LocalDateTime authenticatedAt;
+
     public UserEntity(String email, String password, UserType type) {
         this.email = email;
         this.password = password;
         this.type = type;
+    }
+
+    public void updateAuthentication(boolean isAuthenticated, LocalDateTime authenticatedAt) {
+        this.isAuthenticated = isAuthenticated;
+        this.authenticatedAt = authenticatedAt;
     }
 }

@@ -9,6 +9,7 @@ import org.bogus.groove.domain.user.AuthService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +43,11 @@ public class AuthController {
         return CommonResponse.success(
             new LoginResponse("", "")
         );
+    }
+
+    @PostMapping("/api/auth/email/{sessionKey}")
+    public CommonResponse<Void> authenticateEmail(@PathVariable String sessionKey) {
+        authService.authenticateEmail(sessionKey);
+        return CommonResponse.success();
     }
 }
