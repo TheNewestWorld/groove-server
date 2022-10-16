@@ -9,6 +9,7 @@ dependencies {
     implementation("com.auth0:java-jwt:$jwtVersion")
     implementation(project(":common"))
     implementation(project(":redis"))
+    implementation(project(":mail"))
 
     implementation("com.h2database:h2:$h2Version")
     implementation("org.postgresql:postgresql:$postgresqlVersion")
