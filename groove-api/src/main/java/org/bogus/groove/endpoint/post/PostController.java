@@ -32,29 +32,32 @@ public class PostController {
     @Operation(summary = "게시글 작성")
     @PostMapping
     public CommonResponse<Void> createPost(@RequestBody PostCreateRequest request) {
-        postService.createPost(request.getTitle(), request.getContent(), request.getLikeCount(), request.getUserId(),
+        postService.createPost(request.getTitle(), request.getContent(), request.getUserId(),
             request.getCategoryId());
         return CommonResponse.success();
     }
 
     @Operation(summary = "게시글 리스트 조회")
     @GetMapping
-    public CommonResponse<List<PostResponse>> getPostList(Pageable pageable) {
-        return CommonResponse.success(postService.getPostList(pageable).stream().map(post -> new PostResponse(post)).collect(
-            Collectors.toList()));
+    public CommonResponse<List<PostResponse>> getPostList(@AuthenticationPrincipal CustomUserDetails userDetails, Pageable pageable) {
+        return CommonResponse.success(
+            postService.getPostList(userDetails.getUserId(), pageable).stream().map(post -> new PostResponse(post)).collect(
+                Collectors.toList()));
     }
 
     @Operation(summary = "카테고리 별 게시글 리스트 조회")
     @GetMapping("/category/{categoryId}")
-    public CommonResponse<List<PostResponse>> getPostList(@PathVariable Long categoryId, Pageable pageable) {
-        return CommonResponse.success(postService.getPostList(categoryId, pageable).stream().map(post -> new PostResponse(post)).collect(
-            Collectors.toList()));
+    public CommonResponse<List<PostResponse>> getPostList(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                          @PathVariable Long categoryId, Pageable pageable) {
+        return CommonResponse.success(
+            postService.getPostList(userDetails.getUserId(), categoryId, pageable).stream().map(post -> new PostResponse(post)).collect(
+                Collectors.toList()));
     }
 
     @Operation(summary = "게시글 상세 조회")
     @GetMapping("/{postId}")
-    public CommonResponse<PostDetailResponse> getPost(@PathVariable Long postId) {
-        return CommonResponse.success(new PostDetailResponse(postService.getPost(postId)));
+    public CommonResponse<PostDetailResponse> getPost(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long postId) {
+        return CommonResponse.success(new PostDetailResponse(postService.getPost(userDetails.getUserId(), postId)));
     }
 
     @Secured(SecurityCode.USER)

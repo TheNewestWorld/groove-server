@@ -10,20 +10,18 @@ public class PostResponse {
     private Long id;
     private String title;
     private String content;
-    private Integer likeCount;
-    private boolean isDeleted;
     private Long userId;
-    private Long categoryId;
+    private boolean likeFlag;
+    private Integer likeCount;
     private Integer commentCount;
 
     public PostResponse(PostGetResult post) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.likeCount = post.getLikeCount();
-        this.isDeleted = post.isDeleted();
         this.userId = post.getUserId();
-        this.categoryId = post.getCategoryId();
+        this.likeFlag = post.isLikeFlag();
+        this.likeCount = post.getLikeCount();
         this.commentCount = post.getCommentCount();
     }
 }

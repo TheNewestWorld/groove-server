@@ -21,9 +21,6 @@ public class PostEntity extends BaseEntity {
     @Setter
     private String content;
 
-    @Column(name = "like_count")
-    private Integer likeCount;
-
     @Column(name = "deleted_flag")
     @Setter
     private boolean isDeleted;
@@ -35,12 +32,11 @@ public class PostEntity extends BaseEntity {
     @Setter
     private Long categoryId;
 
-    public PostEntity(String title, String content, Integer likeCount, boolean isDeleted,
+    public PostEntity(String title, String content, boolean isDeleted,
                       Long userId, Long categoryId) {
         super();
         this.title = title;
         this.content = content;
-        this.likeCount = likeCount;
         this.isDeleted = isDeleted;
         this.userId = userId;
         this.categoryId = categoryId;
