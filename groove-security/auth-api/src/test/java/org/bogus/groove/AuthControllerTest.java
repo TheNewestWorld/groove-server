@@ -44,13 +44,14 @@ class AuthControllerTest extends BaseIntegrationTest {
 
     String email = "jig7357@naver.com";
     String password = "password";
+    String nickname = "nickname";
     UserEntity userEntity;
     String accessToken;
     String refreshToken;
 
     @BeforeEach
     public void setup() {
-        userService.register(new UserRegisterParam(email, passwordEncoder.encode(password)));
+        userService.register(new UserRegisterParam(email, passwordEncoder.encode(password), nickname));
         userEntity = userRepository.findByEmailAndType(email, UserType.GROOVE).get();
         accessToken = tokenGenerator.generateAccessToken(userEntity.getId());
         refreshToken = tokenGenerator.generateRefreshToken(userEntity.getId());

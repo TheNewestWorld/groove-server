@@ -38,7 +38,8 @@ class UserControllerTest extends BaseIntegrationTest {
     public void setup() {
         String email = "jig7357@naver.com";
         String password = "password";
-        userService.register(new UserRegisterParam(email, password));
+        String nickname = "nickname";
+        userService.register(new UserRegisterParam(email, password, nickname));
         userEntity = userRepository.findByEmailAndType(email, UserType.GROOVE).get();
         accessToken = tokenGenerator.generateAccessToken(userEntity.getId());
     }
@@ -47,7 +48,8 @@ class UserControllerTest extends BaseIntegrationTest {
     public void 회원가입() throws Exception {
         String email = "jig7357@google.com";
         String password = "password";
-        var registerRequest = new UserRegisterRequest(email, password);
+        String nickname = "nickname2";
+        var registerRequest = new UserRegisterRequest(email, password, nickname);
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/users/register")
