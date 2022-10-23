@@ -24,11 +24,12 @@ public class UserController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/api/users/register")
-    public CommonResponse<UserInfo> register(@RequestBody RegisterRequest request) {
+    public CommonResponse<UserInfo> register(@RequestBody UserRegisterRequest request) {
         var result = userService.register(
             new UserRegisterParam(
                 request.getEmail(),
-                passwordEncoder.encode(request.getPassword())
+                passwordEncoder.encode(request.getPassword()),
+                request.getNickname()
             )
         );
         return CommonResponse.success(result);
