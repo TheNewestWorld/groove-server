@@ -1,6 +1,5 @@
 package org.bogus.groove.domain.user;
 
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +9,8 @@ public class UserService {
     private final UserRegister userRegister;
     private final UserInfoFinder userInfoFinder;
 
-    @Transactional
-    public UserInfo register(UserRegisterParam param) {
-        return userRegister.register(param);
+    public void register(UserRegisterParam param) {
+        userRegister.register(param);
     }
 
     public UserInfo getUserInfo(Long userId) {

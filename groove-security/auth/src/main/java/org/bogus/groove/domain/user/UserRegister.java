@@ -1,6 +1,7 @@
 package org.bogus.groove.domain.user;
 
 import java.util.List;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.exception.BadRequestException;
 import org.bogus.groove.common.exception.ErrorType;
@@ -15,17 +16,12 @@ public class UserRegister {
     private final UserAuthorityUpdater userAuthorityUpdater;
     private final UserReader userReader;
 
-    public UserInfo register(UserRegisterParam param) {
+    @Transactional
+    public void register(UserRegisterParam param) {
         validateNotDuplicated(param);
 
         var created = userCreator.create(param);
-        var authorities = userAuthorityUpdater.update(created.getId(), List.of(Authority.USER));
-        return new UserInfo(
-            created.getId(),
-            created.getEmail(),
-            created.getType(),
-            authorities
-        );
+        userAuthorityUpdater.update(created.getId(), List.of(Authority.USER));
     }
 
     private void validateNotDuplicated(UserRegisterParam param) {

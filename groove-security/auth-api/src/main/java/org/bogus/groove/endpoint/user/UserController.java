@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.config.CustomUserDetails;
 import org.bogus.groove.config.SecurityCode;
-import org.bogus.groove.domain.user.UserInfo;
 import org.bogus.groove.domain.user.UserRegisterParam;
 import org.bogus.groove.domain.user.UserService;
 import org.springframework.security.access.annotation.Secured;
@@ -24,15 +23,15 @@ public class UserController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/api/users/register")
-    public CommonResponse<UserInfo> register(@RequestBody UserRegisterRequest request) {
-        var result = userService.register(
+    public CommonResponse<Void> register(@RequestBody UserRegisterRequest request) {
+        userService.register(
             new UserRegisterParam(
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword()),
                 request.getNickname()
             )
         );
-        return CommonResponse.success(result);
+        return CommonResponse.success();
     }
 
     @Secured(SecurityCode.USER)
