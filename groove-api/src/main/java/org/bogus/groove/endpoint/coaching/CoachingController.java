@@ -25,7 +25,7 @@ public class CoachingController {
     }
 
     @GetMapping("/{coachingId}")
-    public CommonResponse<Coaching> getCoaching(@PathVariable Long coachingId){
+    public CommonResponse<Coaching> getCoaching(@PathVariable Long coachingId) {
         return CommonResponse.success(coachingService.getCoaching(coachingId));
     }
 }

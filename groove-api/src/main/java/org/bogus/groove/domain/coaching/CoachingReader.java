@@ -2,8 +2,8 @@ package org.bogus.groove.domain.coaching;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.ErrorType;
-import org.bogus.groove.common.NotFoundException;
+import org.bogus.groove.common.exception.ErrorType;
+import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.storage.repository.CoachingRepository;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +17,6 @@ public class CoachingReader {
     }
 
     public Optional<Coaching> readOrNull(Long coachingId) {
-        return coachingRepository.findById(coachingId).map(entity -> new Coaching(entity));
+        return coachingRepository.findById(coachingId).map(Coaching::new);
     }
 }

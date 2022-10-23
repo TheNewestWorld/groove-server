@@ -2,7 +2,6 @@ package org.bogus.groove.domain.coaching;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.CoachingStateType;
-import org.bogus.groove.endpoint.coaching.CoachingResponse;
 import org.springframework.stereotype.Service;
 
 @Service
