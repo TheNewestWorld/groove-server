@@ -6,12 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.bogus.groove.domain.comment.CommentReader;
 import org.bogus.groove.domain.like.Like;
 import org.bogus.groove.domain.like.LikeReader;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
     private final PostCreator postCreator;
     private final PostReader postReader;
     private final PostUpdater postUpdater;
@@ -23,24 +25,18 @@ public class PostService {
         return postCreator.createPost(title, content, userId, categoryId);
     }
 
-    public List<PostGetResult> getPostList(Long userId, Pageable pageable) {
+    public Slice<PostGetResult> getPostList(Long userId, Long categoryId, int page, int size) {
         List<Like> likeList = likeReader.likeList(userId);
-        List<PostGetResult> postList = postReader.readAllPosts(pageable).stream().map(
-            post -> new PostGetResult(post,
-                !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
-                likeReader.countPostLike(post.getId()),
-                commentReader.countPostComment(post.getId()))).collect(Collectors.toList());
-        return postList;
-    }
-
-    public List<PostGetResult> getPostList(Long userId, Long categoryId, Pageable pageable) {
-        List<Like> likeList = likeReader.likeList(userId);
-        List<PostGetResult> postList = postReader.readAllPosts(categoryId, pageable).stream().map(
-            post -> new PostGetResult(post,
-                !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
-                likeReader.countPostLike(post.getId()),
-                commentReader.countPostComment(post.getId()))).collect(Collectors.toList());
-        return postList;
+        var posts = postReader.readAllPosts(categoryId, page, size);
+        return new SliceImpl<>(
+            posts.map(
+                post -> new PostGetResult(post,
+                    !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
+                    likeReader.countPostLike(post.getId()),
+                    commentReader.countPostComment(post.getId()))).toList(),
+            posts.getPageable(),
+            posts.hasNext()
+        );
     }
 
     public PostGetDetailResult getPost(Long userId, Long postId) {
