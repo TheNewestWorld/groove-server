@@ -2,6 +2,7 @@ package org.bogus.groove.domain.coaching;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.CoachingStateType;
+import org.bogus.groove.endpoint.coaching.CoachingResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,5 +16,9 @@ public class CoachingService {
                                    String imageFileMap, boolean publicFlag, CoachingStateType coachingState) {
         return coachingCreator.createCoaching(refTrainerId, refUserId, title, content, voiceFileMap, imageFileMap, publicFlag,
             coachingState);
+    }
+
+    public Coaching getCoaching(Long coachingId) {
+        return coachingReader.readCoaching(coachingId);
     }
 }

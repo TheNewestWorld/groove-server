@@ -3,12 +3,13 @@ package org.bogus.groove.domain.coaching;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.CoachingStateType;
 import org.bogus.groove.storage.entity.CoachingEntity;
+import org.bogus.groove.storage.repository.CoachingRepository;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class CoachingCreator {
-    private final org.bogus.groove.storage.repository.CoachingRepository coachingRepository;
+    private final CoachingRepository coachingRepository;
 
     public Coaching createCoaching(Long refTrainerId, Long refUserId, String title, String content, String voiceFileMap,
                                    String imageFileMap, boolean publicFlag, CoachingStateType coachingState) {

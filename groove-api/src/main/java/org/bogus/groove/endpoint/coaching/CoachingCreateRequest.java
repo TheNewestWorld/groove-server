@@ -1,11 +1,15 @@
 package org.bogus.groove.endpoint.coaching;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bogus.groove.common.enumeration.CoachingStateType;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CoachingCreateRequest {
     private Long refTrainerId;
     private Long refUserId;
