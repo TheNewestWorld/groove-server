@@ -2,6 +2,7 @@ package org.bogus.groove.domain.post;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.common.enumeration.SortOrderType;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.storage.repository.PostRepository;
@@ -15,8 +16,8 @@ public class PostReader {
 
     private final PostRepository postRepository;
 
-    public Slice<Post> readAllPosts(Long categoryId, int page, int size) {
-        return postRepository.findByCategoryIdAndIsDeletedFalseOrderByCreatedAtDesc(categoryId, PageRequest.of(page, size))
+    public Slice<Post> readAllPosts(Long categoryId, int page, int size, SortOrderType sortOrderType, String word) {
+        return postRepository.findAllPosts(categoryId, PageRequest.of(page, size))
             .map(Post::new);
     }
 

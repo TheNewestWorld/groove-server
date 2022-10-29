@@ -25,6 +25,14 @@ public class PostEntity extends BaseEntity {
     @Setter
     private boolean isDeleted;
 
+    @Column(name = "like_count")
+    @Setter
+    private Integer likeCount;
+
+    @Column(name = "comment_count")
+    @Setter
+    private Integer commentCount;
+
     @Column(name = "ref_user_id")
     private Long userId;
 

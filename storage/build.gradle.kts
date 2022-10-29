@@ -1,6 +1,7 @@
 val springBootVersion: String by project
 val h2Version: String by project
 val postgresqlVersion: String by project
+val queryDslVersion: String by project
 
 dependencies {
     api("org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion")
@@ -8,4 +9,9 @@ dependencies {
 
     implementation("com.h2database:h2:$h2Version")
     implementation("org.postgresql:postgresql:$postgresqlVersion")
+    implementation ("com.querydsl:querydsl-jpa:$queryDslVersion")
+    annotationProcessor (
+            "javax.persistence:javax.persistence-api",
+            "javax.annotation:javax.annotation-api",
+            "com.querydsl:querydsl-apt:$queryDslVersion:jpa")
 }

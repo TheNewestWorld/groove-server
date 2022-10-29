@@ -3,6 +3,7 @@ package org.bogus.groove.domain.post;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.common.enumeration.SortOrderType;
 import org.bogus.groove.domain.comment.CommentReader;
 import org.bogus.groove.domain.like.Like;
 import org.bogus.groove.domain.like.LikeReader;
@@ -25,9 +26,9 @@ public class PostService {
         return postCreator.createPost(title, content, userId, categoryId);
     }
 
-    public Slice<PostGetResult> getPostList(Long userId, Long categoryId, int page, int size) {
+    public Slice<PostGetResult> getPostList(Long userId, Long categoryId, int page, int size, SortOrderType sortOrderType, String word) {
         List<Like> likeList = likeReader.likeList(userId);
-        var posts = postReader.readAllPosts(categoryId, page, size);
+        var posts = postReader.readAllPosts(categoryId, page, size, sortOrderType, word);
         return new SliceImpl<>(
             posts.map(
                 post -> new PostGetResult(post,

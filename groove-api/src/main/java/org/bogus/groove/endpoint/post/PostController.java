@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.common.PageResponse;
+import org.bogus.groove.common.enumeration.SortOrderType;
 import org.bogus.groove.config.CustomUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.post.PostService;
@@ -44,8 +45,10 @@ public class PostController {
         @RequestParam int page,
         @RequestParam int size,
         @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestParam SortOrderType sortOrderType,
+        @RequestParam String word,
         @PathVariable Long categoryId) {
-        var result = postService.getPostList(userDetails.getUserId(), categoryId, page, size);
+        var result = postService.getPostList(userDetails.getUserId(), categoryId, page, size, sortOrderType, word);
         return CommonResponse.success(
             new PageResponse<>(
                 result.getNumber(),
