@@ -18,6 +18,7 @@ public class GoogleMailSender {
 
     // TODO : 프론트 상의 후 링크 변경 필요
     private static final String CHANGE_PASSWORD_LINK = "http://localhost:8080";
+    private static final String EMAIL_AUTHENTICATION_LINK = "http://localhost:8080";
 
     private MimeMessage getPasswordChangeMessage(String to, String sessionKey) {
         MimeMessage message = sender.createMimeMessage();
@@ -37,8 +38,33 @@ public class GoogleMailSender {
         return message;
     }
 
-    public void sendMessage(String to, String sessionKey) {
-        MimeMessage message = getPasswordChangeMessage(to, sessionKey);
+    private MimeMessage emailAuthenticationMessage(String to, String sessionKey) {
+        MimeMessage message = sender.createMimeMessage();
+
+        try {
+            message.addRecipients(MimeMessage.RecipientType.TO, to);
+            message.setSubject("[Groove] 이메일 인증 요청");
+
+            StringBuilder sb = new StringBuilder();
+            sb.append(EMAIL_AUTHENTICATION_LINK).append("/").append(sessionKey);
+            message.setText(sb.toString(), "utf-8");
+            message.setFrom(new InternetAddress("noreply@groove.com", "groove"));
+        } catch (Exception e) {
+            throw new InternalServerException(ErrorType.FAILED_TO_SEND_MAIL);
+        }
+
+        return message;
+    }
+
+    public void sendMessage(String to, String sessionKey, EmailType type) {
+        MimeMessage message = null;
+
+        if (EmailType.EMAIL_AUTHENTICATION.equals(type)) {
+            message = emailAuthenticationMessage(to, sessionKey);
+        } else if (EmailType.CHANGE_PASSWORD.equals(type)) {
+            message = getPasswordChangeMessage(to, sessionKey);
+        }
+
         sender.send(message);
     }
 }

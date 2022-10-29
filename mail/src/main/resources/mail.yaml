@@ -1,16 +1,14 @@
-spring:
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: heehee2310@gmail.com
-    password:
-    properties:
-      mail:
-        smtp:
-          starttls:
-            enable: true
-            required: true
-          auth: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
+mail:
+  smtp:
+    auth: true
+    starttls:
+      required: true
+      enable: true
+    socketFactory:
+      class: javax.net.ssl.SSLSocketFactory
+      fallback: false
+      port: 465
+    port: 465
+AdminMail:
+  id: mr.bogus2023@gmail.com
+  password: pukslnhirkdgfovd

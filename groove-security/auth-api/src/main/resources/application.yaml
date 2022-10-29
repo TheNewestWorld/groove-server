@@ -3,18 +3,3 @@ spring:
     import:
       - groove-auth-api.yaml
       - groove-security.yaml
-
-mail:
-  smtp:
-    auth: true
-    starttls:
-      required: true
-      enable: true
-    socketFactory:
-      class: javax.net.ssl.SSLSocketFactory
-      fallback: false
-      port: 465
-    port: 465
-AdminMail:
-  id: mr.bogus2023@gmail.com
-  password: pukslnhirkdgfovd
