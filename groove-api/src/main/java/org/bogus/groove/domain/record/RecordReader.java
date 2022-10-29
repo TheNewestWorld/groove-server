@@ -26,4 +26,12 @@ public class RecordReader {
 
         return new Record(entity);
     }
+
+    public Record readByAttachmentId(long attachmentId) {
+        var entity = recordRepository.findByAttachmentId(attachmentId);
+        if (entity.isEmpty() || entity.get().isDeleted()) {
+            throw new NotFoundException(ErrorType.NOT_FOUND_RECORD);
+        }
+        return new Record(entity.get());
+    }
 }
