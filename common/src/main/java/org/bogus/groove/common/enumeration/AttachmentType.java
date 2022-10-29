@@ -1,7 +1,14 @@
 package org.bogus.groove.common.enumeration;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum AttachmentType {
-  IMG,
-  VOICE,
-  VIDEO;
+    PROFILE("profile"),
+    PRIVATE_RECORD("private-record")
+    ;
+
+    private final String path;
 }

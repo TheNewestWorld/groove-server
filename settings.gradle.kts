@@ -6,6 +6,7 @@ include("groove-security:spring-security")
 include("storage")
 include("common")
 include("redis")
+include("object-storage")
 
 pluginManagement {
     val springBootVersion: String by settings

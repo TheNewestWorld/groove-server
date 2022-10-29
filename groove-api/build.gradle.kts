@@ -22,6 +22,7 @@ dependencies {
 
     implementation(project(":storage"))
     implementation(project(":common"))
+    implementation(project(":object-storage"))
 
     // auth
     implementation("org.springframework.boot:spring-boot-starter-security:$springBootVersion")

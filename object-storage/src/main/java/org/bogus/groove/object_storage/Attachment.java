@@ -1,4 +1,4 @@
-package org.bogus.groove.domain.attachment;
+package org.bogus.groove.object_storage;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,18 +13,16 @@ public class Attachment {
     private Long id;
     private String objectKey;
     private String path;
-    private String name;
+    private String fileName;
     private long size;
-    private String extension;
     private AttachmentType fileType;
 
     public Attachment(AttachmentEntity entity) {
         id = entity.getId();
         objectKey = entity.getObjectKey();
         path = entity.getPath();
-        name = entity.getName();
+        fileName = entity.getFileName();
         size = entity.getSize();
-        extension = entity.getExtension();
         fileType = entity.getAttachmentType();
     }
 }
