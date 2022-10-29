@@ -3,6 +3,7 @@ package org.bogus.groove.endpoint.post;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.common.PageResponse;
@@ -40,14 +41,14 @@ public class PostController {
     }
 
     @Operation(summary = "카테고리 별 게시글 리스트 조회")
-    @GetMapping("/category/{categoryId}")
+    @GetMapping("/category")
     public CommonResponse<PageResponse<List<PostResponse>>> getPostList(
         @RequestParam int page,
         @RequestParam int size,
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestParam SortOrderType sortOrderType,
-        @RequestParam String word,
-        @PathVariable Long categoryId) {
+        @RequestParam(required = false) String word,
+        @RequestParam(required = false) Long categoryId) {
         var result = postService.getPostList(userDetails.getUserId(), categoryId, page, size, sortOrderType, word);
         return CommonResponse.success(
             new PageResponse<>(

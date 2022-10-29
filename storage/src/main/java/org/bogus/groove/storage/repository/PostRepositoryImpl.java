@@ -1,5 +1,6 @@
 package org.bogus.groove.storage.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -23,7 +24,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     public Slice<PostEntity> findAllPosts(Long categoryId, Pageable pageable, String word) {
         QPostEntity post = QPostEntity.postEntity;
         List<PostEntity> results =
-            jpaQueryFactory.selectFrom(post).where(post.categoryId.eq(categoryId), post.content.contains(word)).orderBy(sort(pageable))
+            jpaQueryFactory.selectFrom(post).where(allCheck(categoryId, word)).orderBy(sort(pageable))
                 .limit(pageable.getPageSize() + 1).offset(pageable.getOffset()).fetch();
 
         boolean hasNext = false;
@@ -32,6 +33,20 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
             hasNext = true;
         }
         return new SliceImpl<>(results, pageable, hasNext);
+    }
+
+    private BooleanBuilder categoryEq(Long categoryId) {
+        QPostEntity post = QPostEntity.postEntity;
+        return categoryId != null ? new BooleanBuilder(post.categoryId.eq(categoryId)) : new BooleanBuilder();
+    }
+
+    private BooleanBuilder wordSearch(String word) {
+        QPostEntity post = QPostEntity.postEntity;
+        return word != null ? new BooleanBuilder(post.title.contains(word).or(post.content.contains(word))) : new BooleanBuilder();
+    }
+
+    private BooleanBuilder allCheck(Long categoryId, String word) {
+        return categoryEq(categoryId).and(wordSearch(word));
     }
 
     private OrderSpecifier<?> sort(Pageable pageable) {
