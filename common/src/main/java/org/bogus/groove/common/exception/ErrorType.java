@@ -14,6 +14,7 @@ public enum ErrorType {
     NOT_FOUND_ATTACHMENT("파일을 찾을 수 없습니다."),
     NOT_FOUND_LIKE("해당 좋아요를 찾을 수 없습니다."),
     NOT_FOUND_AUTHENTICATION_SESSION("인증 세션을 찾을 수 없습니다."),
+    AUTHENTICATION_SESSION_EXPIRED("만료된 인증 세션입니다."),
     FAILED_TO_CREATE_POST("게시글 생성을 실패하였습니다."),
     FAILED_TO_CREATE_COMMENT("댓글 생성을 실패하였습니다."),
     FAILED_TO_SEND_MAIL("메일 발송에 실패했습니다."),

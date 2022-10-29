@@ -17,7 +17,7 @@ public class EmailAuthenticationCreator {
             new EmailAuthenticationEntity(
                 userId,
                 UUID.randomUUID().toString(),
-                LocalDateTime.now().plusDays(1)
+                LocalDateTime.now().plusHours(1)
             )
         );
 
