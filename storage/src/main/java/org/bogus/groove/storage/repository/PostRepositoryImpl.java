@@ -22,10 +22,12 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     @Override
     public Slice<PostEntity> findAllPosts(Long categoryId, Pageable pageable, String word) {
         QPostEntity post = QPostEntity.postEntity;
-        List<PostEntity> results = jpaQueryFactory.selectFrom(post).where(post.categoryId.eq(categoryId), post.content.contains(word)).orderBy(sort(pageable)).limit(pageable.getPageSize()+1).offset(pageable.getOffset()).fetch();
+        List<PostEntity> results =
+            jpaQueryFactory.selectFrom(post).where(post.categoryId.eq(categoryId), post.content.contains(word)).orderBy(sort(pageable))
+                .limit(pageable.getPageSize() + 1).offset(pageable.getOffset()).fetch();
 
         boolean hasNext = false;
-        if(results.size() > pageable.getPageSize()) {
+        if (results.size() > pageable.getPageSize()) {
             results.remove(pageable.getPageSize());
             hasNext = true;
         }
@@ -34,7 +36,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     private OrderSpecifier<?> sort(Pageable pageable) {
         QPostEntity post = QPostEntity.postEntity;
-        if(!pageable.getSort().isEmpty()) {
+        if (!pageable.getSort().isEmpty()) {
             for (Sort.Order order : pageable.getSort()) {
                 Order direction = order.getDirection().isAscending() ? Order.ASC : Order.DESC;
                 switch (order.getProperty()) {
@@ -44,6 +46,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         return new OrderSpecifier<>(direction, post.likeCount);
                     case "commentCount":
                         return new OrderSpecifier<>(direction, post.commentCount);
+                    default:
+                        return new OrderSpecifier<>(direction, post.createdAt);
                 }
             }
         }
