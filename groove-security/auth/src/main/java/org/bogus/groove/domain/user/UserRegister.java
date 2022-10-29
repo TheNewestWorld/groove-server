@@ -21,7 +21,7 @@ public class UserRegister {
         validateNotDuplicated(param);
 
         var created = userCreator.create(param);
-        userAuthorityUpdater.update(created.getId(), List.of(Authority.USER));
+        userAuthorityUpdater.update(created.getId(), List.of(Authority.INACTIVE));
         return userReader.read(created.getId());
     }
 

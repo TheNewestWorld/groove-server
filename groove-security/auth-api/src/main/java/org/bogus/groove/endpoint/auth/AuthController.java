@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.INACTIVE, SecurityCode.USER})
     @Operation(summary = "액세스 토큰 리프레쉬")
     @PostMapping("/api/auth/refresh")
     public CommonResponse<TokenRefreshResponse> refresh(
@@ -31,7 +31,7 @@ public class AuthController {
         return CommonResponse.success(new TokenRefreshResponse(result));
     }
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.INACTIVE, SecurityCode.USER})
     @Operation(summary = "로그아웃")
     @PostMapping("/api/auth/logout")
     public CommonResponse<Void> logout(HttpServletRequest request) {
