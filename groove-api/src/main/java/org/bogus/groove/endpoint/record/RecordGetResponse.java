@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class RecordGetResponse {
-    private final long recordId;
+    private final String fileUri;
     private final String recordName;
     private final LocalDateTime createdAt;
 }

@@ -18,7 +18,7 @@ public class RecordReader {
             .map(Record::new);
     }
 
-    public Record read(long recordId) {
+    public Record readById(long recordId) {
         var entity = recordRepository.findById(recordId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_RECORD));
         if (entity.isDeleted()) {
             throw new NotFoundException(ErrorType.NOT_FOUND_RECORD);

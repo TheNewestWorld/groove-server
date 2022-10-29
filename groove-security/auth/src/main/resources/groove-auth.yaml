@@ -7,6 +7,10 @@ spring:
 
   sql.init.mode: never
 
+  config:
+    import:
+      - object-storage.yaml
+
   h2:
     console:
       enabled: true
