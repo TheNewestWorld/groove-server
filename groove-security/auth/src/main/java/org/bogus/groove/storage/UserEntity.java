@@ -41,7 +41,7 @@ public class UserEntity extends BaseEntity {
     @Column(name = "authenticated_at")
     private LocalDateTime authenticatedAt;
 
-    public UserEntity(String email, String password, UserType type) {
+    public UserEntity(String email, String password, UserType type, String nickname) {
         this.email = email;
         this.password = password;
         this.type = type;

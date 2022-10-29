@@ -17,8 +17,8 @@ public class UserService {
     private final GoogleMailSender googleMailSender;
 
     @Transactional
-    public UserInfo register(UserRegisterParam param) {
-        UserInfo user =  userRegister.register(param.getEmail(), param.getPassword(), param.getUserType());
+    public User register(UserRegisterParam param) {
+        User user = userRegister.register(param);
         EmailAuthentication emailAuthentication = emailAuthenticationCreator.create(user.getId());
         googleMailSender.sendMessage(user.getEmail(), emailAuthentication.getSessionKey(), EmailType.EMAIL_AUTHENTICATION);
 
