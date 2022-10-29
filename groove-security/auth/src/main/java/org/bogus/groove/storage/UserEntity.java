@@ -14,7 +14,10 @@ import org.bogus.groove.domain.user.UserType;
 @Entity
 @Table(
     name = "`user`",
-    uniqueConstraints = {@UniqueConstraint(columnNames = {"email", "type"})}
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"email", "type"}),
+        @UniqueConstraint(columnNames = {"nickname"})
+    }
 )
 @Getter
 @NoArgsConstructor
@@ -29,6 +32,9 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserType type;
 
+    @Column(name = "nickname")
+    private String nickname;
+
     @Column(name = "authentication_flag")
     private boolean isAuthenticated;
 
@@ -39,6 +45,7 @@ public class UserEntity extends BaseEntity {
         this.email = email;
         this.password = password;
         this.type = type;
+        this.nickname = nickname;
     }
 
     public void updateAuthentication(boolean isAuthenticated, LocalDateTime authenticatedAt) {

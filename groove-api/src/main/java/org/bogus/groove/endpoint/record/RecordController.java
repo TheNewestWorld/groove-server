@@ -1,5 +1,6 @@
 package org.bogus.groove.endpoint.record;
 
+import io.swagger.v3.oas.annotations.Operation;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,7 @@ public class RecordController {
     private final RecordService recordService;
 
     @Secured(SecurityCode.USER)
+    @Operation(summary = "마이페이지 - 녹음파일 저장")
     @PostMapping(
         value = "/api/records",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
@@ -43,6 +45,7 @@ public class RecordController {
     }
 
     @Secured(SecurityCode.USER)
+    @Operation(summary = "마이페이지 - 녹음파일 페이징")
     @GetMapping("/api/records")
     public CommonResponse<PageResponse<List<RecordGetResponse>>> getRecords(
         @RequestParam int page,
@@ -67,6 +70,7 @@ public class RecordController {
     }
 
     @Secured(SecurityCode.USER)
+    @Operation(summary = "마이페이지 - 녹음파일 다운로드")
     @GetMapping("/api/records/{recordId}")
     public ResponseEntity<StreamingResponseBody> downloadRecord(@PathVariable Long recordId) {
         var file = recordService.download(recordId);
@@ -80,6 +84,7 @@ public class RecordController {
     }
 
     @Secured(SecurityCode.USER)
+    @Operation(summary = "마이페이지 - 녹음 삭제")
     @DeleteMapping("/api/records/{recordId}")
     public CommonResponse<Void> deleteRecord(
         @PathVariable Long recordId,

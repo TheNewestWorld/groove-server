@@ -32,7 +32,7 @@ spring.config.activate.on-profile: dev
 # heroku data resource
 spring:
   datasource:
-    url: jdbc:postgres://${DATABASE_HOST}
+    url: jdbc:postgresql://${DATABASE_HOST}
     driver-class-name: org.postgresql.Driver
     username: ${DATABASE_USERNAME}
     password: ${DATABASE_PASSWORD}
@@ -40,6 +40,6 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     defer-datasource-initialization: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect

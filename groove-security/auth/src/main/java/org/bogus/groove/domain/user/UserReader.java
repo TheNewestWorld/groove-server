@@ -16,11 +16,16 @@ public class UserReader {
         return readOrNull(userId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
     }
 
+
     public Optional<User> readOrNull(String email, UserType userType) {
         return userRepository.findByEmailAndType(email, userType).map(User::new);
     }
 
     public Optional<User> readOrNull(Long userId) {
         return userRepository.findById(userId).map(User::new);
+    }
+
+    public Optional<User> readOrNull(String nickname) {
+        return userRepository.findByNickname(nickname).map(User::new);
     }
 }

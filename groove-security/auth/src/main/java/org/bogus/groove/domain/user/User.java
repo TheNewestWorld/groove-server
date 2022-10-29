@@ -8,6 +8,7 @@ import org.bogus.groove.storage.UserEntity;
 public class User {
     private final Long id;
     private final String email;
+    private final String nickname;
     private final UserType type;
     private final boolean isAuthenticated;
     private final LocalDateTime authenticatedAt;
@@ -17,6 +18,7 @@ public class User {
     User(UserEntity entity) {
         this.id = entity.getId();
         this.email = entity.getEmail();
+        this.nickname = entity.getNickname();
         this.type = entity.getType();
         this.isAuthenticated = entity.isAuthenticated();
         this.authenticatedAt = entity.getAuthenticatedAt();

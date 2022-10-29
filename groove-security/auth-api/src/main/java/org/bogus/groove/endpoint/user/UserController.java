@@ -1,10 +1,10 @@
 package org.bogus.groove.endpoint.user;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.config.CustomUserDetails;
 import org.bogus.groove.config.SecurityCode;
-import org.bogus.groove.domain.user.UserInfo;
 import org.bogus.groove.domain.user.UserRegisterParam;
 import org.bogus.groove.domain.user.UserService;
 import org.springframework.security.access.annotation.Secured;
@@ -22,18 +22,21 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
+    @Operation(summary = "회원가입")
     @PostMapping("/api/users/register")
-    public CommonResponse<UserInfo> register(@RequestBody RegisterRequest request) {
-        var result = userService.register(
+    public CommonResponse<Void> register(@RequestBody UserRegisterRequest request) {
+        userService.register(
             new UserRegisterParam(
                 request.getEmail(),
-                passwordEncoder.encode(request.getPassword())
+                passwordEncoder.encode(request.getPassword()),
+                request.getNickname()
             )
         );
-        return CommonResponse.success(result);
+        return CommonResponse.success();
     }
 
     @Secured(SecurityCode.USER)
+    @Operation(summary = "로그인 유저 정보 조회")
     @GetMapping("/api/users/self")
     public CommonResponse<UserInfoGetResponse> getSelfInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
         var result = userService.getUserInfo(userDetails.getUserId());
