@@ -1,10 +1,12 @@
 package org.bogus.groove.domain.comment;
 
+import java.util.List;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.common.exception.UnauthorizedException;
+import org.bogus.groove.storage.entity.CommentEntity;
 import org.bogus.groove.storage.entity.PostEntity;
 import org.bogus.groove.storage.repository.CommentRepository;
 import org.bogus.groove.storage.repository.PostRepository;
@@ -23,6 +25,11 @@ public class CommentDeleter {
             entity.setDeleted(true);
             PostEntity post = postRepository.getById(entity.getPostId());
             post.setCommentCount(post.getCommentCount() - 1);
+            List<CommentEntity> reComments = commentRepository.findAllByParentIdAndIsDeletedFalse(entity.getId());
+            for (CommentEntity reComment : reComments) {
+                reComment.setDeleted(true);
+                post.setCommentCount(post.getCommentCount() - 1);
+            }
         } else {
             throw new UnauthorizedException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
         }

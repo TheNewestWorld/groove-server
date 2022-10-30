@@ -19,7 +19,7 @@ public class CommentEntity extends BaseEntity {
 
     @Column(name = "deleted_flag")
     @Setter
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 
     @Column(name = "parent_id")
     private Long parentId;
@@ -30,9 +30,8 @@ public class CommentEntity extends BaseEntity {
     @Column(name = "ref_post_id")
     private Long postId;
 
-    public CommentEntity(String content, Boolean isDeleted, Long parentId, Long userId, Long postId) {
+    public CommentEntity(String content, Long parentId, Long userId, Long postId) {
         this.content = content;
-        this.isDeleted = isDeleted;
         this.parentId = parentId;
         this.userId = userId;
         this.postId = postId;

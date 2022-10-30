@@ -19,7 +19,7 @@ public class CommentCreator {
     @Transactional
     public Comment createComment(String content, Long parentId, Long userId, Long postId) {
         try {
-            var entity = commentRepository.save(new CommentEntity(content, false, parentId, userId, postId));
+            var entity = commentRepository.save(new CommentEntity(content, parentId, userId, postId));
             PostEntity post = postRepository.getById(postId);
             post.setCommentCount(post.getCommentCount() + 1);
             return new Comment(entity);
