@@ -28,6 +28,6 @@ public class CommentGetResult {
 
     public CommentGetResult(Comment comment, List<Comment> reComments) {
         this(comment);
-        this.reComments = reComments.stream().map(reComment -> new CommentGetResult(reComment)).collect(Collectors.toList());
+        this.reComments = reComments.stream().map(CommentGetResult::new).collect(Collectors.toList());
     }
 }
