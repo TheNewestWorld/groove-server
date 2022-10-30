@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.SortOrderType;
-import org.bogus.groove.domain.comment.CommentReader;
 import org.bogus.groove.domain.like.Like;
 import org.bogus.groove.domain.like.LikeReader;
 import org.bogus.groove.domain.user.User;

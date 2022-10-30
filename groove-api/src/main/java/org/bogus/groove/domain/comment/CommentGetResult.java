@@ -2,7 +2,6 @@ package org.bogus.groove.domain.comment;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Getter;
 
 @Getter

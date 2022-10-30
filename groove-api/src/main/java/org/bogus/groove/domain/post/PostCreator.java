@@ -14,7 +14,7 @@ public class PostCreator {
 
     public Post createPost(String title, String content, Long userId, Long categoryId) {
         try {
-            var entity = postRepository.save(new PostEntity(title, content, false, userId, categoryId));
+            var entity = postRepository.save(new PostEntity(title, content, userId, categoryId));
             return new Post(entity);
         } catch (IllegalArgumentException e) {
             throw new InternalServerException(ErrorType.FAILED_TO_CREATE_POST);
