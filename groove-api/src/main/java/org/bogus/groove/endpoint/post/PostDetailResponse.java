@@ -11,9 +11,11 @@ public class PostDetailResponse {
     private String title;
     private String content;
     private Long userId;
+    private String nickName;
     private boolean likeFlag;
     private Integer likeCount;
     private Integer commentCount;
+    private Long categoryId;
 
     public PostDetailResponse(PostGetDetailResult postDetail) {
         this.id = postDetail.getPost().getId();
@@ -21,8 +23,10 @@ public class PostDetailResponse {
         this.title = postDetail.getPost().getTitle();
         this.content = postDetail.getPost().getContent();
         this.userId = postDetail.getPost().getUserId();
+        this.nickName = postDetail.getPost().getNickName();
         this.likeFlag = postDetail.getPost().isLikeFlag();
         this.likeCount = postDetail.getPost().getLikeCount();
         this.commentCount = postDetail.getPost().getCommentCount();
+        this.categoryId = postDetail.getPost().getCategoryId();
     }
 }

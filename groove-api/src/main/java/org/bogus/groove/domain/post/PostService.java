@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.SortOrderType;
-import org.bogus.groove.domain.comment.CommentReader;
 import org.bogus.groove.domain.like.Like;
 import org.bogus.groove.domain.like.LikeReader;
+import org.bogus.groove.domain.user.User;
+import org.bogus.groove.domain.user.UserReader;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
@@ -20,30 +21,29 @@ public class PostService {
     private final PostUpdater postUpdater;
     private final PostDeleter postDeleter;
     private final LikeReader likeReader;
-    private final CommentReader commentReader;
+    private final UserReader userReader;
 
     public Post createPost(String title, String content, Long userId, Long categoryId) {
         return postCreator.createPost(title, content, userId, categoryId);
     }
 
     public Slice<PostGetResult> getPostList(Long userId, Long categoryId, int page, int size, SortOrderType sortOrderType, String word) {
+        User user = userReader.read(userId);
         List<Like> likeList = likeReader.likeList(userId);
         var posts = postReader.readAllPosts(categoryId, page, size, sortOrderType, word);
         return new SliceImpl<>(
             posts.map(
-                post -> new PostGetResult(post,
-                    !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
-                    likeReader.countPostLike(post.getId()),
-                    commentReader.countPostComment(post.getId()))).toList(),
+                post -> new PostGetResult(post, user.getNickname(),
+                    !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty())).toList(),
             posts.getPageable(),
             posts.hasNext()
         );
     }
 
     public PostGetDetailResult getPost(Long userId, Long postId) {
+        User user = userReader.read(userId);
         Post post = postReader.readPost(postId);
-        PostGetResult result = new PostGetResult(post, likeReader.checkLike(userId, postId), likeReader.countPostLike(postId),
-            commentReader.countPostComment(postId));
+        PostGetResult result = new PostGetResult(post, user.getNickname(), likeReader.checkLike(userId, postId));
         PostGetDetailResult postDetail = new PostGetDetailResult(result, post.getCreatedAt());
         return postDetail;
     }

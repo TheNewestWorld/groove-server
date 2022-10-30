@@ -12,7 +12,7 @@ public class LikeReader {
     private final LikeRepository likeRepository;
 
     public List<Like> likeList(Long userId) {
-        return likeRepository.findByUserId(userId).stream().map(entity -> new Like(entity)).collect(Collectors.toList());
+        return likeRepository.findByUserId(userId).stream().map(Like::new).collect(Collectors.toList());
     }
 
     public boolean checkLike(Long userId, Long postId) {

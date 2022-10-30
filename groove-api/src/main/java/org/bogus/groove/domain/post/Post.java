@@ -18,6 +18,7 @@ public class Post {
     private Integer likeCount;
     private Integer commentCount;
     private Long userId;
+    private Long categoryId;
 
     public Post(PostEntity entity) {
         this.id = entity.getId();
@@ -28,5 +29,6 @@ public class Post {
         this.likeCount = entity.getLikeCount();
         this.commentCount = entity.getCommentCount();
         this.userId = entity.getUserId();
+        this.categoryId = entity.getCategoryId();
     }
 }

@@ -38,7 +38,7 @@ public class CommentController {
     @Operation(summary = "댓글 리스트 조회")
     @GetMapping("/post/{postId}/comment")
     public CommonResponse<List<CommentResponse>> getCommentList(@PathVariable Long postId) {
-        return CommonResponse.success(commentService.getCommentList(postId).stream().map(comment -> new CommentResponse(comment)).collect(
+        return CommonResponse.success(commentService.getCommentList(postId).stream().map(CommentResponse::new).collect(
             Collectors.toList()));
     }
 

@@ -17,6 +17,7 @@ public class CommentResponse {
     private String content;
     private Long parentId;
     private Long userId;
+    private String nickName;
     private Long postId;
     private List<CommentResponse> reComments;
 
@@ -26,6 +27,7 @@ public class CommentResponse {
         this.content = comment.getContent();
         this.parentId = comment.getParentId();
         this.userId = comment.getUserId();
+        this.nickName = comment.getNickName();
         this.postId = comment.getPostId();
         this.reComments = Optional.ofNullable(comment.getReComments()).orElseGet(Collections::emptyList).stream()
             .map(reComment -> new CommentResponse(reComment)).collect(
