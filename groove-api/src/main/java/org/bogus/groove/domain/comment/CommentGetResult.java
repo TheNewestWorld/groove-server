@@ -13,21 +13,24 @@ public class CommentGetResult {
     private boolean isDeleted;
     private Long parentId;
     private Long userId;
+    private String nickName;
     private Long postId;
     private List<CommentGetResult> reComments;
 
-    public CommentGetResult(Comment comment) {
+    public CommentGetResult(Comment comment, String nickName) {
         this.id = comment.getId();
         this.createdAt = comment.getCreatedAt();
         this.content = comment.getContent();
         this.isDeleted = comment.isDeleted();
         this.parentId = comment.getParentId();
         this.userId = comment.getUserId();
+        this.nickName = nickName;
         this.postId = comment.getPostId();
     }
 
-    public CommentGetResult(Comment comment, List<Comment> reComments) {
-        this(comment);
-        this.reComments = reComments.stream().map(CommentGetResult::new).collect(Collectors.toList());
+    public CommentGetResult(Comment comment, String nickName, List<CommentGetResult> reComments) {
+        this(comment, nickName);
+        this.nickName = nickName;
+        this.reComments = reComments;
     }
 }

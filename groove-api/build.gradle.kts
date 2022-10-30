@@ -28,4 +28,5 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-security:$springDocVersion")
     implementation(project(":groove-security:spring-security"))
     implementation(project(":groove-security:auth-api"))
+    implementation(project(":groove-security:auth"))
 }
