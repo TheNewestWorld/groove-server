@@ -24,7 +24,11 @@ public class AttachmentReader {
             .orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_ATTACHMENT));
     }
 
-    public Optional<Attachment> readOrNull(long attachmentId) {
-        return attachmentRepository.findById(attachmentId).map((entity) -> new Attachment(entity, domain));
+    public Optional<Attachment> readOrNull(Long attachmentId) {
+        if (attachmentId == null) {
+            return Optional.empty();
+        } else {
+            return attachmentRepository.findById(attachmentId).map((entity) -> new Attachment(entity, domain));
+        }
     }
 }
