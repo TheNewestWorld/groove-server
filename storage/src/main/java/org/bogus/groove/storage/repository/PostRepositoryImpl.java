@@ -46,7 +46,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     }
 
     private BooleanBuilder allCheck(Long categoryId, String word) {
-        return categoryEq(categoryId).and(wordSearch(word));
+        QPostEntity post = QPostEntity.postEntity;
+        return categoryEq(categoryId).and(wordSearch(word)).and(post.isDeleted.eq(Boolean.FALSE));
     }
 
     private OrderSpecifier<?> sort(Pageable pageable) {
