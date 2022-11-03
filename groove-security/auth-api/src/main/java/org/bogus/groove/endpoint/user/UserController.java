@@ -44,6 +44,7 @@ public class UserController {
                 result.getId(),
                 result.getEmail(),
                 result.getType(),
+                result.getProfileUri(),
                 result.getAuthorities()
             )
         );

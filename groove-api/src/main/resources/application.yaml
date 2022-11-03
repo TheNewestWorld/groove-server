@@ -4,6 +4,7 @@ spring:
   config:
     import:
       - storage.yaml
+      - object-storage.yaml
       - redis.yaml
       - groove-security.yaml
       - groove-auth-api.yaml

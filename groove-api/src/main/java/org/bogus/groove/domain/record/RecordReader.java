@@ -18,12 +18,20 @@ public class RecordReader {
             .map(Record::new);
     }
 
-    public Record read(long recordId) {
+    public Record readById(long recordId) {
         var entity = recordRepository.findById(recordId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_RECORD));
         if (entity.isDeleted()) {
             throw new NotFoundException(ErrorType.NOT_FOUND_RECORD);
         }
 
         return new Record(entity);
+    }
+
+    public Record readByAttachmentId(long attachmentId) {
+        var entity = recordRepository.findByAttachmentId(attachmentId);
+        if (entity.isEmpty() || entity.get().isDeleted()) {
+            throw new NotFoundException(ErrorType.NOT_FOUND_RECORD);
+        }
+        return new Record(entity.get());
     }
 }

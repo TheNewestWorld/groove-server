@@ -1,7 +1,7 @@
 package org.bogus.groove.endpoint.record;
 
 import io.swagger.v3.oas.annotations.Operation;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
@@ -9,21 +9,18 @@ import org.bogus.groove.common.PageResponse;
 import org.bogus.groove.config.CustomUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.record.RecordService;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
+import org.bogus.groove.domain.record.RecordUploadParam;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,10 +34,19 @@ public class RecordController {
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public CommonResponse<Void> record(
-        @RequestParam MultipartFile record,
+        @RequestPart MultipartFile record,
         @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
-        recordService.upload(userDetails.getUserId(), record);
+    ) throws IOException {
+        try (var input = record.getInputStream()) {
+            recordService.upload(
+                userDetails.getUserId(),
+                new RecordUploadParam(
+                    input,
+                    record.getOriginalFilename(),
+                    record.getSize()
+                )
+            );
+        }
         return CommonResponse.success();
     }
 
@@ -59,7 +65,7 @@ public class RecordController {
                 result.getSize(),
                 result.map((record) ->
                     new RecordGetResponse(
-                        record.getRecordId(),
+                        record.getFileUri(),
                         record.getRecordName(),
                         record.getCreatedAt()
                     )
@@ -67,20 +73,6 @@ public class RecordController {
                 result.hasNext()
             )
         );
-    }
-
-    @Secured(SecurityCode.USER)
-    @Operation(summary = "마이페이지 - 녹음파일 다운로드")
-    @GetMapping("/api/records/{recordId}")
-    public ResponseEntity<StreamingResponseBody> downloadRecord(@PathVariable Long recordId) {
-        var file = recordService.download(recordId);
-
-        return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment()
-                .filename(file.getFileName(), StandardCharsets.UTF_8)
-                .build()
-                .toString())
-            .body(outputStream -> FileCopyUtils.copy(file.getInputStream(), outputStream));
     }
 
     @Secured(SecurityCode.USER)

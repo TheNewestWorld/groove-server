@@ -12,5 +12,6 @@ public class UserInfoGetResponse {
     private final Long id;
     private final String email;
     private final UserType type;
+    private final String profileUri;
     private final List<Authority> authorities;
 }
