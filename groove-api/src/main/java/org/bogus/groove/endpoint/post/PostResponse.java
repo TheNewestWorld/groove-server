@@ -12,6 +12,7 @@ public class PostResponse {
     private String content;
     private Long userId;
     private String nickName;
+    private String profileUri;
     private boolean likeFlag;
     private Integer likeCount;
     private Integer commentCount;
@@ -23,6 +24,7 @@ public class PostResponse {
         this.content = post.getContent();
         this.userId = post.getUserId();
         this.nickName = post.getNickName();
+        this.profileUri = post.getProfileUri();
         this.likeFlag = post.isLikeFlag();
         this.likeCount = post.getLikeCount();
         this.commentCount = post.getCommentCount();
