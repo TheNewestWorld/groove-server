@@ -7,6 +7,7 @@ include("storage")
 include("common")
 include("redis")
 include("object-storage")
+include("client:user")
 
 pluginManagement {
     val springBootVersion: String by settings

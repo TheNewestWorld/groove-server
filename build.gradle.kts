@@ -24,6 +24,7 @@ subprojects {
     apply(plugin = "java")
     apply(plugin = "checkstyle")
     apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
 
     checkstyle {
         maxWarnings = 0

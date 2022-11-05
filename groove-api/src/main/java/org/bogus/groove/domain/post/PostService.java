@@ -3,11 +3,11 @@ package org.bogus.groove.domain.post;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.client.user.UserClient;
+import org.bogus.groove.client.user.UserInfo;
 import org.bogus.groove.common.enumeration.SortOrderType;
 import org.bogus.groove.domain.like.Like;
 import org.bogus.groove.domain.like.LikeReader;
-import org.bogus.groove.domain.user.User;
-import org.bogus.groove.domain.user.UserReader;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
@@ -21,19 +21,19 @@ public class PostService {
     private final PostUpdater postUpdater;
     private final PostDeleter postDeleter;
     private final LikeReader likeReader;
-    private final UserReader userReader;
+    private final UserClient userClient;
 
     public Post createPost(String title, String content, Long userId, Long categoryId) {
         return postCreator.createPost(title, content, userId, categoryId);
     }
 
     public Slice<PostGetResult> getPostList(Long userId, Long categoryId, int page, int size, SortOrderType sortOrderType, String word) {
-        User user = userReader.read(userId);
+        UserInfo userInfo = userClient.get(userId);
         List<Like> likeList = likeReader.likeList(userId);
         var posts = postReader.readAllPosts(categoryId, page, size, sortOrderType, word);
         return new SliceImpl<>(
             posts.map(
-                post -> new PostGetResult(post, user.getNickname(),
+                post -> new PostGetResult(post, userInfo.getNickname(),
                     !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty())).toList(),
             posts.getPageable(),
             posts.hasNext()
@@ -41,9 +41,9 @@ public class PostService {
     }
 
     public PostGetDetailResult getPost(Long userId, Long postId) {
-        User user = userReader.read(userId);
+        UserInfo userInfo = userClient.get(userId);
         Post post = postReader.readPost(postId);
-        PostGetResult result = new PostGetResult(post, user.getNickname(), likeReader.checkLike(userId, postId));
+        PostGetResult result = new PostGetResult(post, userInfo.getNickname(), likeReader.checkLike(userId, postId));
         PostGetDetailResult postDetail = new PostGetDetailResult(result, post.getCreatedAt());
         return postDetail;
     }
