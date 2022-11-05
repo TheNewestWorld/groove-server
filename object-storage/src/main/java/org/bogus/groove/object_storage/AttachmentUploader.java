@@ -18,6 +18,7 @@ public class AttachmentUploader {
                 result.getPath(),
                 param.getFileName(),
                 param.getSize(),
+                param.getResourceId(),
                 param.getAttachmentType()
             )
         );
