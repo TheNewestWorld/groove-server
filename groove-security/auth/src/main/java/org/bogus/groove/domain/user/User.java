@@ -10,7 +10,6 @@ public class User {
     private final String email;
     private final String nickname;
     private final UserType type;
-    private final Long profileId;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
@@ -19,7 +18,6 @@ public class User {
         this.email = entity.getEmail();
         this.nickname = entity.getNickname();
         this.type = entity.getType();
-        this.profileId = entity.getProfileId();
         this.createdAt = entity.getCreatedAt();
         this.updatedAt = entity.getUpdatedAt();
     }
