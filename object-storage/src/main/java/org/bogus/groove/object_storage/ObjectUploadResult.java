@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ObjectUploadResult {
+class ObjectUploadResult {
     private final String objectKey;
     private final String path;
 }
