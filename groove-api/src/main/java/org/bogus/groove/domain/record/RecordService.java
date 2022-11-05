@@ -7,6 +7,7 @@ import org.bogus.groove.common.exception.ForbiddenException;
 import org.bogus.groove.object_storage.Attachment;
 import org.bogus.groove.object_storage.AttachmentDeleter;
 import org.bogus.groove.object_storage.AttachmentReader;
+import org.bogus.groove.object_storage.AttachmentUpdater;
 import org.bogus.groove.object_storage.AttachmentUploadParam;
 import org.bogus.groove.object_storage.AttachmentUploader;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +21,7 @@ public class RecordService {
     private final AttachmentReader attachmentReader;
     private final AttachmentUploader attachmentUploader;
     private final AttachmentDeleter attachmentDeleter;
+    private final AttachmentUpdater attachmentUpdater;
 
     @Transactional
     public void upload(long userId, RecordUploadParam param) {
@@ -38,11 +40,19 @@ public class RecordService {
         return attachmentReader.readAll(userId, AttachmentType.PRIVATE_RECORD, PageRequest.of(page, size));
     }
 
-    public void delete(Long recordId, long userId) {
+    public void delete(long recordId, long userId) {
         var record = attachmentReader.read(recordId);
         if (record.getFileType() != AttachmentType.PRIVATE_RECORD || record.getResourceId() != userId) {
             throw new ForbiddenException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
         }
         attachmentDeleter.delete(recordId);
+    }
+
+    public void update(long recordId, long userId, String recordName) {
+        var record = attachmentReader.read(recordId);
+        if (record.getFileType() != AttachmentType.PRIVATE_RECORD || record.getResourceId() != userId) {
+            throw new ForbiddenException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
+        }
+        attachmentUpdater.updateName(recordId, recordName);
     }
 }

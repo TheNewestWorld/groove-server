@@ -18,6 +18,7 @@ public class AttachmentEntity extends BaseEntity {
     @Column(name = "object_key")
     private String objectKey;
 
+    @Setter
     @Column(name = "name")
     private String fileName;
 

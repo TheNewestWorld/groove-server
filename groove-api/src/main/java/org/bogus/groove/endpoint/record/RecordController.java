@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -84,6 +86,18 @@ public class RecordController {
         @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         recordService.delete(recordId, userDetails.getUserId());
+        return CommonResponse.success();
+    }
+
+    @Secured(SecurityCode.USER)
+    @Operation(summary = "마이페이지 - 녹음 이름 변경")
+    @PutMapping("/api/records/{recordId}")
+    public CommonResponse<Void> updateRecordName(
+        @PathVariable Long recordId,
+        @RequestBody RecordNameUpdateRequest request,
+        @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        recordService.update(recordId, userDetails.getUserId(), request.getRecordName());
         return CommonResponse.success();
     }
 }
