@@ -5,6 +5,7 @@ import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.ForbiddenException;
 import org.bogus.groove.object_storage.Attachment;
+import org.bogus.groove.object_storage.AttachmentAuthorityChecker;
 import org.bogus.groove.object_storage.AttachmentDeleter;
 import org.bogus.groove.object_storage.AttachmentReader;
 import org.bogus.groove.object_storage.AttachmentUpdater;
@@ -22,6 +23,7 @@ public class RecordService {
     private final AttachmentUploader attachmentUploader;
     private final AttachmentDeleter attachmentDeleter;
     private final AttachmentUpdater attachmentUpdater;
+    private final AttachmentAuthorityChecker attachmentAuthorityChecker;
 
     @Transactional
     public void upload(long userId, RecordUploadParam param) {
@@ -41,16 +43,16 @@ public class RecordService {
     }
 
     public void delete(long recordId, long userId) {
-        var record = attachmentReader.read(recordId);
-        if (record.getFileType() != AttachmentType.PRIVATE_RECORD || record.getResourceId() != userId) {
+        var authorized = attachmentAuthorityChecker.check(recordId, AttachmentType.PRIVATE_RECORD, userId);
+        if (!authorized) {
             throw new ForbiddenException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
         }
         attachmentDeleter.delete(recordId);
     }
 
     public void update(long recordId, long userId, String recordName) {
-        var record = attachmentReader.read(recordId);
-        if (record.getFileType() != AttachmentType.PRIVATE_RECORD || record.getResourceId() != userId) {
+        var authorized = attachmentAuthorityChecker.check(recordId, AttachmentType.PRIVATE_RECORD, userId);
+        if (!authorized) {
             throw new ForbiddenException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
         }
         attachmentUpdater.updateName(recordId, recordName);
