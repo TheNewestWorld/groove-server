@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.bogus.groove.client.user.UserClient;
 import org.bogus.groove.client.user.UserInfo;
 import org.bogus.groove.common.enumeration.SortOrderType;
+import org.bogus.groove.domain.comment.CommentReader;
 import org.bogus.groove.domain.like.Like;
 import org.bogus.groove.domain.like.LikeReader;
 import org.springframework.data.domain.Slice;
@@ -22,6 +23,7 @@ public class PostService {
     private final PostDeleter postDeleter;
     private final LikeReader likeReader;
     private final UserClient userClient;
+    private final CommentReader commentReader;
 
     public Post createPost(String title, String content, Long userId, Long categoryId) {
         return postCreator.createPost(title, content, userId, categoryId);
@@ -46,6 +48,34 @@ public class PostService {
         PostGetResult result = new PostGetResult(post, userInfo.getNickname(), likeReader.checkLike(userId, postId));
         PostGetDetailResult postDetail = new PostGetDetailResult(result, post.getCreatedAt());
         return postDetail;
+    }
+
+    public Slice<MyPostGetResult> getMyPosts(Long userId, int page, int size) {
+        var userInfo = userClient.get(userId);
+        var posts = postReader.readAllPosts(userId, page, size);
+
+        return posts.map((post) ->
+            new MyPostGetResult(
+                post,
+                userInfo,
+                likeReader.countPostLike(post.getId()),
+                commentReader.countPostComment(post.getId())
+            )
+        );
+    }
+
+    public Slice<MyPostGetResult> getLikedPosts(Long userId, int page, int size) {
+        var userInfo = userClient.get(userId);
+        var posts = postReader.readAllLikedPosts(userId, page, size);
+
+        return posts.map((post) ->
+            new MyPostGetResult(
+                post,
+                userInfo,
+                likeReader.countPostLike(post.getId()),
+                commentReader.countPostComment(post.getId())
+            )
+        );
     }
 
     public void updatePost(Long userId, Long postId, String title, String content, Long categoryId) {

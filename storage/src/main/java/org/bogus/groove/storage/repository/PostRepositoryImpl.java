@@ -5,8 +5,10 @@ import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.storage.entity.PostEntity;
+import org.bogus.groove.storage.entity.QLikeEntity;
 import org.bogus.groove.storage.entity.QPostEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -33,6 +35,29 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
             hasNext = true;
         }
         return new SliceImpl<>(results, pageable, hasNext);
+    }
+
+    @Override
+    public Slice<PostEntity> findAllLikedPosts(Long userId, Pageable pageable) {
+        QPostEntity post = QPostEntity.postEntity;
+        QLikeEntity like = QLikeEntity.likeEntity;
+
+        var result = jpaQueryFactory.selectFrom(post)
+            .join(like).on(like.postId.eq(post.id))
+            .where(
+                allCheck(null, null)
+                    .and(like.userId.eq(userId))
+            )
+            .orderBy(post.createdAt.desc())
+            .limit(pageable.getPageSize() + 1)
+            .offset(pageable.getOffset())
+            .fetch();
+
+        return new SliceImpl<>(
+            result.stream().limit(pageable.getPageSize()).collect(Collectors.toList()),
+            pageable,
+            result.size() > pageable.getPageSize()
+        );
     }
 
     private BooleanBuilder categoryEq(Long categoryId) {
