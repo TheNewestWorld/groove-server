@@ -42,7 +42,7 @@ public class RecordController {
                 userDetails.getUserId(),
                 new RecordUploadParam(
                     input,
-                    record.getOriginalFilename(),
+                    "새로운 녹음",
                     record.getSize()
                 )
             );
@@ -65,8 +65,9 @@ public class RecordController {
                 result.getSize(),
                 result.map((record) ->
                     new RecordGetResponse(
-                        record.getFileUri(),
-                        record.getRecordName(),
+                        record.getId(),
+                        record.getUri(),
+                        record.getFileName(),
                         record.getCreatedAt()
                     )
                 ).toList(),
