@@ -19,12 +19,6 @@ public class UserUpdater {
         entity.setNickname(nickname);
     }
 
-    @Transactional
-    public void update(long userId, long profileId) {
-        var entity = getEntity(userId);
-        entity.setProfileId(profileId);
-    }
-
     private UserEntity getEntity(long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
     }

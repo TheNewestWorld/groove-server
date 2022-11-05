@@ -1,34 +1,57 @@
 package org.bogus.groove.object_storage;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
+import org.bogus.groove.storage.entity.AttachmentEntity;
 import org.bogus.groove.storage.repository.AttachmentRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class AttachmentReader {
     private final AttachmentRepository attachmentRepository;
-
-    // TODO 필요한 곳에서 조인으로 가져오면서 uri 도 만들어주도록 변경
     @Value("${application.domain}")
     private String domain;
 
+    public List<Attachment> readAll(Long resourceId, AttachmentType attachmentType) {
+        return attachmentRepository
+            .findAllByResourceIdAndAttachmentTypeAndIsDeletedIsFalse(resourceId, attachmentType)
+            .stream().map(attachmentMapper())
+            .collect(Collectors.toList());
+    }
+
+    public Slice<Attachment> readAll(Long resourceId, AttachmentType attachmentType, Pageable pageable) {
+        var slice = attachmentRepository
+            .findAllByResourceIdAndAttachmentTypeAndIsDeletedIsFalse(resourceId, attachmentType, pageable);
+
+        var content = slice
+            .stream().map(attachmentMapper())
+            .collect(Collectors.toList());
+
+        return new SliceImpl<>(content, slice.getPageable(), slice.hasNext());
+    }
+
     public Attachment read(String objectKey, AttachmentType attachmentType) {
         return attachmentRepository
-            .findByObjectKeyAndAttachmentType(objectKey, attachmentType).map((entity) -> new Attachment(entity, domain))
+            .findByObjectKeyAndAttachmentTypeAndIsDeletedIsFalse(objectKey, attachmentType).map(attachmentMapper())
             .orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_ATTACHMENT));
     }
 
-    public Optional<Attachment> readOrNull(Long attachmentId) {
-        if (attachmentId == null) {
-            return Optional.empty();
-        } else {
-            return attachmentRepository.findById(attachmentId).map((entity) -> new Attachment(entity, domain));
-        }
+    public Attachment read(Long attachmentId) {
+        return attachmentRepository.findById(attachmentId).map(attachmentMapper())
+            .orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_ATTACHMENT));
+    }
+
+    private Function<AttachmentEntity, Attachment> attachmentMapper() {
+        return (entity) -> new Attachment(entity, domain);
     }
 }

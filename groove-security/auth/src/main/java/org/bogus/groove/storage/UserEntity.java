@@ -36,10 +36,6 @@ public class UserEntity extends BaseEntity {
     @Column(name = "nickname")
     private String nickname;
 
-    @Setter
-    @Column(name = "ref_profile_id")
-    private Long profileId;
-
     public UserEntity(String email, String password, UserType type, String nickname) {
         this.email = email;
         this.password = password;
