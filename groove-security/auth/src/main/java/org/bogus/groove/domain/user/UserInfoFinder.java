@@ -28,7 +28,7 @@ public class UserInfoFinder {
         var authorities = userAuthorityReader.readAll(userId);
         var profileUri = getProfileUri(user);
 
-        return new UserInfo(user.getId(), user.getEmail(), user.getType(), profileUri, authorities);
+        return new UserInfo(user.getId(), user.getEmail(), user.getType(), user.getNickname(), profileUri, authorities);
     }
 
     public UserInfo find(String email, UserType userType) {
@@ -36,7 +36,7 @@ public class UserInfoFinder {
         var authorities = userAuthorityReader.readAll(user.getId());
         var profileUri = getProfileUri(user);
 
-        return new UserInfo(user.getId(), user.getEmail(), user.getType(), profileUri, authorities);
+        return new UserInfo(user.getId(), user.getEmail(), user.getType(), user.getNickname(), profileUri, authorities);
     }
 
     private String getProfileUri(User user) {
