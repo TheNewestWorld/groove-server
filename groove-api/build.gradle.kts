@@ -1,4 +1,3 @@
-val springBootVersion: String by project
 val springDocVersion: String by project
 
 tasks.getByName("bootJar") {
@@ -15,18 +14,18 @@ tasks.withType<Test> {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web:$springBootVersion")
-    implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     implementation(project(":storage"))
     implementation(project(":common"))
     implementation(project(":object-storage"))
 
-    // auth
-    implementation("org.springframework.boot:spring-boot-starter-security:$springBootVersion")
+    implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")
     implementation("org.springdoc:springdoc-openapi-security:$springDocVersion")
+
+    // auth
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation(project(":groove-security:spring-security"))
     implementation(project(":groove-security:auth-api"))
     implementation(project(":groove-security:auth"))

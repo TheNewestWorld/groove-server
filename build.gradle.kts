@@ -6,7 +6,8 @@ plugins {
     id("java")
     id("java-library")
     id("checkstyle")
-    id("org.springframework.boot") apply false
+    id("org.springframework.boot") version "2.6.7"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
 }
 
 group = "org.newest"
@@ -24,6 +25,7 @@ subprojects {
     apply(plugin = "java")
     apply(plugin = "checkstyle")
     apply(plugin = "org.springframework.boot")
+    apply(plugin = "io.spring.dependency-management")
 
     checkstyle {
         maxWarnings = 0
