@@ -6,7 +6,8 @@ plugins {
     id("java")
     id("java-library")
     id("checkstyle")
-    id("org.springframework.boot") apply false
+    id("org.springframework.boot") version "2.6.7"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
 }
 
 group = "org.newest"
@@ -35,6 +36,9 @@ subprojects {
     dependencies {
         compileOnly("org.projectlombok:lombok:$lombokVersion")
         annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
+        testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+        testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
     }
 
     tasks.getByName("bootJar") {
@@ -44,4 +48,8 @@ subprojects {
     tasks.getByName("jar") {
         enabled = true
     }
+}
+
+springBoot {
+    mainClass.value("org.bogus.groove.ApiApplication")
 }

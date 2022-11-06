@@ -1,11 +1,12 @@
 package org.bogus.groove;
 
+import org.bogus.groove.common.Password;
 import org.bogus.groove.domain.user.AuthService;
 import org.bogus.groove.domain.user.UserRegisterParam;
 import org.bogus.groove.domain.user.UserService;
 import org.bogus.groove.domain.user.UserType;
 import org.bogus.groove.domain.user.token.TokenGenerator;
-import org.bogus.groove.endpoint.user.UserRegisterRequest;
+import org.bogus.groove.fixture.TestUserRegisterRequest;
 import org.bogus.groove.storage.UserEntity;
 import org.bogus.groove.storage.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -36,20 +37,15 @@ class UserControllerTest extends BaseIntegrationTest {
 
     @BeforeEach
     public void setup() {
-        String email = "jig7357@naver.com";
-        String password = "password";
-        String nickname = "nickname";
-        userService.register(new UserRegisterParam(email, password, nickname));
-        userEntity = userRepository.findByEmailAndType(email, UserType.GROOVE).get();
+        var userMock = TestUserRegisterRequest.mock(1);
+        userService.register(new UserRegisterParam(userMock.getEmail(), new Password(userMock.getPassword()), userMock.getNickname()));
+        userEntity = userRepository.findByEmailAndType(userMock.getEmail(), UserType.GROOVE).get();
         accessToken = tokenGenerator.generateAccessToken(userEntity.getId());
     }
 
     @Test
     public void 회원가입() throws Exception {
-        String email = "jig7357@google.com";
-        String password = "password";
-        String nickname = "nickname2";
-        var registerRequest = new UserRegisterRequest(email, password, nickname);
+        var registerRequest = TestUserRegisterRequest.mock(2);
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/users/register")
@@ -59,7 +55,7 @@ class UserControllerTest extends BaseIntegrationTest {
             .andDo(MockMvcResultHandlers.print())
             .andExpect(MockMvcResultMatchers.status().isOk())
         ;
-        Assertions.assertTrue(userRepository.findByEmailAndType(email, UserType.GROOVE).isPresent());
+        Assertions.assertTrue(userRepository.findByEmailAndType(registerRequest.getEmail(), UserType.GROOVE).isPresent());
     }
 
     @Test

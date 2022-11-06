@@ -1,5 +1,6 @@
 package org.bogus.groove.config.authentication;
 
+import org.bogus.groove.common.Password;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.UnauthorizedException;
 import org.bogus.groove.config.CustomUserDetails;
@@ -24,7 +25,8 @@ public class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         var userDetails = getUserDetailsService().loadUserByUsername(authentication.getName());
-        if (passwordEncoder.matches((String) authentication.getCredentials(), userDetails.getPassword())) {
+        var rawPassword = ((Password) authentication.getCredentials()).getValue();
+        if (passwordEncoder.matches(rawPassword, userDetails.getPassword())) {
             return new UsernamePasswordAuthenticationToken(
                 ((CustomUserDetails) userDetails).erasePassword(),
                 null,
