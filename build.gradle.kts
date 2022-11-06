@@ -49,3 +49,7 @@ subprojects {
         enabled = true
     }
 }
+
+springBoot {
+    mainClass.value("org.bogus.groove.ApiApplication")
+}
