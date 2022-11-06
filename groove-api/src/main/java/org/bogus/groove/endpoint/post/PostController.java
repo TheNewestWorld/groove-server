@@ -3,6 +3,7 @@ package org.bogus.groove.endpoint.post;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -43,20 +44,22 @@ public class PostController {
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestPart PostCreateRequest request,
         @RequestPart(required = false) List<MultipartFile> attachments
-    ) throws IOException {
+    ) {
         List<PostAttachmentCreateParam> params = new ArrayList<>();
         if (attachments != null) {
             for (MultipartFile attachment : attachments) {
-                try (var input = attachment.getInputStream()) {
+                try {
+                    InputStream input = attachment.getInputStream();
                     params.add(new PostAttachmentCreateParam(
                         input,
                         attachment.getOriginalFilename(),
                         attachment.getSize()
                     ));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
-
         postService.createPost(request.getTitle(), request.getContent(), userDetails.getUserId(),
             request.getCategoryId(), params);
         return CommonResponse.success();
@@ -103,16 +106,19 @@ public class PostController {
         @RequestPart PostUpdateRequest request,
         @PathVariable Long postId,
         @RequestPart(required = false) List<MultipartFile> attachments
-    ) throws IOException {
+    ) {
         List<PostAttachmentCreateParam> params = new ArrayList<>();
         if (attachments != null) {
             for (MultipartFile attachment : attachments) {
-                try (var input = attachment.getInputStream()) {
+                try {
+                    InputStream input = attachment.getInputStream();
                     params.add(new PostAttachmentCreateParam(
                         input,
                         attachment.getOriginalFilename(),
                         attachment.getSize()
                     ));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }
