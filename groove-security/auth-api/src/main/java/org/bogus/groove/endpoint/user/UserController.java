@@ -12,7 +12,6 @@ import org.bogus.groove.domain.user.UserService;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
     @Operation(summary = "회원가입")
     @PostMapping("/api/users/register")
@@ -33,7 +31,7 @@ public class UserController {
         userService.register(
             new UserRegisterParam(
                 request.getEmail(),
-                passwordEncoder.encode(request.getPassword()),
+                request.getPassword(),
                 request.getNickname()
             )
         );
