@@ -36,6 +36,9 @@ subprojects {
     dependencies {
         compileOnly("org.projectlombok:lombok:$lombokVersion")
         annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
+        testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+        testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
     }
 
     tasks.getByName("bootJar") {
@@ -45,4 +48,8 @@ subprojects {
     tasks.getByName("jar") {
         enabled = true
     }
+}
+
+springBoot {
+    mainClass.value("org.bogus.groove.ApiApplication")
 }

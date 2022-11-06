@@ -2,6 +2,9 @@ package org.bogus.groove.config;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.domain.user.Password;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -21,5 +24,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                     .addInterceptor(interceptor)
                     .addPathPatterns("/api/**");
             });
+    }
+
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer objectMapperConfig() {
+        return builder -> builder.deserializerByType(Password.class, new PasswordDeserializer());
     }
 }
