@@ -1,6 +1,7 @@
 package org.bogus.groove.endpoint.post;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Getter;
 import org.bogus.groove.domain.post.PostGetDetailResult;
 
@@ -17,6 +18,7 @@ public class PostDetailResponse {
     private Integer likeCount;
     private Integer commentCount;
     private Long categoryId;
+    private List<String> attachmentUris;
 
     public PostDetailResponse(PostGetDetailResult postDetail) {
         this.id = postDetail.getPost().getId();
@@ -30,5 +32,6 @@ public class PostDetailResponse {
         this.likeCount = postDetail.getPost().getLikeCount();
         this.commentCount = postDetail.getPost().getCommentCount();
         this.categoryId = postDetail.getPost().getCategoryId();
+        this.attachmentUris = postDetail.getPost().getAttachmentUris();
     }
 }

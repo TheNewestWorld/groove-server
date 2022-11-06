@@ -1,5 +1,6 @@
 package org.bogus.groove.domain.post;
 
+import java.util.List;
 import lombok.Getter;
 
 @Getter
@@ -14,8 +15,9 @@ public class PostGetResult {
     private Integer likeCount;
     private Integer commentCount;
     private Long categoryId;
+    private List<String> attachmentUris;
 
-    public PostGetResult(Post post, String nickName, String profileUri, boolean likeFlag) {
+    public PostGetResult(Post post, String nickName, String profileUri, boolean likeFlag, List<String> attachmentUris) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
@@ -26,5 +28,6 @@ public class PostGetResult {
         this.likeCount = post.getLikeCount();
         this.commentCount = post.getCommentCount();
         this.categoryId = post.getCategoryId();
+        this.attachmentUris = attachmentUris;
     }
 }

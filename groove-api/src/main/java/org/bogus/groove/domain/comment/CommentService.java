@@ -3,6 +3,7 @@ package org.bogus.groove.domain.comment;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.domain.user.UserReader;
 import org.bogus.groove.object_storage.Attachment;
 import org.bogus.groove.object_storage.AttachmentReader;
@@ -24,16 +25,17 @@ public class CommentService {
 
     public List<CommentGetResult> getCommentList(Long postId) {
         return commentReader.readAllPostComment(postId).stream()
-            .map(comment -> new CommentGetResult(comment, userReader.read(comment.getUserId()).getNickname(),
-                attachmentReader.readOrNull(userReader.read(comment.getUserId()).getProfileId()).map(
-                    Attachment::getUri).orElse(null),
+            .map(comment -> new CommentGetResult(
+                comment,
+                userReader.read(comment.getUserId()).getNickname(),
+                getProfileUri(comment.getUserId()),
                 commentReader.readAllPostReComment(
-                        comment.getId()).stream()
-                    .map(reComment -> new CommentGetResult(reComment, userReader.read(reComment.getUserId()).getNickname(),
-                        attachmentReader.readOrNull(userReader.read(reComment.getUserId()).getProfileId()).map(
-                            Attachment::getUri).orElse(null))).collect(
-                        Collectors.toList()))).collect(
-                Collectors.toList());
+                    comment.getId()).stream().map(reComment -> new CommentGetResult(
+                    reComment,
+                    userReader.read(reComment.getUserId()).getNickname(),
+                    getProfileUri(reComment.getUserId()))
+                ).collect(Collectors.toList()))
+            ).collect(Collectors.toList());
     }
 
     public void updateComment(Long userId, Long commentId, String content) {
@@ -42,5 +44,10 @@ public class CommentService {
 
     public void deleteComment(Long userId, Long commentId) {
         commentDeleter.deleteComment(userId, commentId);
+    }
+
+    private String getProfileUri(Long userId) {
+        return attachmentReader.readAll(userId, AttachmentType.PROFILE)
+            .stream().findFirst().map(Attachment::getUri).orElse(null);
     }
 }
