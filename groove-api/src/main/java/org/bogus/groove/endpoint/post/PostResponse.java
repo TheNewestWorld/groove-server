@@ -18,6 +18,7 @@ public class PostResponse {
     private Integer likeCount;
     private Integer commentCount;
     private Long categoryId;
+    private boolean authority;
     private List<String> attachmentUris;
 
     public PostResponse(PostGetResult post) {
@@ -31,6 +32,7 @@ public class PostResponse {
         this.likeCount = post.getLikeCount();
         this.commentCount = post.getCommentCount();
         this.categoryId = post.getCategoryId();
+        this.authority = post.isAuthority();
         this.attachmentUris = post.getAttachmentUris();
     }
 }

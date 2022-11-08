@@ -23,17 +23,19 @@ public class CommentService {
         return commentCreator.createComment(content, parentId, userId, postId);
     }
 
-    public List<CommentGetResult> getCommentList(Long postId) {
+    public List<CommentGetResult> getCommentList(Long userId, Long postId) {
         return commentReader.readAllPostComment(postId).stream()
             .map(comment -> new CommentGetResult(
                 comment,
                 userReader.read(comment.getUserId()).getNickname(),
                 getProfileUri(comment.getUserId()),
+                userId == comment.getUserId() ? true : false,
                 commentReader.readAllPostReComment(
                     comment.getId()).stream().map(reComment -> new CommentGetResult(
                     reComment,
                     userReader.read(reComment.getUserId()).getNickname(),
-                    getProfileUri(reComment.getUserId()))
+                    getProfileUri(reComment.getUserId()),
+                    userId == reComment.getUserId() ? true : false)
                 ).collect(Collectors.toList()))
             ).collect(Collectors.toList());
     }

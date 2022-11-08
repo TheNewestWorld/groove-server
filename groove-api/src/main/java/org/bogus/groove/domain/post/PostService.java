@@ -61,6 +61,7 @@ public class PostService {
                     userReader.read(post.getUserId()).getNickname(),
                     getProfileUri(userId),
                     !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
+                    userId == post.getUserId() ? true : false,
                     getAttachmentUri(post))
             ).toList(),
             posts.getPageable(),
@@ -76,6 +77,7 @@ public class PostService {
             user.getNickname(),
             getProfileUri(userId),
             likeReader.checkLike(userId, postId),
+            userId == post.getUserId() ? true : false,
             getAttachmentUri(post)
         );
         PostGetDetailResult postDetail = new PostGetDetailResult(result, post.getCreatedAt());
