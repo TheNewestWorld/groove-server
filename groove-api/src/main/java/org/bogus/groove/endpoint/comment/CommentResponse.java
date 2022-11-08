@@ -20,6 +20,7 @@ public class CommentResponse {
     private String nickName;
     private String profileUri;
     private Long postId;
+    private boolean authority;
     private List<CommentResponse> reComments;
 
     public CommentResponse(CommentGetResult comment) {
@@ -31,6 +32,7 @@ public class CommentResponse {
         this.nickName = comment.getNickName();
         this.profileUri = comment.getProfileUri();
         this.postId = comment.getPostId();
+        this.authority = comment.isAuthority();
         this.reComments = Optional.ofNullable(comment.getReComments()).orElseGet(Collections::emptyList).stream()
             .map(reComment -> new CommentResponse(reComment)).collect(
                 Collectors.toList());
