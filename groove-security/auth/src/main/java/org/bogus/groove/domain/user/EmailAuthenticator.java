@@ -31,8 +31,8 @@ public class EmailAuthenticator {
 
         userUpdater.update(
             authenticated.getUserId(),
-            authenticated.isAuthenticated(),
-            authenticated.getAuthenticatedAt()
+            authenticated.isVerified(),
+            authenticated.getVerifiedAt()
         );
 
         userAuthorityUpdater.update(authenticated.getId(), List.of(Authority.USER));

@@ -52,14 +52,14 @@ public class UserController {
 
     @Secured(SecurityCode.INACTIVE)
     @Operation(summary = "유저 인증 메일 재발송 (로그인 한 경우)")
-    @PostMapping("/api/users/email-authentication-link/send")
+    @PostMapping("/api/mail/authentication")
     public CommonResponse<Void> sendEmailAuthenticationLink(@AuthenticationPrincipal CustomUserDetails userDetails) {
         userService.sendAuthenticationMail(userDetails.getEmail());
         return CommonResponse.success();
     }
 
     @Operation(summary = "비밀번호 변경 메일 요청")
-    @PostMapping("/api/users/password-update-link/send")
+    @PostMapping("/api/mail/change-password")
     public CommonResponse<Void> sendPasswordUpdateLink(@RequestBody PasswordUpdateLinkRequest request) {
         userService.sendPasswordUpdateLink(request.getEmail());
         return CommonResponse.success();

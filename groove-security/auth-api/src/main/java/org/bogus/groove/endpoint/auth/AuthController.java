@@ -49,7 +49,7 @@ public class AuthController {
         );
     }
 
-    @PostMapping("/api/auth/email/{sessionKey}")
+    @PostMapping("/api/auth/email-authentications/{sessionKey}")
     public CommonResponse<Void> authenticateEmail(@PathVariable String sessionKey) {
         authService.authenticateEmail(sessionKey);
         return CommonResponse.success();

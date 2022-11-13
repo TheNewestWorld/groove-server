@@ -29,9 +29,7 @@ public class UserService {
 
     public void sendAuthenticationMail(String email) {
         UserInfo user = userInfoFinder.find(email, UserType.GROOVE);
-
-        EmailAuthentication emailAuthentication = emailAuthenticationCreator.create(user.getId());
-        googleMailSender.sendMessage(user.getEmail(), emailAuthentication.getSessionKey(), EmailType.EMAIL_AUTHENTICATION);
+        emailAuthenticationCreator.create(user.getId(), user.getEmail(), EmailType.EMAIL_AUTHENTICATION);
     }
 
     public UserInfo getUserInfo(Long userId) {
@@ -40,9 +38,7 @@ public class UserService {
 
     public void sendPasswordUpdateLink(String email) {
         UserInfo user = userInfoFinder.find(email, UserType.GROOVE);
-
-        EmailAuthentication emailAuthentication = emailAuthenticationCreator.create(user.getId());
-        googleMailSender.sendMessage(user.getEmail(), emailAuthentication.getSessionKey(), EmailType.CHANGE_PASSWORD);
+        emailAuthenticationCreator.create(user.getId(), user.getEmail(), EmailType.CHANGE_PASSWORD);
     }
 
     public void updatePassword(String sessionKey, String password) {

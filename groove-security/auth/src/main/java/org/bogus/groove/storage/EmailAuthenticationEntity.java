@@ -21,11 +21,11 @@ public class EmailAuthenticationEntity extends BaseEntity {
     @Column(name = "expired_at")
     private LocalDateTime expiredAt;
 
-    @Column(name = "authentication_flag")
-    private boolean isAuthenticated = false;
+    @Column(name = "verified")
+    private boolean verified = false;
 
-    @Column(name = "authenticated_at")
-    private LocalDateTime authenticatedAt;
+    @Column(name = "verified_at")
+    private LocalDateTime verifiedAt;
 
     public EmailAuthenticationEntity(long userId, String sessionKey, LocalDateTime expiredAt) {
         this.userId = userId;
@@ -33,9 +33,9 @@ public class EmailAuthenticationEntity extends BaseEntity {
         this.expiredAt = expiredAt;
     }
 
-    public void updateAuthentication(boolean isAuthenticated, LocalDateTime authenticatedAt) {
-        this.isAuthenticated = isAuthenticated;
-        this.authenticatedAt = authenticatedAt;
+    public void updateAuthentication(boolean verified, LocalDateTime verifiedAt) {
+        this.verified = verified;
+        this.verifiedAt = verifiedAt;
     }
 
 }

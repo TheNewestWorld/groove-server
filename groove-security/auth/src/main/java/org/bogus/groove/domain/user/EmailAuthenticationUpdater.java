@@ -15,11 +15,11 @@ public class EmailAuthenticationUpdater {
     private final EmailAuthenticationRepository repository;
 
     @Transactional
-    public EmailAuthentication update(String sessionKey, boolean isAuthenticated, LocalDateTime authenticatedAt) {
+    public EmailAuthentication update(String sessionKey, boolean verified, LocalDateTime verifiedAt) {
         EmailAuthenticationEntity entity = repository.findBySessionKey(sessionKey)
             .orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_SESSION));
 
-        entity.updateAuthentication(isAuthenticated, authenticatedAt);
+        entity.updateAuthentication(verified, verifiedAt);
 
         return new EmailAuthentication(entity);
     }
