@@ -17,7 +17,7 @@ public class NoticeReader {
     private final NoticeRepository noticeRepository;
 
     public Slice<Notice> readAll(Pageable pageable) {
-        var slice = noticeRepository.findAllOrderByCreatedAtDesc(pageable);
+        var slice = noticeRepository.findAllByOrderByCreatedAtDesc(pageable);
 
         var notice = slice.stream()
             .map(Notice::new)
