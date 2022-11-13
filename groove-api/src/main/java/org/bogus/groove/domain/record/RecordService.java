@@ -4,70 +4,57 @@ import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.ForbiddenException;
-import org.bogus.groove.domain.attachment.Attachment;
-import org.bogus.groove.domain.attachment.AttachmentCreator;
-import org.bogus.groove.domain.attachment.AttachmentReader;
-import org.bogus.groove.domain.object.ObjectStorage;
+import org.bogus.groove.object_storage.Attachment;
+import org.bogus.groove.object_storage.AttachmentAuthorityChecker;
+import org.bogus.groove.object_storage.AttachmentDeleter;
+import org.bogus.groove.object_storage.AttachmentReader;
+import org.bogus.groove.object_storage.AttachmentUpdater;
+import org.bogus.groove.object_storage.AttachmentUploadParam;
+import org.bogus.groove.object_storage.AttachmentUploader;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 public class RecordService {
-    private final ObjectStorage objectStorage;
-    private final AttachmentCreator attachmentCreator;
-    private final RecordCreator recordCreator;
-    private final RecordReader recordReader;
-    private final RecordDeleter recordDeleter;
     private final AttachmentReader attachmentReader;
+    private final AttachmentUploader attachmentUploader;
+    private final AttachmentDeleter attachmentDeleter;
+    private final AttachmentUpdater attachmentUpdater;
+    private final AttachmentAuthorityChecker attachmentAuthorityChecker;
 
     @Transactional
-    public void upload(long userId, MultipartFile record) {
-        var uploadResult = objectStorage.upload(record, AttachmentType.VOICE);
-        var attachment = attachmentCreator.create(uploadResult);
-
-        recordCreator.create(userId, attachment.getId());
-    }
-
-    public Slice<RecordGetResult> getAll(long userId, int page, int size) {
-        var records = recordReader.read(userId, page, size);
-
-        return new SliceImpl<>(
-            records.map((record) ->
-                new RecordGetResult(
-                    record.getId(),
-                    findName(record),
-                    record.getCreatedAt()
-                )
-            ).toList(),
-            records.getPageable(),
-            records.hasNext()
+    public void upload(long userId, RecordUploadParam param) {
+        attachmentUploader.upload(
+            new AttachmentUploadParam(
+                param.getInputStream(),
+                param.getFileName(),
+                param.getSize(),
+                userId,
+                AttachmentType.PRIVATE_RECORD
+            )
         );
     }
 
-    public FileDownload download(long recordId) {
-        var record = recordReader.read(recordId);
-        var attachment = attachmentReader.read(record.getAttachmentId());
-
-        return new FileDownload(
-            objectStorage.download(attachment.getPath()),
-            attachment.getName()
-        );
+    public Slice<Attachment> getAll(long userId, int page, int size) {
+        return attachmentReader.readAll(userId, AttachmentType.PRIVATE_RECORD, PageRequest.of(page, size));
     }
 
-    public void delete(Long recordId, long userId) {
-        var record = recordReader.read(recordId);
-        if (record.getUserId() != userId) {
+    public void delete(long recordId, long userId) {
+        var authorized = attachmentAuthorityChecker.check(recordId, AttachmentType.PRIVATE_RECORD, userId);
+        if (!authorized) {
             throw new ForbiddenException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
         }
-
-        recordDeleter.delete(recordId);
+        attachmentDeleter.delete(recordId);
     }
 
-    private String findName(Record record) {
-        return attachmentReader.readOrNull(record.getAttachmentId()).map(Attachment::getName).orElse(null);
+    public void update(long recordId, long userId, String recordName) {
+        var authorized = attachmentAuthorityChecker.check(recordId, AttachmentType.PRIVATE_RECORD, userId);
+        if (!authorized) {
+            throw new ForbiddenException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
+        }
+        attachmentUpdater.updateName(recordId, recordName);
     }
 }

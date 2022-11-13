@@ -17,13 +17,13 @@ public class CommentReader {
         checkPostIsExist(postId);
         return commentRepository.findAllByPostIdAndIsDeletedFalse(postId).stream().filter(entity -> entity.getId() == entity.getParentId())
             .map(
-                entity -> new Comment(entity)).collect(Collectors.toList());
+                Comment::new).collect(Collectors.toList());
     }
 
     public List<Comment> readAllPostReComment(Long commentId) {
         return commentRepository.findAllByParentIdAndIsDeletedFalse(commentId).stream()
             .filter(entity -> entity.getId() != entity.getParentId())
-            .map(entity -> new Comment(entity)).collect(Collectors.toList());
+            .map(Comment::new).collect(Collectors.toList());
     }
 
     public Integer countPostComment(Long postId) {

@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.bogus.groove.domain.user.UserType;
 
 @Entity
@@ -32,6 +33,7 @@ public class UserEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private UserType type;
 
+    @Setter
     @Column(name = "nickname")
     private String nickname;
 

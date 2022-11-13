@@ -15,7 +15,10 @@ public class Post {
     private String title;
     private String content;
     private boolean isDeleted;
+    private Integer likeCount;
+    private Integer commentCount;
     private Long userId;
+    private Long categoryId;
 
     public Post(PostEntity entity) {
         this.id = entity.getId();
@@ -23,6 +26,9 @@ public class Post {
         this.title = entity.getTitle();
         this.content = entity.getContent();
         this.isDeleted = entity.isDeleted();
+        this.likeCount = entity.getLikeCount();
+        this.commentCount = entity.getCommentCount();
         this.userId = entity.getUserId();
+        this.categoryId = entity.getCategoryId();
     }
 }

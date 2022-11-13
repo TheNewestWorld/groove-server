@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 public enum ErrorType {
     NOT_FOUND("정보를 찾을 수 없습니다."),
     NOT_FOUND_USER("유저 정보를 찾을 수 없습니다."),
+    NOT_FOUND_CATEGORY("해당 카테고리를 찾을 수 없습니다."),
     NOT_FOUND_POST("해당 게시글을 찾을 수 없습니다."),
     NOT_FOUND_COMMENT("해당 댓글을 찾을 수 없습니다."),
     NOT_FOUND_RECOMMENT("해당 대댓글을 찾을 수 없습니다."),
@@ -13,6 +14,7 @@ public enum ErrorType {
     NOT_FOUND_RECORD("녹음을 찾을 수 없습니다."),
     NOT_FOUND_ATTACHMENT("파일을 찾을 수 없습니다."),
     NOT_FOUND_LIKE("해당 좋아요를 찾을 수 없습니다."),
+    FAILED_TO_CREATE_CATEGORY("카테고리 생성을 실패하였습니다."),
     NOT_FOUND_AUTHENTICATION_SESSION("인증 세션을 찾을 수 없습니다."),
     AUTHENTICATION_SESSION_EXPIRED("만료된 인증 세션입니다."),
     FAILED_TO_CREATE_POST("게시글 생성을 실패하였습니다."),

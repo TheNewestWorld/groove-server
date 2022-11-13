@@ -3,13 +3,15 @@ package org.bogus.groove;
 import java.nio.charset.StandardCharsets;
 import org.bogus.groove.common.exception.UnauthorizedException;
 import org.bogus.groove.domain.user.AuthService;
+import org.bogus.groove.domain.user.Password;
 import org.bogus.groove.domain.user.UserRegisterParam;
 import org.bogus.groove.domain.user.UserService;
 import org.bogus.groove.domain.user.UserType;
 import org.bogus.groove.domain.user.token.TokenGenerator;
 import org.bogus.groove.domain.user.token.TokenValidator;
-import org.bogus.groove.endpoint.auth.LoginRequest;
 import org.bogus.groove.endpoint.auth.TokenRefreshRequest;
+import org.bogus.groove.fixture.TestLoginRequest;
+import org.bogus.groove.fixture.TestUserRegisterRequest;
 import org.bogus.groove.storage.UserEntity;
 import org.bogus.groove.storage.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -39,27 +40,22 @@ class AuthControllerTest extends BaseIntegrationTest {
     @Autowired
     TokenValidator tokenValidator;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    String email = "jig7357@naver.com";
-    String password = "password";
-    String nickname = "nickname";
     UserEntity userEntity;
     String accessToken;
     String refreshToken;
 
     @BeforeEach
     public void setup() {
-        userService.register(new UserRegisterParam(email, passwordEncoder.encode(password), nickname));
-        userEntity = userRepository.findByEmailAndType(email, UserType.GROOVE).get();
+        var userMock = TestUserRegisterRequest.mock(1);
+        userService.register(new UserRegisterParam(userMock.getEmail(), new Password(userMock.getPassword()), userMock.getNickname()));
+        userEntity = userRepository.findByEmailAndType(userMock.getEmail(), UserType.GROOVE).get();
         accessToken = tokenGenerator.generateAccessToken(userEntity.getId());
         refreshToken = tokenGenerator.generateRefreshToken(userEntity.getId());
     }
 
     @Test
     public void 로그인() throws Exception {
-        var loginRequest = new LoginRequest(email, password);
+        var loginRequest = TestLoginRequest.mock(1);
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/api/auth/login")

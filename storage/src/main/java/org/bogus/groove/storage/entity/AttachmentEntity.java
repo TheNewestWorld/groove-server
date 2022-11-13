@@ -7,6 +7,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.bogus.groove.common.enumeration.AttachmentType;
 
 @Entity
@@ -17,28 +18,33 @@ public class AttachmentEntity extends BaseEntity {
     @Column(name = "object_key")
     private String objectKey;
 
+    @Setter
+    @Column(name = "name")
+    private String fileName;
+
     @Column(name = "path")
     private String path;
 
     @Column(name = "size")
     private long size;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "extension")
-    private String extension;
+    @Column(name = "ref_resource_id")
+    private Long resourceId;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private AttachmentType attachmentType;
 
-    public AttachmentEntity(String objectKey, String path, long size, String name, String extension, AttachmentType attachmentType) {
+    @Setter
+    @Column(name = "deleted_flag")
+    private boolean isDeleted;
+
+    public AttachmentEntity(String objectKey, String path, String fileName, long size, Long resourceId, AttachmentType attachmentType) {
         this.objectKey = objectKey;
         this.path = path;
+        this.fileName = fileName;
         this.size = size;
-        this.name = name;
-        this.extension = extension;
+        this.resourceId = resourceId;
         this.attachmentType = attachmentType;
     }
 }

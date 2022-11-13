@@ -2,6 +2,7 @@ spring:
   config:
     import:
       - mail.yaml
+      - object-storage.yaml
 
   datasource:
     url: jdbc:h2:mem:testdb;MODE=MYSQL

@@ -1,0 +1,9 @@
+application:
+  domain: http://localhost:8080
+
+---
+
+spring.config.activate.on-profile: dev
+
+application:
+  domain: https://groove-server.herokuapp.com

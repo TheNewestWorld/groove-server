@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserRegisterParam {
     private final String email;
-    private final String password;
+    private final Password password;
     private final UserType userType = UserType.GROOVE;
     private final String nickname;
 }

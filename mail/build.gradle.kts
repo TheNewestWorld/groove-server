@@ -1,7 +1,5 @@
-val springBootVersion: String by project
-
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-mail:$springBootVersion")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
 
     implementation(project(":common"))
 }

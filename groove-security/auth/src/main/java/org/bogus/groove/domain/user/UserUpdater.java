@@ -1,7 +1,6 @@
 package org.bogus.groove.domain.user;
 
 import java.time.LocalDateTime;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
@@ -9,12 +8,19 @@ import org.bogus.groove.storage.UserEntity;
 import org.bogus.groove.storage.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
 public class UserUpdater {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Transactional
+    public void update(long userId, String nickname) {
+        var entity = getEntity(userId);
+        entity.setNickname(nickname);
+    }
 
     @Transactional
     public User update(Long userId, boolean isAuthenticated, LocalDateTime authenticatedAt) {
@@ -30,5 +36,9 @@ public class UserUpdater {
         var entity = userRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
         var encodedPassword = passwordEncoder.encode(password);
         entity.updatePassword(encodedPassword);
+    }
+
+    private UserEntity getEntity(long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
     }
 }

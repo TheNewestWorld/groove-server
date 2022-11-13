@@ -4,6 +4,7 @@ spring:
   config:
     import:
       - storage.yaml
+      - object-storage.yaml
       - redis.yaml
       - groove-security.yaml
       - groove-auth-api.yaml
@@ -28,7 +29,5 @@ springdoc:
     display-query-params-without-oauth2: true
     doc-expansion: none
   group-configs:
-    - group: community
-      paths-to-match: /api/community/**
     - group: v1
       paths-to-match: /api/**
