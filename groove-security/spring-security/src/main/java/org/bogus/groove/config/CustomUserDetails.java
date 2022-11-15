@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class CustomUserDetails implements UserDetails {
     @Getter
     private final long userId;
+    @Getter
     private final String email;
     @Getter
     private final UserType type;

@@ -17,11 +17,12 @@ public class UserRegister {
     private final UserReader userReader;
 
     @Transactional
-    public void register(UserRegisterParam param) {
+    public User register(UserRegisterParam param) {
         validateNotDuplicated(param);
 
         var created = userCreator.create(param);
-        userAuthorityUpdater.update(created.getId(), List.of(Authority.USER));
+        userAuthorityUpdater.update(created.getId(), List.of(Authority.INACTIVE));
+        return userReader.read(created.getId());
     }
 
     private void validateNotDuplicated(UserRegisterParam param) {
