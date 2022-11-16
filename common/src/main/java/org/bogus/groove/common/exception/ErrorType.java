@@ -18,6 +18,7 @@ public enum ErrorType {
     FAILED_TO_CREATE_CATEGORY("카테고리 생성을 실패하였습니다."),
     NOT_FOUND_AUTHENTICATION_SESSION("인증 세션을 찾을 수 없습니다."),
     AUTHENTICATION_SESSION_EXPIRED("만료된 인증 세션입니다."),
+    NOT_FOUND_REPORT("신고 내용을 찾을 수 없습니다"),
     FAILED_TO_CREATE_POST("게시글 생성을 실패하였습니다."),
     FAILED_TO_CREATE_COMMENT("댓글 생성을 실패하였습니다."),
     FAILED_TO_CREATE_NOTIFICATION("알림 생성을 실패하였습니다."),
