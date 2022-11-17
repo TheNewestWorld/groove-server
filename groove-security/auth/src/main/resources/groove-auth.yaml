@@ -1,4 +1,9 @@
 spring:
+  config:
+    import:
+      - mail.yaml
+      - object-storage.yaml
+
   datasource:
     url: jdbc:h2:mem:testdb;MODE=MYSQL
     driver-class-name: org.h2.Driver
@@ -6,10 +11,6 @@ spring:
     password: pass
 
   sql.init.mode: never
-
-  config:
-    import:
-      - object-storage.yaml
 
   h2:
     console:

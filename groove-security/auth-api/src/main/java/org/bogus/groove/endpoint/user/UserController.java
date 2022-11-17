@@ -38,7 +38,7 @@ public class UserController {
         return CommonResponse.success();
     }
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.INACTIVE, SecurityCode.USER})
     @Operation(summary = "로그인 유저 정보 조회")
     @GetMapping("/api/users/self")
     public CommonResponse<UserInfoGetResponse> getSelfInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -53,6 +53,28 @@ public class UserController {
                 result.getAuthorities()
             )
         );
+    }
+
+    @Secured(SecurityCode.INACTIVE)
+    @Operation(summary = "유저 인증 메일 재발송 (로그인 한 경우)")
+    @PostMapping("/api/mail/authentication")
+    public CommonResponse<Void> sendEmailAuthenticationLink(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.sendAuthenticationMail(userDetails.getEmail());
+        return CommonResponse.success();
+    }
+
+    @Operation(summary = "비밀번호 변경 메일 요청")
+    @PostMapping("/api/mail/change-password")
+    public CommonResponse<Void> sendPasswordUpdateLink(@RequestBody PasswordUpdateLinkRequest request) {
+        userService.sendPasswordUpdateLink(request.getEmail());
+        return CommonResponse.success();
+    }
+
+    @Operation(summary = "비밀번호 변경")
+    @PutMapping("/api/users/password")
+    public CommonResponse<Void> updatePassword(@RequestBody PasswordChangeRequest request) {
+        userService.updatePassword(request.getSessionKey(), request.getPassword());
+        return CommonResponse.success();
     }
 
     @Secured(SecurityCode.USER)

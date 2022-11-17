@@ -9,7 +9,6 @@ import org.bogus.groove.domain.user.token.TokenGenerator;
 import org.bogus.groove.fixture.TestUserRegisterRequest;
 import org.bogus.groove.storage.UserEntity;
 import org.bogus.groove.storage.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +35,7 @@ class UserControllerTest extends BaseIntegrationTest {
         accessToken = tokenGenerator.generateAccessToken(userEntity.getId());
     }
 
+   /*
     @Test
     public void 회원가입() throws Exception {
         var registerRequest = TestUserRegisterRequest.mock(2);
@@ -50,6 +50,7 @@ class UserControllerTest extends BaseIntegrationTest {
         ;
         Assertions.assertTrue(userRepository.findByEmailAndType(registerRequest.getEmail(), UserType.GROOVE).isPresent());
     }
+    */
 
     @Test
     public void 자신의_정보를_조회한다() throws Exception {

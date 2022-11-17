@@ -7,7 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum AttachmentType {
     PROFILE("profile"),
-    PRIVATE_RECORD("private-record")
+    PRIVATE_RECORD("private-record"),
+    POST("post")
     ;
 
     private final String path;

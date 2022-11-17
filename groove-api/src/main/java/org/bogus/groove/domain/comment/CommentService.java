@@ -19,14 +19,28 @@ public class CommentService {
         return commentCreator.createComment(content, parentId, userId, postId);
     }
 
-    public List<CommentGetResult> getCommentList(Long postId) {
+    public List<CommentGetResult> getCommentList(Long userId, Long postId) {
         return commentReader.readAllPostComment(postId).stream()
-            .map(comment -> new CommentGetResult(comment, userClient.get(comment.getUserId()).getNickname(),
-                commentReader.readAllPostReComment(
-                        comment.getId()).stream()
-                    .map(reComment -> new CommentGetResult(reComment, userClient.get(reComment.getUserId()).getNickname())).collect(
-                        Collectors.toList()))).collect(
-                Collectors.toList());
+            .map(comment -> {
+                var commentUser = userClient.get(comment.getUserId());
+                return new CommentGetResult(
+                    comment,
+                    commentUser.getNickname(),
+                    commentUser.getProfileUri(),
+                    userId == comment.getUserId() ? true : false,
+                    commentReader.readAllPostReComment(
+                        comment.getId()).stream().map(reComment -> {
+                            var reCommentUser = userClient.get(reComment.getUserId());
+                            return new CommentGetResult(
+                                reComment,
+                                reCommentUser.getNickname(),
+                                reCommentUser.getProfileUri(),
+                                userId == reComment.getUserId() ? true : false
+                            );
+                        }
+                    ).collect(Collectors.toList())
+                );
+            }).collect(Collectors.toList());
     }
 
     public void updateComment(Long userId, Long commentId, String content) {

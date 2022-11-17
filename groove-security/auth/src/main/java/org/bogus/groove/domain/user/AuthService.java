@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class AuthService {
     private final TokenGenerator tokenGenerator;
     private final TokenValidator tokenValidator;
+    private final EmailAuthenticator emailAuthenticator;
 
     public String refresh(long userId, String refreshToken) {
         tokenValidator.validateRefreshable(userId, refreshToken);
@@ -18,5 +19,9 @@ public class AuthService {
 
     public void logout(String token) {
         tokenValidator.invalidate(token);
+    }
+
+    public void authenticateEmail(String sessionKey) {
+        emailAuthenticator.authenticate(sessionKey);
     }
 }

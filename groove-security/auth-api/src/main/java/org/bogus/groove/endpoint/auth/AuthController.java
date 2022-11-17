@@ -10,6 +10,7 @@ import org.bogus.groove.domain.user.AuthService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.INACTIVE, SecurityCode.USER})
     @Operation(summary = "액세스 토큰 리프레쉬")
     @PostMapping("/api/auth/refresh")
     public CommonResponse<TokenRefreshResponse> refresh(
@@ -30,7 +31,7 @@ public class AuthController {
         return CommonResponse.success(new TokenRefreshResponse(result));
     }
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.INACTIVE, SecurityCode.USER})
     @Operation(summary = "로그아웃")
     @PostMapping("/api/auth/logout")
     public CommonResponse<Void> logout(HttpServletRequest request) {
@@ -46,5 +47,11 @@ public class AuthController {
         return CommonResponse.success(
             new LoginResponse("", "")
         );
+    }
+
+    @PostMapping("/api/auth/email-authentications/{sessionKey}")
+    public CommonResponse<Void> authenticateEmail(@PathVariable String sessionKey) {
+        authService.authenticateEmail(sessionKey);
+        return CommonResponse.success();
     }
 }
