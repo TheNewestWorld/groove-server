@@ -1,4 +1,4 @@
-package org.bogus.groove.domain.user;
+package org.bogus.groove.common;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

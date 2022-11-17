@@ -3,13 +3,14 @@ package org.bogus.groove.domain.post;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.client.user.UserClient;
+import org.bogus.groove.client.user.UserInfo;
 import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.common.enumeration.SortOrderType;
 import org.bogus.groove.domain.attachment.PostAttachmentCreateParam;
+import org.bogus.groove.domain.comment.CommentReader;
 import org.bogus.groove.domain.like.Like;
 import org.bogus.groove.domain.like.LikeReader;
-import org.bogus.groove.domain.user.User;
-import org.bogus.groove.domain.user.UserReader;
 import org.bogus.groove.object_storage.Attachment;
 import org.bogus.groove.object_storage.AttachmentDeleter;
 import org.bogus.groove.object_storage.AttachmentReader;
@@ -28,7 +29,8 @@ public class PostService {
     private final PostUpdater postUpdater;
     private final PostDeleter postDeleter;
     private final LikeReader likeReader;
-    private final UserReader userReader;
+    private final UserClient userClient;
+    private final CommentReader commentReader;
     private final AttachmentReader attachmentReader;
     private final AttachmentUploader attachmentUploader;
     private final AttachmentDeleter attachmentDeleter;
@@ -56,13 +58,16 @@ public class PostService {
         var posts = postReader.readAllPosts(categoryId, page, size, sortOrderType, word);
         return new SliceImpl<>(
             posts.map(
-                post -> new PostGetResult(
-                    post,
-                    userReader.read(post.getUserId()).getNickname(),
-                    getProfileUri(userId),
-                    !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
-                    userId == post.getUserId() ? true : false,
-                    getAttachmentUri(post))
+                post -> {
+                    UserInfo userInfo = userClient.get(userId);
+                    return new PostGetResult(
+                        post,
+                        userInfo.getNickname(),
+                        userInfo.getProfileUri(),
+                        !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
+                        userId == post.getUserId() ? true : false,
+                        getAttachmentUri(post));
+                }
             ).toList(),
             posts.getPageable(),
             posts.hasNext()
@@ -70,18 +75,46 @@ public class PostService {
     }
 
     public PostGetDetailResult getPost(Long userId, Long postId) {
-        User user = userReader.read(userId);
+        UserInfo userInfo = userClient.get(userId);
         Post post = postReader.readPost(postId);
         PostGetResult result = new PostGetResult(
             post,
-            user.getNickname(),
-            getProfileUri(userId),
+            userInfo.getNickname(),
+            userInfo.getProfileUri(),
             likeReader.checkLike(userId, postId),
             userId == post.getUserId() ? true : false,
             getAttachmentUri(post)
         );
         PostGetDetailResult postDetail = new PostGetDetailResult(result, post.getCreatedAt());
         return postDetail;
+    }
+
+    public Slice<MyPostGetResult> getMyPosts(Long userId, int page, int size) {
+        var userInfo = userClient.get(userId);
+        var posts = postReader.readAllPosts(userId, page, size);
+
+        return posts.map((post) ->
+            new MyPostGetResult(
+                post,
+                userInfo,
+                likeReader.countPostLike(post.getId()),
+                commentReader.countPostComment(post.getId())
+            )
+        );
+    }
+
+    public Slice<MyPostGetResult> getLikedPosts(Long userId, int page, int size) {
+        var userInfo = userClient.get(userId);
+        var posts = postReader.readAllLikedPosts(userId, page, size);
+
+        return posts.map((post) ->
+            new MyPostGetResult(
+                post,
+                userInfo,
+                likeReader.countPostLike(post.getId()),
+                commentReader.countPostComment(post.getId())
+            )
+        );
     }
 
     public void updatePost(Long userId, Long postId, String title, String content, Long categoryId,
@@ -107,11 +140,6 @@ public class PostService {
         postDeleter.deletePost(userId, postId);
         var attachments = attachmentReader.readAll(postId, AttachmentType.POST);
         attachments.forEach((attachment -> attachmentDeleter.delete(attachment.getId())));
-    }
-
-    private String getProfileUri(Long userId) {
-        return attachmentReader.readAll(userId, AttachmentType.PROFILE)
-            .stream().findFirst().map(Attachment::getUri).orElse(null);
     }
 
     private List<String> getAttachmentUri(Post post) {

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bogus.groove.domain.user.Password;
+import org.bogus.groove.common.Password;
 
 @Getter
 @AllArgsConstructor

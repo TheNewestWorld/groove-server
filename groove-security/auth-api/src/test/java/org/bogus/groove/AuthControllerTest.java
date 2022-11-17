@@ -1,9 +1,9 @@
 package org.bogus.groove;
 
 import java.nio.charset.StandardCharsets;
+import lombok.RequiredArgsConstructor;
+import org.bogus.groove.common.Password;
 import org.bogus.groove.common.exception.UnauthorizedException;
-import org.bogus.groove.domain.user.AuthService;
-import org.bogus.groove.domain.user.Password;
 import org.bogus.groove.domain.user.UserRegisterParam;
 import org.bogus.groove.domain.user.UserService;
 import org.bogus.groove.domain.user.UserType;
@@ -17,28 +17,18 @@ import org.bogus.groove.storage.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+@RequiredArgsConstructor
 class AuthControllerTest extends BaseIntegrationTest {
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    AuthService authService;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    TokenGenerator tokenGenerator;
-
-    @Autowired
-    TokenValidator tokenValidator;
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final TokenGenerator tokenGenerator;
+    private final TokenValidator tokenValidator;
 
     UserEntity userEntity;
     String accessToken;

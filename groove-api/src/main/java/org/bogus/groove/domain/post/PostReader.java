@@ -24,6 +24,16 @@ public class PostReader {
             .map(Post::new);
     }
 
+    public Slice<Post> readAllPosts(Long userId, int page, int size) {
+        return postRepository.findAllByUserIdAndIsDeletedIsFalseOrderByCreatedAtDesc(userId, PageRequest.of(page, size))
+            .map(Post::new);
+    }
+
+    public Slice<Post> readAllLikedPosts(Long userId, int page, int size) {
+        return postRepository.findAllLikedPosts(userId, PageRequest.of(page, size))
+            .map(Post::new);
+    }
+
     public Post readPost(Long postId) {
         return readOrNull(postId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_POST));
     }

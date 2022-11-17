@@ -1,7 +1,7 @@
 package org.bogus.groove.config.authentication;
 
 import lombok.Getter;
-import org.bogus.groove.domain.user.Password;
+import org.bogus.groove.common.Password;
 
 @Getter
 public class LoginRequest {

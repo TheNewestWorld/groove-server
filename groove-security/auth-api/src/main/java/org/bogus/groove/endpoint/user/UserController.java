@@ -48,6 +48,7 @@ public class UserController {
                 result.getId(),
                 result.getEmail(),
                 result.getType(),
+                result.getNickName(),
                 result.getProfileUri(),
                 result.getAuthorities()
             )
