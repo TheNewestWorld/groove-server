@@ -2,13 +2,16 @@ package org.bogus.groove;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.Password;
+import org.bogus.groove.common.exception.NotFoundException;
+import org.bogus.groove.common.exception.UnauthorizedException;
+import org.bogus.groove.domain.user.User;
+import org.bogus.groove.domain.user.UserReader;
+import org.bogus.groove.domain.user.UserRegister;
 import org.bogus.groove.domain.user.UserRegisterParam;
-import org.bogus.groove.domain.user.UserService;
-import org.bogus.groove.domain.user.UserType;
 import org.bogus.groove.domain.user.token.TokenGenerator;
+import org.bogus.groove.domain.user.token.TokenValidator;
 import org.bogus.groove.fixture.TestUserRegisterRequest;
-import org.bogus.groove.storage.UserEntity;
-import org.bogus.groove.storage.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -20,19 +23,25 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @RequiredArgsConstructor
 class UserControllerTest extends BaseIntegrationTest {
-    private final UserService userService;
-    private final UserRepository userRepository;
+    private final UserRegister userRegister;
+    private final UserReader userReader;
     private final TokenGenerator tokenGenerator;
+    private final TokenValidator tokenValidator;
 
-    UserEntity userEntity;
+    User user;
     String accessToken;
 
     @BeforeEach
     public void setup() {
         var userMock = TestUserRegisterRequest.mock(1);
-        userService.register(new UserRegisterParam(userMock.getEmail(), new Password(userMock.getPassword()), userMock.getNickname()));
-        userEntity = userRepository.findByEmailAndTypeAndActiveIsTrue(userMock.getEmail(), UserType.GROOVE).get();
-        accessToken = tokenGenerator.generateAccessToken(userEntity.getId());
+        user = userRegister.register(
+            new UserRegisterParam(
+                userMock.getEmail(),
+                new Password(userMock.getPassword()),
+                userMock.getNickname()
+            )
+        );
+        accessToken = tokenGenerator.generateAccessToken(user.getId());
     }
 
    /*
@@ -62,8 +71,23 @@ class UserControllerTest extends BaseIntegrationTest {
             .andDo(MockMvcResultHandlers.print())
             .andExpectAll(
                 MockMvcResultMatchers.status().isOk(),
-                MockMvcResultMatchers.jsonPath("data.id").value(userEntity.getId())
+                MockMvcResultMatchers.jsonPath("data.id").value(user.getId())
             )
         ;
+    }
+
+    @Test
+    public void 탈퇴한_유저는_조회되지_않는다() throws Exception {
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/users/self")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, accessToken)
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk());
+
+        Assertions.assertThrows(NotFoundException.class, () -> userReader.read(user.getId()));
+        Assertions.assertThrows(NotFoundException.class, () -> userReader.read(user.getEmail(), user.getType()));
+        Assertions.assertThrows(UnauthorizedException.class, () -> tokenValidator.validate(accessToken));
     }
 }
