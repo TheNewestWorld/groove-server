@@ -6,5 +6,4 @@ import lombok.Getter;
 public class CommentCreateRequest {
     private String content;
     private Long parentId;
-    private Long postId;
 }
