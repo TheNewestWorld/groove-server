@@ -43,6 +43,10 @@ public class UserEntity extends BaseEntity {
     @Column(name = "authenticated_at")
     private LocalDateTime authenticatedAt;
 
+    @Setter
+    @Column(name = "active")
+    private boolean active = true;
+
     public UserEntity(String email, String password, UserType type, String nickname) {
         this.email = email;
         this.password = password;

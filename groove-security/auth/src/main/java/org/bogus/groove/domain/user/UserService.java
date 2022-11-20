@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
+import org.bogus.groove.domain.user.token.TokenValidator;
 import org.bogus.groove.mail.config.EmailType;
 import org.bogus.groove.object_storage.AttachmentDeleter;
 import org.bogus.groove.object_storage.AttachmentReader;
@@ -24,6 +25,7 @@ public class UserService {
     private final AttachmentDeleter attachmentDeleter;
     private final EmailAuthenticationCreator emailAuthenticationCreator;
     private final EmailAuthenticationReader emailAuthenticationReader;
+    private final TokenValidator tokenValidator;
 
     @Transactional
     public User register(UserRegisterParam param) {
@@ -75,5 +77,10 @@ public class UserService {
                 AttachmentType.PROFILE
             )
         );
+    }
+
+    public void unregister(Long userId, String accessToken) {
+        userUpdater.inactivate(userId);
+        tokenValidator.invalidate(accessToken);
     }
 }
