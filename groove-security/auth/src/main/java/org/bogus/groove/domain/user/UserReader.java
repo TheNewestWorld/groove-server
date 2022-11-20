@@ -24,7 +24,11 @@ public class UserReader {
         return userRepository.findById(userId).map(User::new);
     }
 
-    public Optional<User> readOrNull(String nickname) {
-        return userRepository.findByNickname(nickname).map(User::new);
+    public boolean isExists(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    public boolean isExists(String email, UserType userType) {
+        return userRepository.existsByEmailAndType(email, userType);
     }
 }

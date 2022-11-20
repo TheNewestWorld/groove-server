@@ -26,10 +26,10 @@ public class UserRegister {
     }
 
     private void validateNotDuplicated(UserRegisterParam param) {
-        if (userReader.readOrNull(param.getEmail(), param.getUserType()).isPresent()) {
+        if (userReader.isExists(param.getEmail(), param.getUserType())) {
             throw new BadRequestException(ErrorType.DUPLICATED_USER);
         }
-        if (userReader.readOrNull(param.getNickname()).isPresent()) {
+        if (userReader.isExists(param.getNickname())) {
             throw new BadRequestException(ErrorType.DUPLICATED_NICKNAME);
         }
     }
