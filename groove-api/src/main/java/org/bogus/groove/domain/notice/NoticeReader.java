@@ -1,13 +1,11 @@
 package org.bogus.groove.domain.notice;
 
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.storage.repository.NoticeRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,11 +17,7 @@ public class NoticeReader {
     public Slice<Notice> readAll(Pageable pageable) {
         var slice = noticeRepository.findAllByOrderByCreatedAtDesc(pageable);
 
-        var notice = slice.stream()
-            .map(Notice::new)
-            .collect(Collectors.toList());
-
-        return new SliceImpl<>(notice, slice.getPageable(), slice.hasNext());
+        return slice.map(Notice::new);
     }
 
     public Notice read(Long noticeId) {
