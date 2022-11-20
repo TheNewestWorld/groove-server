@@ -12,7 +12,6 @@ import org.bogus.groove.storage.repository.AttachmentRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -33,11 +32,7 @@ public class AttachmentReader {
         var slice = attachmentRepository
             .findAllByResourceIdAndAttachmentTypeAndIsDeletedIsFalse(resourceId, attachmentType, pageable);
 
-        var content = slice
-            .stream().map(attachmentMapper())
-            .collect(Collectors.toList());
-
-        return new SliceImpl<>(content, slice.getPageable(), slice.hasNext());
+        return slice.map(attachmentMapper());
     }
 
     public Attachment read(String objectKey, AttachmentType attachmentType) {
