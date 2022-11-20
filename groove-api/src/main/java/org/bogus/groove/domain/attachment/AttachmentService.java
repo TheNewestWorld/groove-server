@@ -16,7 +16,7 @@ public class AttachmentService {
     private final AttachmentAuthorityChecker attachmentAuthorityChecker;
 
     public AttachmentDownload download(String objectKey, AttachmentType attachmentType, Long userId) {
-        var authorized = attachmentAuthorityChecker.check(objectKey, AttachmentType.PRIVATE_RECORD, userId);
+        var authorized = attachmentAuthorityChecker.check(objectKey, attachmentType, userId);
         if (!authorized) {
             throw new ForbiddenException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
         }
