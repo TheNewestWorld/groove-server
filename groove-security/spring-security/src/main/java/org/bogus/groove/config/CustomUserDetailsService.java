@@ -15,7 +15,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var userEntity = userRepository.findByEmailAndType(username, UserType.GROOVE)
+        var userEntity = userRepository.findByEmailAndTypeAndActiveIsTrue(username, UserType.GROOVE)
             .orElseThrow(() -> {
                 throw new UsernameNotFoundException("존재하지 않는 유저입니다.");
             });

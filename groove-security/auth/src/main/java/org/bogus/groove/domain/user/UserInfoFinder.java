@@ -2,8 +2,6 @@ package org.bogus.groove.domain.user;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
-import org.bogus.groove.common.exception.ErrorType;
-import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.domain.user.authority.UserAuthorityReader;
 import org.bogus.groove.object_storage.Attachment;
 import org.bogus.groove.object_storage.AttachmentReader;
@@ -32,7 +30,7 @@ public class UserInfoFinder {
     }
 
     public UserInfo find(String email, UserType userType) {
-        var user = userReader.readOrNull(email, userType).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
+        var user = userReader.read(email, userType);
         var authorities = userAuthorityReader.readAll(user.getId());
         var profileUri = getProfileUri(user);
 

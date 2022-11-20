@@ -38,7 +38,7 @@ class AuthControllerTest extends BaseIntegrationTest {
     public void setup() {
         var userMock = TestUserRegisterRequest.mock(1);
         userService.register(new UserRegisterParam(userMock.getEmail(), new Password(userMock.getPassword()), userMock.getNickname()));
-        userEntity = userRepository.findByEmailAndType(userMock.getEmail(), UserType.GROOVE).get();
+        userEntity = userRepository.findByEmailAndTypeAndActiveIsTrue(userMock.getEmail(), UserType.GROOVE).get();
         accessToken = tokenGenerator.generateAccessToken(userEntity.getId());
         refreshToken = tokenGenerator.generateRefreshToken(userEntity.getId());
     }
