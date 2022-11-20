@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class AttachmentAuthorityChecker {
     private final AttachmentReader attachmentReader;
 
-    public boolean check(long attachmentId, AttachmentType attachmentType, long resourceId) {
+    public boolean check(long attachmentId, AttachmentType attachmentType, Long resourceId) {
         var record = attachmentReader.read(attachmentId);
         if (record.getFileType() != attachmentType) {
             throw new NotFoundException(ErrorType.NOT_FOUND_ATTACHMENT);
@@ -19,14 +19,14 @@ public class AttachmentAuthorityChecker {
         return hasAuthority(resourceId, record);
     }
 
-    public boolean check(String objectKey, AttachmentType attachmentType, long resourceId) {
+    public boolean check(String objectKey, AttachmentType attachmentType, Long resourceId) {
         var record = attachmentReader.read(objectKey, attachmentType);
         return hasAuthority(resourceId, record);
     }
 
-    private boolean hasAuthority(long resourceId, Attachment record) {
+    private boolean hasAuthority(Long resourceId, Attachment record) {
         if (record.getFileType() == AttachmentType.PRIVATE_RECORD) {
-            return record.getResourceId() == resourceId;
+            return record.getResourceId().equals(resourceId);
         }
         return true;
     }
