@@ -20,6 +20,7 @@ public enum ErrorType {
     AUTHENTICATION_SESSION_EXPIRED("만료된 인증 세션입니다."),
     FAILED_TO_CREATE_POST("게시글 생성을 실패하였습니다."),
     FAILED_TO_CREATE_COMMENT("댓글 생성을 실패하였습니다."),
+    FAILED_TO_CREATE_NOTIFICATION("알림 생성을 실패하였습니다."),
     FAILED_TO_SEND_MAIL("메일 발송에 실패했습니다."),
     FAILED_TO_LIKE_POST("게시글 좋아요를 실패하였습니다."),
     ALREADY_LIKE_POST("이미 좋아요를 한 게시글 입니다."),
