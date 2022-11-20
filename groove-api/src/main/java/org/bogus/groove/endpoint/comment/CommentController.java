@@ -30,8 +30,9 @@ public class CommentController {
     @Operation(summary = "댓글 작성 (parentId, commentId가 동일하면 댓글 다르면 대댓글)")
     @PostMapping("/post/{postId}/comment")
     public CommonResponse<Void> createComment(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                              @PathVariable Long postId,
                                               @RequestBody CommentCreateRequest request) {
-        commentService.createComment(request.getContent(), request.getParentId(), userDetails.getUserId(), request.getPostId());
+        commentService.createComment(request.getContent(), request.getParentId(), userDetails.getUserId(), postId);
         return CommonResponse.success();
     }
 
@@ -47,21 +48,21 @@ public class CommentController {
 
     @Secured(SecurityCode.USER)
     @Operation(summary = "댓글 수정")
-    @PutMapping("/comment/{contentId}")
+    @PutMapping("/comment/{commentId}")
     public CommonResponse<Void> updateComment(
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody CommentUpdateRequest request,
-        @PathVariable Long contentId
+        @PathVariable Long commentId
     ) {
-        commentService.updateComment(userDetails.getUserId(), contentId, request.getContent());
+        commentService.updateComment(userDetails.getUserId(), commentId, request.getContent());
         return CommonResponse.success();
     }
 
     @Secured(SecurityCode.USER)
     @Operation(summary = "댓글 삭제")
-    @DeleteMapping("/comment/{contentId}")
-    public CommonResponse<Void> deleteComment(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long contentId) {
-        commentService.deleteComment(userDetails.getUserId(), contentId);
+    @DeleteMapping("/comment/{commentId}")
+    public CommonResponse<Void> deleteComment(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long commentId) {
+        commentService.deleteComment(userDetails.getUserId(), commentId);
         return CommonResponse.success();
     }
 }
