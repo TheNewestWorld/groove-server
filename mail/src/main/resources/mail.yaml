@@ -12,3 +12,8 @@ mail:
 AdminMail:
   id: mr.bogus2023@gmail.com
   password: pukslnhirkdgfovd
+
+spring:
+  web:
+    resources:
+      static-locations: classpath:/
