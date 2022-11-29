@@ -25,7 +25,7 @@ public class AttachmentEntity extends BaseEntity {
     @Column(name = "path")
     private String path;
 
-    @Column(name = "size")
+    @Column(name = "\"size\"")
     private long size;
 
     @Column(name = "ref_resource_id")

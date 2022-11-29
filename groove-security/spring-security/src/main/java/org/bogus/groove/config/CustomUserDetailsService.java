@@ -1,9 +1,9 @@
 package org.bogus.groove.config;
 
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.domain.user.UserType;
-import org.bogus.groove.storage.UserAuthorityRepository;
-import org.bogus.groove.storage.UserRepository;
+import org.bogus.groove.common.enumeration.UserType;
+import org.bogus.groove.storage.repository.UserAuthorityRepository;
+import org.bogus.groove.storage.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

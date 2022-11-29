@@ -2,6 +2,7 @@ package org.bogus.groove.domain.user;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
+import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove.domain.user.authority.UserAuthorityReader;
 import org.bogus.groove.object_storage.Attachment;
 import org.bogus.groove.object_storage.AttachmentReader;

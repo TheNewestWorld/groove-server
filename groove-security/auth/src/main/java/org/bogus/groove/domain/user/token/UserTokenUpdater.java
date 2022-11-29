@@ -3,8 +3,8 @@ package org.bogus.groove.domain.user.token;
 import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.storage.UserTokenEntity;
-import org.bogus.groove.storage.UserTokenRepository;
+import org.bogus.groove.storage.entity.UserTokenEntity;
+import org.bogus.groove.storage.repository.UserTokenRepository;
 import org.springframework.stereotype.Component;
 
 @Component

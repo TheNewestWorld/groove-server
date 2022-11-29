@@ -1,6 +1,6 @@
 //package org.bogus.groove.config.oauth;
 //
-//import org.bogus.groove.domain.user.UserType;
+//import org.bogus.groove.common.enumeration.UserType;
 //import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 //
 //public class GoogleUserInfo implements OAuth2UserInfo {

@@ -1,4 +1,4 @@
-package org.bogus.groove.storage;
+package org.bogus.groove.storage.entity;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -10,7 +10,7 @@ import javax.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bogus.groove.domain.user.UserType;
+import org.bogus.groove.common.enumeration.UserType;
 
 @Entity
 @Table(

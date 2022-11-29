@@ -3,8 +3,8 @@ package org.bogus.groove.endpoint.user;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.domain.user.UserType;
-import org.bogus.groove.domain.user.authority.Authority;
+import org.bogus.groove.common.enumeration.Authority;
+import org.bogus.groove.common.enumeration.UserType;
 
 @Getter
 @RequiredArgsConstructor
