@@ -11,7 +11,5 @@ dependencies {
     implementation(project(":redis"))
     implementation(project(":mail"))
     implementation(project(":object-storage"))
-
-    implementation("com.h2database:h2:$h2Version")
-    implementation("org.postgresql:postgresql:$postgresqlVersion")
+    implementation(project(":storage"))
 }
