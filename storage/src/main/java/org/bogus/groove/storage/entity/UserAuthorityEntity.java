@@ -1,4 +1,4 @@
-package org.bogus.groove.storage;
+package org.bogus.groove.storage.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bogus.groove.domain.user.authority.Authority;
+import org.bogus.groove.common.enumeration.Authority;
 
 @Entity
 @Table(

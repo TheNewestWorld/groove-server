@@ -2,13 +2,11 @@ package org.bogus.groove;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.Password;
+import org.bogus.groove.domain.user.User;
 import org.bogus.groove.domain.user.UserRegisterParam;
 import org.bogus.groove.domain.user.UserService;
-import org.bogus.groove.domain.user.UserType;
 import org.bogus.groove.domain.user.token.TokenGenerator;
 import org.bogus.groove.fixture.TestUserRegisterRequest;
-import org.bogus.groove.storage.UserEntity;
-import org.bogus.groove.storage.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -21,18 +19,18 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @RequiredArgsConstructor
 class UserControllerTest extends BaseIntegrationTest {
     private final UserService userService;
-    private final UserRepository userRepository;
     private final TokenGenerator tokenGenerator;
 
-    UserEntity userEntity;
+    User user;
     String accessToken;
 
     @BeforeEach
     public void setup() {
         var userMock = TestUserRegisterRequest.mock(1);
-        userService.register(new UserRegisterParam(userMock.getEmail(), new Password(userMock.getPassword()), userMock.getNickname()));
-        userEntity = userRepository.findByEmailAndType(userMock.getEmail(), UserType.GROOVE).get();
-        accessToken = tokenGenerator.generateAccessToken(userEntity.getId());
+        user = userService.register(
+            new UserRegisterParam(userMock.getEmail(), new Password(userMock.getPassword()), userMock.getNickname())
+        );
+        accessToken = tokenGenerator.generateAccessToken(user.getId());
     }
 
    /*
@@ -62,7 +60,7 @@ class UserControllerTest extends BaseIntegrationTest {
             .andDo(MockMvcResultHandlers.print())
             .andExpectAll(
                 MockMvcResultMatchers.status().isOk(),
-                MockMvcResultMatchers.jsonPath("data.id").value(userEntity.getId())
+                MockMvcResultMatchers.jsonPath("data.id").value(user.getId())
             )
         ;
     }

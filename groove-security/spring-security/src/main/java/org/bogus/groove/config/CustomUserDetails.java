@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove.domain.user.UserInfo;
-import org.bogus.groove.domain.user.UserType;
-import org.bogus.groove.storage.UserAuthorityEntity;
-import org.bogus.groove.storage.UserEntity;
+import org.bogus.groove.storage.entity.UserAuthorityEntity;
+import org.bogus.groove.storage.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

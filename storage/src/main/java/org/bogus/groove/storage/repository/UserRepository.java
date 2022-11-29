@@ -1,7 +1,8 @@
-package org.bogus.groove.storage;
+package org.bogus.groove.storage.repository;
 
 import java.util.Optional;
-import org.bogus.groove.domain.user.UserType;
+import org.bogus.groove.common.enumeration.UserType;
+import org.bogus.groove.storage.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {

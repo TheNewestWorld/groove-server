@@ -3,7 +3,7 @@ package org.bogus.groove.domain.user;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
-import org.bogus.groove.storage.EmailAuthenticationRepository;
+import org.bogus.groove.storage.repository.EmailAuthenticationRepository;
 import org.springframework.stereotype.Component;
 
 @Component

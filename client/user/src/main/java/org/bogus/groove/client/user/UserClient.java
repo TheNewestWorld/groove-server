@@ -2,6 +2,8 @@ package org.bogus.groove.client.user;
 
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.common.enumeration.Authority;
+import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove.endpoint.user.InternalUserController;
 import org.springframework.stereotype.Component;
 

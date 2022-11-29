@@ -5,8 +5,8 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.UnauthorizedException;
-import org.bogus.groove.storage.UserTokenEntity;
-import org.bogus.groove.storage.UserTokenRepository;
+import org.bogus.groove.storage.entity.UserTokenEntity;
+import org.bogus.groove.storage.repository.UserTokenRepository;
 import org.springframework.stereotype.Component;
 
 @Component

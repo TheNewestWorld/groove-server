@@ -5,8 +5,8 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.mail.config.EmailType;
 import org.bogus.groove.mail.config.GoogleMailSender;
-import org.bogus.groove.storage.EmailAuthenticationEntity;
-import org.bogus.groove.storage.EmailAuthenticationRepository;
+import org.bogus.groove.storage.entity.EmailAuthenticationEntity;
+import org.bogus.groove.storage.repository.EmailAuthenticationRepository;
 import org.springframework.stereotype.Component;
 
 @Component

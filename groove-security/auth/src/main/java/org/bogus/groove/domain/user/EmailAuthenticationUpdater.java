@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
-import org.bogus.groove.storage.EmailAuthenticationEntity;
-import org.bogus.groove.storage.EmailAuthenticationRepository;
+import org.bogus.groove.storage.entity.EmailAuthenticationEntity;
+import org.bogus.groove.storage.repository.EmailAuthenticationRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 

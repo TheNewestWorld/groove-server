@@ -3,7 +3,7 @@ package org.bogus.groove.domain.user.token;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.storage.UserTokenEntity;
+import org.bogus.groove.storage.entity.UserTokenEntity;
 
 @Getter
 @RequiredArgsConstructor
