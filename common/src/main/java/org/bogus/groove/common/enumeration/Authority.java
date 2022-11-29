@@ -1,4 +1,4 @@
-package org.bogus.groove.domain.user.authority;
+package org.bogus.groove.common.enumeration;
 
 public enum Authority {
     INACTIVE,
@@ -6,4 +6,3 @@ public enum Authority {
     TRAINER,
     ADMIN;
 }
-

@@ -3,6 +3,7 @@ package org.bogus.groove.domain.user;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
+import org.bogus.groove.common.enumeration.UserType;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.mail.config.EmailType;

@@ -1,4 +1,4 @@
-package org.bogus.groove.storage;
+package org.bogus.groove.storage.entity;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;

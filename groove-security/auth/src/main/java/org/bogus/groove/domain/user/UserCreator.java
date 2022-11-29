@@ -1,8 +1,8 @@
 package org.bogus.groove.domain.user;
 
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.storage.UserEntity;
-import org.bogus.groove.storage.UserRepository;
+import org.bogus.groove.storage.entity.UserEntity;
+import org.bogus.groove.storage.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 

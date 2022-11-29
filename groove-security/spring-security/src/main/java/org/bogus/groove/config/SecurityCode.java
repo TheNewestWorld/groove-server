@@ -1,7 +1,7 @@
 package org.bogus.groove.config;
 
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.domain.user.authority.Authority;
+import org.bogus.groove.common.enumeration.Authority;
 import org.springframework.security.core.GrantedAuthority;
 
 @RequiredArgsConstructor

@@ -1,6 +1,6 @@
 //package org.bogus.groove.config.oauth;
 //
-//import org.bogus.groove.domain.user.UserType;
+//import org.bogus.groove.common.enumeration.UserType;
 //
 //public interface OAuth2UserInfo {
 //    UserType getUserType();

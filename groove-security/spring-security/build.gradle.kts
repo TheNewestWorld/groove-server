@@ -4,6 +4,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 
     implementation(project(":common"))
+    implementation(project(":storage"))
     implementation(project(":groove-security:auth"))
 }
 
