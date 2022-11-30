@@ -3,6 +3,7 @@ package org.bogus.groove.endpoint.report;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
+import org.bogus.groove.common.PageResponse;
 import org.bogus.groove.config.CustomUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.report.Report;
@@ -26,25 +27,24 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @PostMapping("/report/receive")
+    @PostMapping("/reports")
     public CommonResponse<Void> createReport(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                             @RequestBody ReportRequestParam reportRequestParamParam) {
-        reportService.createReport(customUserDetails.getUserId(), reportRequestParamParam.getPostId(),
-            reportRequestParamParam.getReportTargetType(),
-            reportRequestParamParam.getReportReasonType());
+                                             @RequestBody ReportRequestParam reportRequestParam) {
+        reportService.create(customUserDetails.getUserId(), reportRequestParam.getPostId(),
+            reportRequestParam.getReportTargetType(),
+            reportRequestParam.getReportReasonType());
         return CommonResponse.success();
     }
 
     @Secured(SecurityCode.ADMIN)
     @GetMapping("/report/{reportId}")
     public CommonResponse<Report> getReport(@PathVariable Long reportId) {
-        return CommonResponse.success(reportService.getReport(reportId));
+        return CommonResponse.success(reportService.get(reportId));
     }
 
     @Secured(SecurityCode.ADMIN)
     @GetMapping("/reports")
-    public CommonResponse<List<Report>> getReportList(
-        @PageableDefault(size = 20, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return CommonResponse.success(reportService.getReportList(pageable));
+    public CommonResponse<List<Report>> getReportList(Pageable pageable) {
+        return CommonResponse.success(reportService.getList(pageable));
     }
 }
