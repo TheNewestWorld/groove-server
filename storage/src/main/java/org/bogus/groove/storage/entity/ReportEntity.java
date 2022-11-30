@@ -8,20 +8,20 @@ import org.bogus.groove.common.enumeration.ReportReasonType;
 import org.bogus.groove.common.enumeration.ReportTargetType;
 
 @Entity
-@Table(name = "Report")
+@Table(name = "report")
 @Getter
 public class ReportEntity extends BaseEntity {
 
     @Column(name = "ref_user_id")
     private Long userId;
 
-    @Column(name = "ref_Target_id")
+    @Column(name = "ref_target_id")
     private Long targetId;
 
-    @Column(name = "report_target_type")
+    @Column(name = "target_type")
     private ReportTargetType reportTargetType;
 
-    @Column(name = "report_reason_type")
+    @Column(name = "reason_type")
     private ReportReasonType reportReasonType;
 
     public ReportEntity(Long userId, Long targetId, ReportTargetType reportTargetType,

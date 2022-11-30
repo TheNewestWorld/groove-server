@@ -14,15 +14,15 @@ public class ReportService {
     private final ReportCreator reportCreator;
     private final ReportReader reportReader;
 
-    public void createReport(Long userId, Long postId, ReportTargetType reportTargetType, ReportReasonType reportReasonType) {
+    public void create(Long userId, Long postId, ReportTargetType reportTargetType, ReportReasonType reportReasonType) {
         reportCreator.createReport(userId, postId, reportTargetType, reportReasonType);
     }
 
-    public List<Report> getReportList(Pageable pageable) {
+    public List<Report> getList(Pageable pageable) {
         return reportReader.readAllReport(pageable);
     }
 
-    public Report getReport(Long reportId) {
+    public Report get(Long reportId) {
         return reportReader.readReport(reportId);
     }
 }
