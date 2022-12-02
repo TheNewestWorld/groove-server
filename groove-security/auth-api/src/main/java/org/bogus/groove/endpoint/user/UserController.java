@@ -47,10 +47,10 @@ public class UserController {
             new UserInfoGetResponse(
                 result.getId(),
                 result.getEmail(),
-                result.getType(),
+                result.getProviderType(),
                 result.getNickName(),
                 result.getProfileUri(),
-                result.getAuthorities()
+                result.getRole()
             )
         );
     }

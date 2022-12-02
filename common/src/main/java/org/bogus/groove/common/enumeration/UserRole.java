@@ -1,6 +1,9 @@
 package org.bogus.groove.common.enumeration;
 
-public enum Authority {
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public enum UserRole {
     INACTIVE,
     USER,
     TRAINER,

@@ -1,13 +1,11 @@
 package org.bogus.groove.domain.user;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.enumeration.Authority;
+import org.bogus.groove.common.enumeration.UserRole;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
-import org.bogus.groove.domain.user.authority.UserAuthorityUpdater;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +14,6 @@ public class EmailAuthenticator {
 
     private final EmailAuthenticationReader emailAuthenticationReader;
     private final EmailAuthenticationUpdater emailAuthenticationUpdater;
-    private final UserAuthorityUpdater userAuthorityUpdater;
     private final UserUpdater userUpdater;
 
     @Transactional
@@ -34,7 +31,6 @@ public class EmailAuthenticator {
             authenticated.isVerified(),
             authenticated.getVerifiedAt()
         );
-
-        userAuthorityUpdater.update(authenticated.getId(), List.of(Authority.USER));
+        userUpdater.update(authenticated.getUserId(), UserRole.USER);
     }
 }

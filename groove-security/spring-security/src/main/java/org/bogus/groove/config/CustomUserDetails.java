@@ -2,12 +2,10 @@ package org.bogus.groove.config;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.enumeration.UserType;
+import org.bogus.groove.common.enumeration.ProviderType;
 import org.bogus.groove.domain.user.UserInfo;
-import org.bogus.groove.storage.entity.UserAuthorityEntity;
 import org.bogus.groove.storage.entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,24 +17,23 @@ public class CustomUserDetails implements UserDetails {
     @Getter
     private final String email;
     @Getter
-    private final UserType type;
+    private final ProviderType type;
     private final List<SecurityCode> securityCodes;
     private String password;
 
     public CustomUserDetails(UserInfo userInfo) {
         this.userId = userInfo.getId();
         this.email = userInfo.getEmail();
-        this.type = userInfo.getType();
-        this.securityCodes = userInfo.getAuthorities().stream().map(SecurityCode::new).collect(Collectors.toList());
+        this.type = userInfo.getProviderType();
+        this.securityCodes = List.of(new SecurityCode(userInfo.getRole()));
     }
 
-    public CustomUserDetails(UserEntity userEntity, Collection<UserAuthorityEntity> userAuthorityEntities) {
+    public CustomUserDetails(UserEntity userEntity) {
         this.userId = userEntity.getId();
         this.email = userEntity.getEmail();
         this.password = userEntity.getPassword();
-        this.type = userEntity.getType();
-        this.securityCodes =
-            userAuthorityEntities.stream().map((entity) -> new SecurityCode(entity.getAuthority())).collect(Collectors.toList());
+        this.type = userEntity.getProviderType();
+        this.securityCodes = List.of(new SecurityCode(userEntity.getRole()));
     }
 
     @Override
