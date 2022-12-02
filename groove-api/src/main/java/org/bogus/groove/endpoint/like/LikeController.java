@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LikeController {
     private final LikeService likeService;
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "게시글 좋아요")
     @PostMapping("/{postId}/like")
     public CommonResponse<Void> like(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long postId) {
@@ -30,7 +30,7 @@ public class LikeController {
         return CommonResponse.success();
     }
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "게시글 좋아요 취소")
     @DeleteMapping("/{postId}/like")
     public CommonResponse<Void> unLike(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long postId) {

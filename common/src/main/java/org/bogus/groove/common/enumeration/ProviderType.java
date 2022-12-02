@@ -1,6 +1,6 @@
 package org.bogus.groove.common.enumeration;
 
-public enum UserType {
+public enum ProviderType {
     GROOVE,
     KAKAO,
     NAVER,

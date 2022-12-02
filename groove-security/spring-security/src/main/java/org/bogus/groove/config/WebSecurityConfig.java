@@ -12,7 +12,6 @@ import org.bogus.groove.config.error.FilterChainExceptionHandlingFilter;
 import org.bogus.groove.domain.user.UserInfoFinder;
 import org.bogus.groove.domain.user.token.TokenGenerator;
 import org.bogus.groove.domain.user.token.TokenValidator;
-import org.bogus.groove.storage.repository.UserAuthorityRepository;
 import org.bogus.groove.storage.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +33,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserRepository userRepository;
-    private final UserAuthorityRepository userAuthorityRepository;
     private final TokenGenerator tokenGenerator;
     private final TokenValidator tokenValidator;
     private final UserInfoFinder userInfoFinder;
@@ -81,7 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private CustomDaoAuthenticationProvider getCustomDaoAuthenticationProvider() {
         var authenticationProvider = new CustomDaoAuthenticationProvider(passwordEncoder);
-        authenticationProvider.setUserDetailsService(new CustomUserDetailsService(userRepository, userAuthorityRepository));
+        authenticationProvider.setUserDetailsService(new CustomUserDetailsService(userRepository));
         return authenticationProvider;
     }
 

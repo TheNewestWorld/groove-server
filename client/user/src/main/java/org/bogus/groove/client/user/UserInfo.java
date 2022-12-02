@@ -1,18 +1,17 @@
 package org.bogus.groove.client.user;
 
-import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.enumeration.Authority;
-import org.bogus.groove.common.enumeration.UserType;
+import org.bogus.groove.common.enumeration.ProviderType;
+import org.bogus.groove.common.enumeration.UserRole;
 
 @Getter
 @RequiredArgsConstructor
 public class UserInfo {
     private final Long id;
     private final String email;
-    private final UserType type;
+    private final ProviderType type;
     private final String nickname;
     private final String profileUri;
-    private final List<Authority> authorities;
+    private final UserRole role;
 }

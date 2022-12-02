@@ -46,7 +46,7 @@ public class CommentController {
                 Collectors.toList()));
     }
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "댓글 수정")
     @PutMapping("/comment/{commentId}")
     public CommonResponse<Void> updateComment(
@@ -58,7 +58,7 @@ public class CommentController {
         return CommonResponse.success();
     }
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "댓글 삭제")
     @DeleteMapping("/comment/{commentId}")
     public CommonResponse<Void> deleteComment(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long commentId) {

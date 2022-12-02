@@ -3,8 +3,8 @@ package org.bogus.groove;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.Password;
 import org.bogus.groove.domain.user.User;
+import org.bogus.groove.domain.user.UserRegister;
 import org.bogus.groove.domain.user.UserRegisterParam;
-import org.bogus.groove.domain.user.UserService;
 import org.bogus.groove.domain.user.token.TokenGenerator;
 import org.bogus.groove.fixture.TestUserRegisterRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @RequiredArgsConstructor
 class UserControllerTest extends BaseIntegrationTest {
-    private final UserService userService;
+    private final UserRegister userRegister;
     private final TokenGenerator tokenGenerator;
 
     User user;
@@ -27,7 +27,7 @@ class UserControllerTest extends BaseIntegrationTest {
     @BeforeEach
     public void setup() {
         var userMock = TestUserRegisterRequest.mock(1);
-        user = userService.register(
+        user = userRegister.register(
             new UserRegisterParam(userMock.getEmail(), new Password(userMock.getPassword()), userMock.getNickname())
         );
         accessToken = tokenGenerator.generateAccessToken(user.getId());

@@ -37,6 +37,7 @@ public class PostController {
     private final PostService postService;
 
     @Operation(summary = "게시글 작성")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PostMapping(
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
@@ -66,6 +67,7 @@ public class PostController {
     }
 
     @Operation(summary = "카테고리 별 게시글 리스트 조회")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @GetMapping("/category")
     public CommonResponse<PageResponse<List<PostResponse>>> getPostList(
         @RequestParam int page,
@@ -86,6 +88,7 @@ public class PostController {
     }
 
     @Operation(summary = "게시글 상세 조회")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @GetMapping("/{postId}")
     public CommonResponse<PostDetailResponse> getPost(
         @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -95,8 +98,8 @@ public class PostController {
         );
     }
 
-    @Secured(SecurityCode.USER)
     @Operation(summary = "게시글 수정")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PutMapping(
         value = "/{postId}",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
@@ -126,8 +129,8 @@ public class PostController {
         return CommonResponse.success();
     }
 
-    @Secured(SecurityCode.USER)
     @Operation(summary = "게시글 삭제")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @DeleteMapping("/{postId}")
     public CommonResponse<Void> deletePost(
         @AuthenticationPrincipal CustomUserDetails userDetails,

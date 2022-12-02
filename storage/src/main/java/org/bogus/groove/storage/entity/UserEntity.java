@@ -10,13 +10,14 @@ import javax.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bogus.groove.common.enumeration.UserType;
+import org.bogus.groove.common.enumeration.ProviderType;
+import org.bogus.groove.common.enumeration.UserRole;
 
 @Entity
 @Table(
     name = "`user`",
     uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"email", "type"}),
+        @UniqueConstraint(columnNames = {"email", "provider"}),
         @UniqueConstraint(columnNames = {"nickname"})
     }
 )
@@ -29,13 +30,18 @@ public class UserEntity extends BaseEntity {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "type")
-    @Enumerated(EnumType.STRING)
-    private UserType type;
-
     @Setter
     @Column(name = "nickname")
     private String nickname;
+
+    @Column(name = "provider")
+    @Enumerated(EnumType.STRING)
+    private ProviderType providerType;
+
+    @Setter
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
     @Column(name = "authentication_flag")
     private boolean isAuthenticated;
@@ -43,11 +49,12 @@ public class UserEntity extends BaseEntity {
     @Column(name = "authenticated_at")
     private LocalDateTime authenticatedAt;
 
-    public UserEntity(String email, String password, UserType type, String nickname) {
+    public UserEntity(String email, String password, String nickname, ProviderType providerType, UserRole role) {
         this.email = email;
         this.password = password;
-        this.type = type;
         this.nickname = nickname;
+        this.providerType = providerType;
+        this.role = role;
     }
 
     public void updateAuthentication(boolean isAuthenticated, LocalDateTime authenticatedAt) {
