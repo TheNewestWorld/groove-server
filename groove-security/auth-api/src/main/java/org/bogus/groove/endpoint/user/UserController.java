@@ -38,8 +38,8 @@ public class UserController {
         return CommonResponse.success();
     }
 
-    @Secured({SecurityCode.INACTIVE, SecurityCode.USER})
     @Operation(summary = "로그인 유저 정보 조회")
+    @Secured({SecurityCode.INACTIVE, SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @GetMapping("/api/users/self")
     public CommonResponse<UserInfoGetResponse> getSelfInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
         var result = userService.getUserInfo(userDetails.getUserId());
@@ -64,6 +64,7 @@ public class UserController {
     }
 
     @Operation(summary = "비밀번호 변경 메일 요청")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PostMapping("/api/mail/change-password")
     public CommonResponse<Void> sendPasswordUpdateLink(@RequestBody PasswordUpdateLinkRequest request) {
         userService.sendPasswordUpdateLink(request.getEmail());
@@ -71,13 +72,14 @@ public class UserController {
     }
 
     @Operation(summary = "비밀번호 변경")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PutMapping("/api/users/password")
     public CommonResponse<Void> updatePassword(@RequestBody PasswordChangeRequest request) {
         userService.updatePassword(request.getSessionKey(), request.getPassword());
         return CommonResponse.success();
     }
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "로그인 유저 정보 업데이트")
     @PutMapping("/api/users/self")
     public CommonResponse<Void> update(
@@ -88,7 +90,7 @@ public class UserController {
         return CommonResponse.success();
     }
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "로그인 유저 프로필 업데이트")
     @PutMapping(
         value = "/api/users/self/profile",

@@ -21,7 +21,7 @@ public class MyPostController {
     private final PostService postService;
 
     @Operation(summary = "마이페이지 - 작성한 게시물")
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @GetMapping("/api/users/self/posts")
     public CommonResponse<PageResponse<List<MyPostGetResponse>>> getMyPosts(
         @RequestParam int page,
@@ -40,7 +40,7 @@ public class MyPostController {
     }
 
     @Operation(summary = "마이페이지 - 좋아한 게시물")
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @GetMapping("/api/users/self/liked-posts")
     public CommonResponse<PageResponse<List<MyPostGetResponse>>> getLikedPosts(
         @RequestParam int page,
