@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
-import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.user.UserProfileUpdateParam;
 import org.bogus.groove.domain.user.UserRegisterParam;
@@ -41,7 +41,7 @@ public class UserController {
     @Operation(summary = "로그인 유저 정보 조회")
     @Secured({SecurityCode.INACTIVE, SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @GetMapping("/api/users/self")
-    public CommonResponse<UserInfoGetResponse> getSelfInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public CommonResponse<UserInfoGetResponse> getSelfInfo(@AuthenticationPrincipal GrooveUserDetails userDetails) {
         var result = userService.getUserInfo(userDetails.getUserId());
         return CommonResponse.success(
             new UserInfoGetResponse(
@@ -58,7 +58,7 @@ public class UserController {
     @Secured(SecurityCode.INACTIVE)
     @Operation(summary = "유저 인증 메일 재발송 (로그인 한 경우)")
     @PostMapping("/api/mail/authentication")
-    public CommonResponse<Void> sendEmailAuthenticationLink(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public CommonResponse<Void> sendEmailAuthenticationLink(@AuthenticationPrincipal GrooveUserDetails userDetails) {
         userService.sendAuthenticationMail(userDetails.getEmail());
         return CommonResponse.success();
     }
@@ -84,7 +84,7 @@ public class UserController {
     @PutMapping("/api/users/self")
     public CommonResponse<Void> update(
         @RequestBody UserUpdateRequest request,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) {
         userService.updateNickname(userDetails.getUserId(), request.getNickname());
         return CommonResponse.success();
@@ -98,7 +98,7 @@ public class UserController {
     )
     public CommonResponse<Void> update(
         @RequestPart MultipartFile profile,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) throws IOException {
         try (var input = profile.getInputStream()) {
             userService.updateProfile(

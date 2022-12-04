@@ -11,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @RequiredArgsConstructor
-public class CustomUserDetails implements UserDetails {
+public class GrooveUserDetails implements UserDetails {
     @Getter
     private final long userId;
     @Getter
@@ -21,14 +21,14 @@ public class CustomUserDetails implements UserDetails {
     private final List<SecurityCode> securityCodes;
     private String password;
 
-    public CustomUserDetails(UserInfo userInfo) {
+    public GrooveUserDetails(UserInfo userInfo) {
         this.userId = userInfo.getId();
         this.email = userInfo.getEmail();
         this.type = userInfo.getProviderType();
         this.securityCodes = List.of(new SecurityCode(userInfo.getRole()));
     }
 
-    public CustomUserDetails(UserEntity userEntity) {
+    public GrooveUserDetails(UserEntity userEntity) {
         this.userId = userEntity.getId();
         this.email = userEntity.getEmail();
         this.password = userEntity.getPassword();
@@ -71,7 +71,7 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-    public CustomUserDetails erasePassword() {
+    public GrooveUserDetails erasePassword() {
         this.password = null;
         return this;
     }

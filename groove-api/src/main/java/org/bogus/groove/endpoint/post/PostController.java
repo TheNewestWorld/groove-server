@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.common.PageResponse;
 import org.bogus.groove.common.enumeration.SortOrderType;
-import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.attachment.PostAttachmentCreateParam;
 import org.bogus.groove.domain.post.PostService;
@@ -42,7 +42,7 @@ public class PostController {
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public CommonResponse<Void> createPost(
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestPart PostCreateRequest request,
         @RequestPart(required = false) List<MultipartFile> attachments
     ) {
@@ -72,7 +72,7 @@ public class PostController {
     public CommonResponse<PageResponse<List<PostResponse>>> getPostList(
         @RequestParam int page,
         @RequestParam int size,
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestParam SortOrderType sortOrderType,
         @RequestParam(required = false) String word,
         @RequestParam(required = false) Long categoryId) {
@@ -91,7 +91,7 @@ public class PostController {
     @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @GetMapping("/{postId}")
     public CommonResponse<PostDetailResponse> getPost(
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @PathVariable Long postId) {
         return CommonResponse.success(
             new PostDetailResponse(postService.getPost(userDetails.getUserId(), postId))
@@ -105,7 +105,7 @@ public class PostController {
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public CommonResponse<Void> updatePost(
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestPart PostUpdateRequest request,
         @PathVariable Long postId,
         @RequestPart(required = false) List<MultipartFile> attachments
@@ -133,7 +133,7 @@ public class PostController {
     @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @DeleteMapping("/{postId}")
     public CommonResponse<Void> deletePost(
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @PathVariable Long postId
     ) {
         postService.deletePost(userDetails.getUserId(), postId);

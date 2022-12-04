@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
-import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.like.LikeService;
 import org.springframework.security.access.annotation.Secured;
@@ -25,7 +25,7 @@ public class LikeController {
     @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "게시글 좋아요")
     @PostMapping("/{postId}/like")
-    public CommonResponse<Void> like(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long postId) {
+    public CommonResponse<Void> like(@AuthenticationPrincipal GrooveUserDetails userDetails, @PathVariable Long postId) {
         likeService.like(userDetails.getUserId(), postId);
         return CommonResponse.success();
     }
@@ -33,7 +33,7 @@ public class LikeController {
     @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "게시글 좋아요 취소")
     @DeleteMapping("/{postId}/like")
-    public CommonResponse<Void> unLike(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long postId) {
+    public CommonResponse<Void> unLike(@AuthenticationPrincipal GrooveUserDetails userDetails, @PathVariable Long postId) {
         likeService.unLike(userDetails.getUserId(), postId);
         return CommonResponse.success();
     }

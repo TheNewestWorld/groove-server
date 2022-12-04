@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.common.PageResponse;
-import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.record.RecordService;
 import org.bogus.groove.domain.record.RecordUploadParam;
@@ -37,7 +37,7 @@ public class RecordController {
     )
     public CommonResponse<Void> record(
         @RequestPart MultipartFile record,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) throws IOException {
         try (var input = record.getInputStream()) {
             recordService.upload(
@@ -58,7 +58,7 @@ public class RecordController {
     public CommonResponse<PageResponse<List<RecordGetResponse>>> getRecords(
         @RequestParam int page,
         @RequestParam int size,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) {
         var result = recordService.getAll(userDetails.getUserId(), page, size);
         return CommonResponse.success(
@@ -83,7 +83,7 @@ public class RecordController {
     @DeleteMapping("/api/records/{recordId}")
     public CommonResponse<Void> deleteRecord(
         @PathVariable Long recordId,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) {
         recordService.delete(recordId, userDetails.getUserId());
         return CommonResponse.success();
@@ -95,7 +95,7 @@ public class RecordController {
     public CommonResponse<Void> updateRecordName(
         @PathVariable Long recordId,
         @RequestBody RecordNameUpdateRequest request,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) {
         recordService.update(recordId, userDetails.getUserId(), request.getRecordName());
         return CommonResponse.success();

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.common.PageResponse;
-import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.post.PostService;
 import org.springframework.security.access.annotation.Secured;
@@ -26,7 +26,7 @@ public class MyPostController {
     public CommonResponse<PageResponse<List<MyPostGetResponse>>> getMyPosts(
         @RequestParam int page,
         @RequestParam int size,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) {
         var result = postService.getMyPosts(userDetails.getUserId(), page, size);
         return CommonResponse.success(
@@ -45,7 +45,7 @@ public class MyPostController {
     public CommonResponse<PageResponse<List<MyPostGetResponse>>> getLikedPosts(
         @RequestParam int page,
         @RequestParam int size,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) {
         var result = postService.getLikedPosts(userDetails.getUserId(), page, size);
         return CommonResponse.success(

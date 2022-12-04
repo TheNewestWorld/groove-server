@@ -2,7 +2,7 @@ package org.bogus.groove.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.config.authentication.CustomDaoAuthenticationProvider;
+import org.bogus.groove.config.authentication.GrooveAuthenticationProvider;
 import org.bogus.groove.config.authentication.RestfulAuthenticationFailureHandler;
 import org.bogus.groove.config.authentication.RestfulAuthenticationFilter;
 import org.bogus.groove.config.authentication.RestfulAuthenticationSuccessHandler;
@@ -77,9 +77,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(getCustomDaoAuthenticationProvider());
     }
 
-    private CustomDaoAuthenticationProvider getCustomDaoAuthenticationProvider() {
-        var authenticationProvider = new CustomDaoAuthenticationProvider(passwordEncoder);
-        authenticationProvider.setUserDetailsService(new CustomUserDetailsService(userRepository));
+    private GrooveAuthenticationProvider getCustomDaoAuthenticationProvider() {
+        var authenticationProvider = new GrooveAuthenticationProvider(passwordEncoder);
+        authenticationProvider.setUserDetailsService(new GrooveUserDetailsService(userRepository));
         return authenticationProvider;
     }
 

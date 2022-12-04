@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetailsService {
+public class GrooveUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
@@ -17,6 +17,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             .orElseThrow(() -> {
                 throw new UsernameNotFoundException("존재하지 않는 유저입니다.");
             });
-        return new CustomUserDetails(userEntity);
+        return new GrooveUserDetails(userEntity);
     }
 }
