@@ -16,7 +16,7 @@ public class LikeReader {
     }
 
     public boolean checkLike(Long userId, Long postId) {
-        return likeRepository.findByUserIdAndPostId(userId, postId).isPresent();
+        return likeRepository.existsByUserIdAndPostId(userId, postId);
     }
 
     public Integer countPostLike(Long postId) {
