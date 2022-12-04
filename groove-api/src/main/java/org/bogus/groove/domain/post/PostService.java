@@ -97,6 +97,7 @@ public class PostService {
             new MyPostGetResult(
                 post,
                 userInfo,
+                likeReader.checkLike(userInfo.getId(), post.getId()),
                 likeReader.countPostLike(post.getId()),
                 commentReader.countPostComment(post.getId())
             )
@@ -111,6 +112,7 @@ public class PostService {
             new MyPostGetResult(
                 post,
                 userInfo,
+                likeReader.checkLike(userInfo.getId(), post.getId()),
                 likeReader.countPostLike(post.getId()),
                 commentReader.countPostComment(post.getId())
             )
