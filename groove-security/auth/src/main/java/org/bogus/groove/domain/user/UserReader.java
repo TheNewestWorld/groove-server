@@ -17,6 +17,10 @@ public class UserReader {
         return readOrNull(userId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
     }
 
+    public User read(String email, ProviderType providerType) {
+        return readOrNull(email, providerType).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
+    }
+
     public Optional<User> readOrNull(String email, ProviderType providerType) {
         return userRepository.findByEmailAndProviderType(email, providerType).map(User::new);
     }

@@ -3,8 +3,7 @@ package org.bogus.groove.domain.user;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.mail.config.EmailType;
-import org.bogus.groove.mail.config.GoogleMailSender;
+import org.bogus.groove.common.enumeration.ProviderType;
 import org.bogus.groove.storage.entity.EmailAuthenticationEntity;
 import org.bogus.groove.storage.repository.EmailAuthenticationRepository;
 import org.springframework.stereotype.Component;
@@ -13,9 +12,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class EmailAuthenticationCreator {
     private final EmailAuthenticationRepository repository;
-    private final GoogleMailSender googleMailSender;
+    private final UserReader userReader;
 
-    public EmailAuthentication create(long userId, String email, EmailType type) {
+    public EmailAuthentication create(long userId) {
         var entity = repository.save(
             new EmailAuthenticationEntity(
                 userId,
@@ -23,8 +22,18 @@ public class EmailAuthenticationCreator {
                 LocalDateTime.now().plusHours(1)
             )
         );
+        return new EmailAuthentication(entity);
+    }
 
-        googleMailSender.sendMessage(email, entity.getSessionKey(), type);
+    public EmailAuthentication create(String email) {
+        User user = userReader.read(email, ProviderType.GROOVE);
+        var entity = repository.save(
+            new EmailAuthenticationEntity(
+                user.getId(),
+                UUID.randomUUID().toString(),
+                LocalDateTime.now().plusHours(1)
+            )
+        );
         return new EmailAuthentication(entity);
     }
 }
