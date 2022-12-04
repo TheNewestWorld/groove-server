@@ -13,18 +13,18 @@ public class MyPostGetResult {
     private final String userProfileUri;
     private final String title;
     private final String content;
-    private final boolean isLiked;
+    private final boolean likeFlag;
     private final int likeCount;
     private final int commentCount;
 
-    MyPostGetResult(Post post, UserInfo userInfo, boolean isLiked, int likeCount, int commentCount) {
+    MyPostGetResult(Post post, UserInfo userInfo, boolean likeFlag, int likeCount, int commentCount) {
         this.postId = post.getId();
         this.userId = userInfo.getId();
         this.userNickname = userInfo.getNickname();
         this.userProfileUri = userInfo.getProfileUri();
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.isLiked = isLiked;
+        this.likeFlag = likeFlag;
         this.likeCount = likeCount;
         this.commentCount = commentCount;
     }
