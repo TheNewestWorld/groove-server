@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.Password;
 import org.bogus.groove.common.exception.UnauthorizedException;
 import org.bogus.groove.domain.user.User;
+import org.bogus.groove.domain.user.UserRegister;
 import org.bogus.groove.domain.user.UserRegisterParam;
-import org.bogus.groove.domain.user.UserService;
 import org.bogus.groove.domain.user.token.TokenGenerator;
 import org.bogus.groove.domain.user.token.TokenValidator;
 import org.bogus.groove.endpoint.auth.TokenRefreshRequest;
@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @RequiredArgsConstructor
 class AuthControllerTest extends BaseIntegrationTest {
-    private final UserService userService;
+    private final UserRegister userRegister;
     private final TokenGenerator tokenGenerator;
     private final TokenValidator tokenValidator;
 
@@ -34,7 +34,7 @@ class AuthControllerTest extends BaseIntegrationTest {
     @BeforeEach
     public void setup() {
         var userMock = TestUserRegisterRequest.mock(1);
-        user = userService.register(
+        user = userRegister.register(
             new UserRegisterParam(userMock.getEmail(), new Password(userMock.getPassword()), userMock.getNickname())
         );
         accessToken = tokenGenerator.generateAccessToken(user.getId());

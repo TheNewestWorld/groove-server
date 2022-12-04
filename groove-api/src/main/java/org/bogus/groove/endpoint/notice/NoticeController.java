@@ -67,9 +67,9 @@ public class NoticeController {
         );
     }
 
-    @Operation(summary = "공지사항 리스트 조회")
+    @Operation(summary = "공지사항 상세 조회")
     @GetMapping("/api/notice/{noticeId}")
-    public CommonResponse<NoticeGetResponse> getNotice(@PathVariable Long noticeId) {
-        return CommonResponse.success(new NoticeGetResponse(noticeService.getNotice(noticeId)));
+    public CommonResponse<NoticeDetailGetResponse> getNotice(@PathVariable Long noticeId) {
+        return CommonResponse.success(new NoticeDetailGetResponse(noticeService.getNotice(noticeId)));
     }
 }
