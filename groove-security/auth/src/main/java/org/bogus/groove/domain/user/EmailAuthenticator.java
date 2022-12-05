@@ -20,9 +20,9 @@ public class EmailAuthenticator {
     public void authenticate(String sessionKey) {
         var emailAuthentication = emailAuthenticationReader.read(sessionKey);
 
-        if (emailAuthentication.getExpiredAt().isBefore(LocalDateTime.now())) {
-            throw new NotFoundException(ErrorType.AUTHENTICATION_SESSION_EXPIRED);
-        }
+//        if (emailAuthentication.getExpiredAt().isBefore(LocalDateTime.now())) {
+//            throw new NotFoundException(ErrorType.AUTHENTICATION_SESSION_EXPIRED);
+//        }
 
         var authenticated = emailAuthenticationUpdater.update(sessionKey, true, LocalDateTime.now());
 
