@@ -7,3 +7,11 @@ spring.config.activate.on-profile: dev
 
 application:
   domain: ${DOMAIN}
+
+oci:
+  user: ${OCI_USER}
+  fingerprint: ${OCI_FINGERPRINT}
+  tenancy: ${OCI_TENANCY}
+  region: ${OCI_REGION}
+  key-file: ${OCI_KEY_FILE_PATH}
+  bucket-name: ${OCI_BUCKET_NAME}
