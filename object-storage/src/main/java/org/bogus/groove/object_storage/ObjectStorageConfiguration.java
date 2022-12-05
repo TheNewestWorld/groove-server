@@ -6,14 +6,12 @@ import com.oracle.bmc.http.client.Options;
 import com.oracle.bmc.http.client.StandardClientProperties;
 import com.oracle.bmc.http.client.jersey.ApacheClientProperties;
 import com.oracle.bmc.objectstorage.ObjectStorageClient;
-import java.io.FileWriter;
 import java.io.IOException;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 public class ObjectStorageConfiguration {
@@ -47,24 +45,7 @@ public class ObjectStorageConfiguration {
     }
 
     private ConfigFileAuthenticationDetailsProvider getConfigFileAuthenticationDetailsProvider(OciProperty ociProperty) throws IOException {
-        String config1 = String.join(
-            "\n",
-            "[DEFAULT]",
-            "user=" + ociProperty.getUser(),
-            "fingerprint=" + ociProperty.getFingerprint(),
-            "tenancy=" + ociProperty.getTenancy(),
-            "region=" + ociProperty.getRegion(),
-            "key_file=" + ociProperty.getKeyFile()
-        );
-
-        try (var writer = new FileWriter(new ClassPathResource("bucket-config").getFile())) {
-            writer.write(config1);
-            writer.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        var config = ConfigFileReader.parse(new ClassPathResource("bucket-config").getFile().getAbsolutePath());
+        var config = ConfigFileReader.parse(ociProperty.getConfig());
         return new ConfigFileAuthenticationDetailsProvider(config);
     }
 

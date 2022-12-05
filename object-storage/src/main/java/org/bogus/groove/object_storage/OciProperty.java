@@ -10,10 +10,6 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @RequiredArgsConstructor
 @Getter
 public class OciProperty {
-    private final String user;
-    private final String fingerprint;
-    private final String tenancy;
-    private final String region;
-    private final String keyFile;
+    private final String config;
     private final String bucketName;
 }
