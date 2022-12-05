@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum ErrorType {
+    COMMON_ERROR("잠시 후 다시 시도해 주세요."),
     NOT_FOUND("정보를 찾을 수 없습니다."),
     NOT_FOUND_USER("유저 정보를 찾을 수 없습니다."),
     NOT_FOUND_CATEGORY("해당 카테고리를 찾을 수 없습니다."),
@@ -29,7 +30,8 @@ public enum ErrorType {
     FORBIDDEN_NOT_ENOUGH_AUTHORITY("권한이 없습니다."),
     FORBIDDEN_EMAIL_NOT_AUTHENTICATED("이메일 인증이 완료되지 않았습니다."),
     DUPLICATED_USER("이미 가입된 사용자입니다."),
-    DUPLICATED_NICKNAME("이미 등록된 닉네임이에요.");
+    DUPLICATED_NICKNAME("이미 등록된 닉네임이에요."),
+    FILE_UPLOAD("파일 업로드에 실패했습니다.");
 
     private final String message;
 
