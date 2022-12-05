@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.UserRole;
-import org.bogus.groove.common.exception.ErrorType;
-import org.bogus.groove.common.exception.NotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,9 +18,9 @@ public class EmailAuthenticator {
     public void authenticate(String sessionKey) {
         var emailAuthentication = emailAuthenticationReader.read(sessionKey);
 
-        if (emailAuthentication.getExpiredAt().isBefore(LocalDateTime.now())) {
-            throw new NotFoundException(ErrorType.AUTHENTICATION_SESSION_EXPIRED);
-        }
+//        if (emailAuthentication.getExpiredAt().isBefore(LocalDateTime.now())) {
+//            throw new NotFoundException(ErrorType.AUTHENTICATION_SESSION_EXPIRED);
+//        }
 
         var authenticated = emailAuthenticationUpdater.update(sessionKey, true, LocalDateTime.now());
 
