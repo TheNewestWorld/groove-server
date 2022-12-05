@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.UserRole;
-import org.bogus.groove.common.exception.ErrorType;
-import org.bogus.groove.common.exception.NotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
