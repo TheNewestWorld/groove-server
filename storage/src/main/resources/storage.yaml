@@ -33,7 +33,7 @@ spring.config.activate.on-profile: [ dev ]
 
 spring:
   datasource:
-    url: jdbc:oracle:thin:@cv5wkxst4fvgyixn_high?TNS_ADMIN=./api/oracle-wallet
+    url: ${ORACLE_URL}
     driver-class-name: oracle.jdbc.OracleDriver
     username: ${ORACLE_USERNAME}
     password: ${ORACLE_PASSWORD}
