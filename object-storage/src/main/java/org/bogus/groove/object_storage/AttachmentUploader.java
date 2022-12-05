@@ -9,9 +9,10 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AttachmentUploader {
     private final AttachmentRepository attachmentRepository;
+    private final ObjectStorage objectStorage;
 
     public AttachmentUploadResult upload(AttachmentUploadParam param) {
-        var result = ObjectStorage.upload(param.getInputStream(), param.getAttachmentType());
+        var result = objectStorage.upload(param.getInputStream(), param.getAttachmentType());
         var entity = attachmentRepository.save(
             new AttachmentEntity(
                 result.getObjectKey(),
