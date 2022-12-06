@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
-import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.comment.CommentService;
 import org.springframework.security.access.annotation.Secured;
@@ -29,7 +29,7 @@ public class CommentController {
 
     @Operation(summary = "댓글 작성 (parentId, commentId가 동일하면 댓글 다르면 대댓글)")
     @PostMapping("/post/{postId}/comment")
-    public CommonResponse<Void> createComment(@AuthenticationPrincipal CustomUserDetails userDetails,
+    public CommonResponse<Void> createComment(@AuthenticationPrincipal GrooveUserDetails userDetails,
                                               @PathVariable Long postId,
                                               @RequestBody CommentCreateRequest request) {
         commentService.createComment(request.getContent(), request.getParentId(), userDetails.getUserId(), postId);
@@ -39,18 +39,18 @@ public class CommentController {
     @Operation(summary = "댓글 리스트 조회")
     @GetMapping("/post/{postId}/comment")
     public CommonResponse<List<CommentResponse>> getCommentList(
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @PathVariable Long postId) {
         return CommonResponse.success(
             commentService.getCommentList(userDetails.getUserId(), postId).stream().map(CommentResponse::new).collect(
                 Collectors.toList()));
     }
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "댓글 수정")
     @PutMapping("/comment/{commentId}")
     public CommonResponse<Void> updateComment(
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestBody CommentUpdateRequest request,
         @PathVariable Long commentId
     ) {
@@ -58,10 +58,10 @@ public class CommentController {
         return CommonResponse.success();
     }
 
-    @Secured(SecurityCode.USER)
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "댓글 삭제")
     @DeleteMapping("/comment/{commentId}")
-    public CommonResponse<Void> deleteComment(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long commentId) {
+    public CommonResponse<Void> deleteComment(@AuthenticationPrincipal GrooveUserDetails userDetails, @PathVariable Long commentId) {
         commentService.deleteComment(userDetails.getUserId(), commentId);
         return CommonResponse.success();
     }

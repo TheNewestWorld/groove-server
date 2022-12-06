@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Hidden;
 import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
-import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.domain.attachment.AttachmentService;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -26,7 +26,7 @@ public class AttachmentController {
     public ResponseEntity<StreamingResponseBody> download(
         @PathVariable AttachmentType attachmentType,
         @PathVariable String objectKey,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) {
         var userId = userDetails == null ? null : userDetails.getUserId();
         var download = attachmentService.download(objectKey, attachmentType, userId);

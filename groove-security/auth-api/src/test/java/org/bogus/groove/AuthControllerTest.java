@@ -42,7 +42,7 @@ class AuthControllerTest extends BaseIntegrationTest {
     }
 
     @Test
-    public void 로그인() throws Exception {
+    public void INACTIVE_유저_로그인() throws Exception {
         var loginRequest = TestLoginRequest.mock(1);
 
         mvc.perform(
@@ -52,13 +52,29 @@ class AuthControllerTest extends BaseIntegrationTest {
                     .content(mapper.writeValueAsString(loginRequest))
             )
             .andDo(MockMvcResultHandlers.print())
-            .andExpectAll(
-                MockMvcResultMatchers.status().isOk(),
-                MockMvcResultMatchers.jsonPath("data.accessToken").isString(),
-                MockMvcResultMatchers.jsonPath("data.refreshToken").isString()
-            )
+            .andExpect(MockMvcResultMatchers.status().isForbidden())
         ;
     }
+
+//    TODO emailAuthenticationCreator 분리되면 다시 추가
+//    @Test
+//    public void 유저_로그인() throws Exception {
+//        var loginRequest = TestLoginRequest.mock(1);
+//
+//        mvc.perform(
+//                MockMvcRequestBuilders.post("/api/auth/login")
+//                    .contentType(MediaType.APPLICATION_JSON)
+//                    .characterEncoding(StandardCharsets.UTF_8)
+//                    .content(mapper.writeValueAsString(loginRequest))
+//            )
+//            .andDo(MockMvcResultHandlers.print())
+//            .andExpectAll(
+//                MockMvcResultMatchers.status().isOk(),
+//                MockMvcResultMatchers.jsonPath("data.accessToken").isString(),
+//                MockMvcResultMatchers.jsonPath("data.refreshToken").isString()
+//            )
+//        ;
+//    }
 
     @Test
     public void 토큰_리프레쉬() throws Exception {

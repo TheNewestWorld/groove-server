@@ -40,20 +40,22 @@ class UserControllerTest extends BaseIntegrationTest {
         accessToken = tokenGenerator.generateAccessToken(user.getId());
     }
 
-//    @Test
-//    public void 회원가입() throws Exception {
-//        var registerRequest = TestUserRegisterRequest.mock(2);
-//
-//        mvc.perform(
-//                MockMvcRequestBuilders.post("/api/users/register")
-//                    .contentType(MediaType.APPLICATION_JSON)
-//                    .content(mapper.writeValueAsString(registerRequest))
-//            )
-//            .andDo(MockMvcResultHandlers.print())
-//            .andExpect(MockMvcResultMatchers.status().isOk())
-//        ;
-//        Assertions.assertTrue(userRepository.findByEmailAndType(registerRequest.getEmail(), UserType.GROOVE).isPresent());
-//    }
+   /*
+    @Test
+    public void 회원가입() throws Exception {
+        var registerRequest = TestUserRegisterRequest.mock(2);
+
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/users/register")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(mapper.writeValueAsString(registerRequest))
+            )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+        ;
+        Assertions.assertTrue(userRepository.findByEmailAndType(registerRequest.getEmail(), UserType.GROOVE).isPresent());
+    }
+    */
 
     @Test
     public void 자신의_정보를_조회한다() throws Exception {
@@ -81,7 +83,7 @@ class UserControllerTest extends BaseIntegrationTest {
             .andExpect(MockMvcResultMatchers.status().isOk());
 
         Assertions.assertThrows(NotFoundException.class, () -> userReader.read(user.getId()));
-        Assertions.assertThrows(NotFoundException.class, () -> userReader.read(user.getEmail(), user.getType()));
+        Assertions.assertThrows(NotFoundException.class, () -> userReader.read(user.getEmail(), user.getProviderType()));
         Assertions.assertThrows(UnauthorizedException.class, () -> tokenValidator.validate(accessToken));
     }
 }

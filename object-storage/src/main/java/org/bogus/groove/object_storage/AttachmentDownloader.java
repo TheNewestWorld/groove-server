@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class AttachmentDownloader {
     private final AttachmentReader attachmentReader;
+    private final ObjectStorage objectStorage;
 
     public AttachmentDownload download(String objectKey, AttachmentType attachmentType) {
         var attachment = attachmentReader.read(objectKey, attachmentType);
-        var input = ObjectStorage.download(objectKey, attachmentType);
+        var input = objectStorage.download(objectKey, attachmentType);
 
         return new AttachmentDownload(
             input,

@@ -2,7 +2,7 @@ package org.bogus.groove.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.config.authentication.CustomDaoAuthenticationProvider;
+import org.bogus.groove.config.authentication.GrooveAuthenticationProvider;
 import org.bogus.groove.config.authentication.RestfulAuthenticationFailureHandler;
 import org.bogus.groove.config.authentication.RestfulAuthenticationFilter;
 import org.bogus.groove.config.authentication.RestfulAuthenticationSuccessHandler;
@@ -12,7 +12,6 @@ import org.bogus.groove.config.error.FilterChainExceptionHandlingFilter;
 import org.bogus.groove.domain.user.UserInfoFinder;
 import org.bogus.groove.domain.user.token.TokenGenerator;
 import org.bogus.groove.domain.user.token.TokenValidator;
-import org.bogus.groove.storage.repository.UserAuthorityRepository;
 import org.bogus.groove.storage.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +33,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserRepository userRepository;
-    private final UserAuthorityRepository userAuthorityRepository;
     private final TokenGenerator tokenGenerator;
     private final TokenValidator tokenValidator;
     private final UserInfoFinder userInfoFinder;
@@ -79,9 +77,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(getCustomDaoAuthenticationProvider());
     }
 
-    private CustomDaoAuthenticationProvider getCustomDaoAuthenticationProvider() {
-        var authenticationProvider = new CustomDaoAuthenticationProvider(passwordEncoder);
-        authenticationProvider.setUserDetailsService(new CustomUserDetailsService(userRepository, userAuthorityRepository));
+    private GrooveAuthenticationProvider getCustomDaoAuthenticationProvider() {
+        var authenticationProvider = new GrooveAuthenticationProvider(passwordEncoder);
+        authenticationProvider.setUserDetailsService(new GrooveUserDetailsService(userRepository));
         return authenticationProvider;
     }
 

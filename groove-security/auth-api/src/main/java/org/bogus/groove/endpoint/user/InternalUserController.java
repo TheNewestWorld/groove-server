@@ -1,6 +1,5 @@
 package org.bogus.groove.endpoint.user;
 
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.domain.user.UserService;
 import org.springframework.stereotype.Component;
@@ -15,10 +14,10 @@ public class InternalUserController {
         return new InternalUserInfoGetResponse(
             result.getId(),
             result.getEmail(),
-            result.getType().name(),
+            result.getProviderType(),
             result.getNickName(),
             result.getProfileUri(),
-            result.getAuthorities().stream().map(Enum::name).collect(Collectors.toList())
+            result.getRole()
         );
     }
 }

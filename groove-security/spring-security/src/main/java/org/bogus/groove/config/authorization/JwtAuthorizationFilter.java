@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.domain.user.UserInfoFinder;
 import org.bogus.groove.domain.user.token.TokenValidator;
 import org.springframework.http.HttpHeaders;
@@ -26,7 +26,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             var accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
             tokenValidator.validate(accessToken);
 
-            var userDetails = new CustomUserDetails(userInfoFinder.find(accessToken));
+            var userDetails = new GrooveUserDetails(userInfoFinder.find(accessToken));
             SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(
                     userDetails,

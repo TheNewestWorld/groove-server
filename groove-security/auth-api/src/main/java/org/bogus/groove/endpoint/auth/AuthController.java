@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
-import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.user.AuthService;
 import org.springframework.http.HttpHeaders;
@@ -20,18 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @Secured({SecurityCode.INACTIVE, SecurityCode.USER})
+    @Secured({SecurityCode.INACTIVE, SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "액세스 토큰 리프레쉬")
     @PostMapping("/api/auth/refresh")
     public CommonResponse<TokenRefreshResponse> refresh(
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestBody TokenRefreshRequest request
     ) {
         var result = authService.refresh(userDetails.getUserId(), request.getRefreshToken());
         return CommonResponse.success(new TokenRefreshResponse(result));
     }
 
-    @Secured({SecurityCode.INACTIVE, SecurityCode.USER})
+    @Secured({SecurityCode.INACTIVE, SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "로그아웃")
     @PostMapping("/api/auth/logout")
     public CommonResponse<Void> logout(HttpServletRequest request) {

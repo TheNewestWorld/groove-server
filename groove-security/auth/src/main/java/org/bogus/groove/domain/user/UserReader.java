@@ -2,7 +2,7 @@ package org.bogus.groove.domain.user;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.enumeration.UserType;
+import org.bogus.groove.common.enumeration.ProviderType;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.storage.repository.UserRepository;
@@ -17,12 +17,12 @@ public class UserReader {
         return readOrNull(userId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
     }
 
-    public User read(String email, UserType userType) {
-        return readOrNull(email, userType).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
+    public User read(String email, ProviderType providerType) {
+        return readOrNull(email, providerType).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
     }
 
-    public Optional<User> readOrNull(String email, UserType userType) {
-        return userRepository.findByEmailAndTypeAndActiveIsTrue(email, userType).map(User::new);
+    public Optional<User> readOrNull(String email, ProviderType providerType) {
+        return userRepository.findByEmailAndProviderTypeAndActiveIsTrue(email, providerType).map(User::new);
     }
 
     public Optional<User> readOrNull(Long userId) {
@@ -33,7 +33,7 @@ public class UserReader {
         return userRepository.existsByNickname(nickname);
     }
 
-    public boolean isExists(String email, UserType userType) {
-        return userRepository.existsByEmailAndType(email, userType);
+    public boolean isExists(String email, ProviderType providerType) {
+        return userRepository.existsByEmailAndProviderType(email, providerType);
     }
 }

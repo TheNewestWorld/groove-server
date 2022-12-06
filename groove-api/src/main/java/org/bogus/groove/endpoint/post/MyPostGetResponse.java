@@ -11,6 +11,7 @@ public class MyPostGetResponse {
     private final String userProfileUri;
     private final String title;
     private final String content;
+    private final boolean likeFlag;
     private final int likeCount;
     private final int commentCount;
 
@@ -21,6 +22,7 @@ public class MyPostGetResponse {
         this.userProfileUri = result.getUserProfileUri();
         this.title = result.getTitle();
         this.content = result.getContent();
+        this.likeFlag = result.isLikeFlag();
         this.likeCount = result.getLikeCount();
         this.commentCount = result.getCommentCount();
     }

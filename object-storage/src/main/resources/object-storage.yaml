@@ -7,3 +7,7 @@ spring.config.activate.on-profile: dev
 
 application:
   domain: ${DOMAIN}
+
+oci:
+  config: ${OCI_CONFIG_PATH}
+  bucket-name: ${OCI_BUCKET_NAME}
