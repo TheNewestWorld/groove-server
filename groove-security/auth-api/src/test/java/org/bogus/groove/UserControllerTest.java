@@ -2,11 +2,16 @@ package org.bogus.groove;
 
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.Password;
+import org.bogus.groove.common.exception.NotFoundException;
+import org.bogus.groove.common.exception.UnauthorizedException;
 import org.bogus.groove.domain.user.User;
+import org.bogus.groove.domain.user.UserReader;
 import org.bogus.groove.domain.user.UserRegister;
 import org.bogus.groove.domain.user.UserRegisterParam;
 import org.bogus.groove.domain.user.token.TokenGenerator;
+import org.bogus.groove.domain.user.token.TokenValidator;
 import org.bogus.groove.fixture.TestUserRegisterRequest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +24,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @RequiredArgsConstructor
 class UserControllerTest extends BaseIntegrationTest {
     private final UserRegister userRegister;
+    private final UserReader userReader;
     private final TokenGenerator tokenGenerator;
+    private final TokenValidator tokenValidator;
 
     User user;
     String accessToken;
@@ -63,5 +70,20 @@ class UserControllerTest extends BaseIntegrationTest {
                 MockMvcResultMatchers.jsonPath("data.id").value(user.getId())
             )
         ;
+    }
+
+    @Test
+    public void 탈퇴한_유저는_조회되지_않는다() throws Exception {
+        mvc.perform(
+            MockMvcRequestBuilders.delete("/api/users/self")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, accessToken)
+        )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isOk());
+
+        Assertions.assertThrows(NotFoundException.class, () -> userReader.read(user.getId()));
+        Assertions.assertThrows(NotFoundException.class, () -> userReader.read(user.getEmail(), user.getProviderType()));
+        Assertions.assertThrows(UnauthorizedException.class, () -> tokenValidator.validate(accessToken));
     }
 }

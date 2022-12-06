@@ -13,7 +13,7 @@ public class GrooveUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var userEntity = userRepository.findByEmailAndProviderType(username, ProviderType.GROOVE)
+        var userEntity = userRepository.findByEmailAndProviderTypeAndActiveIsTrue(username, ProviderType.GROOVE)
             .orElseThrow(() -> {
                 throw new UsernameNotFoundException("존재하지 않는 유저입니다.");
             });

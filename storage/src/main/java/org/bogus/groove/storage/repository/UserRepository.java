@@ -6,7 +6,11 @@ import org.bogus.groove.storage.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
-    Optional<UserEntity> findByEmailAndProviderType(String email, ProviderType providerType);
+    Optional<UserEntity> findByEmailAndProviderTypeAndActiveIsTrue(String email, ProviderType type);
 
-    Optional<UserEntity> findByNickname(String nickname);
+    Optional<UserEntity> findByIdAndActiveIsTrue(Long userId);
+
+    boolean existsByNickname(String nickname);
+
+    boolean existsByEmailAndProviderType(String email, ProviderType type);
 }

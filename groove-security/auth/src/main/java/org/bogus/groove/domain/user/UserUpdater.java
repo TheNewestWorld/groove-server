@@ -47,6 +47,12 @@ public class UserUpdater {
         entity.setRole(userRole);
     }
 
+    @Transactional
+    public void inactivate(Long userId) {
+        var entity = getEntity(userId);
+        entity.setActive(false);
+    }
+
     private UserEntity getEntity(long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
     }

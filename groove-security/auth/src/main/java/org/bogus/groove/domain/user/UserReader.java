@@ -17,15 +17,23 @@ public class UserReader {
         return readOrNull(userId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
     }
 
+    public User read(String email, ProviderType providerType) {
+        return readOrNull(email, providerType).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
+    }
+
     public Optional<User> readOrNull(String email, ProviderType providerType) {
-        return userRepository.findByEmailAndProviderType(email, providerType).map(User::new);
+        return userRepository.findByEmailAndProviderTypeAndActiveIsTrue(email, providerType).map(User::new);
     }
 
     public Optional<User> readOrNull(Long userId) {
-        return userRepository.findById(userId).map(User::new);
+        return userRepository.findByIdAndActiveIsTrue(userId).map(User::new);
     }
 
-    public Optional<User> readOrNull(String nickname) {
-        return userRepository.findByNickname(nickname).map(User::new);
+    public boolean isExists(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    public boolean isExists(String email, ProviderType providerType) {
+        return userRepository.existsByEmailAndProviderType(email, providerType);
     }
 }
