@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @Secured({SecurityCode.INACTIVE, SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "액세스 토큰 리프레쉬")
+    @Secured({SecurityCode.INACTIVE, SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PostMapping("/api/auth/refresh")
     public CommonResponse<TokenRefreshResponse> refresh(
         @AuthenticationPrincipal GrooveUserDetails userDetails,
@@ -31,8 +31,8 @@ public class AuthController {
         return CommonResponse.success(new TokenRefreshResponse(result));
     }
 
-    @Secured({SecurityCode.INACTIVE, SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "로그아웃")
+    @Secured({SecurityCode.INACTIVE, SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PostMapping("/api/auth/logout")
     public CommonResponse<Void> logout(HttpServletRequest request) {
         var accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
