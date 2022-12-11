@@ -39,28 +39,20 @@ public class JwtUtil {
     }
 
     public UserToken generateAccessToken(Long userId) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expiresAt = now.plus(authProperty.getAccessExpiration());
-
-        String token = JWT.create()
-            .withIssuer(appProperty.getName())
-            .withIssuedAt(now.atZone(ZoneId.systemDefault()).toInstant())
-            .withSubject("access")
-            .withClaim(userIdKey, userId)
-            .withExpiresAt(expiresAt.atZone(ZoneId.systemDefault()).toInstant())
-            .sign(signing);
-
-        return new UserToken(token, LocalDateTime.from(expiresAt));
+        LocalDateTime expiresAt = LocalDateTime.now().plus(authProperty.getAccessExpiration());
+        return generateToken(userId, expiresAt, "access");
     }
 
     public UserToken generateRefreshToken(Long userId) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime expiresAt = now.plus(authProperty.getRefreshExpiration());
+        LocalDateTime expiresAt = LocalDateTime.now().plus(authProperty.getRefreshExpiration());
+        return generateToken(userId, expiresAt, "refresh");
+    }
 
+    public UserToken generateToken(Long userId, LocalDateTime expiresAt, String subject) {
         String token = JWT.create()
             .withIssuer(appProperty.getName())
-            .withIssuedAt(now.atZone(ZoneId.systemDefault()).toInstant())
-            .withSubject("refresh")
+            .withIssuedAt(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())
+            .withSubject(subject)
             .withClaim(userIdKey, userId)
             .withExpiresAt(expiresAt.atZone(ZoneId.systemDefault()).toInstant())
             .sign(signing);

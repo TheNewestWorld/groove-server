@@ -1,6 +1,5 @@
 package org.bogus.groove.domain.user.token;
 
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.util.JwtUtil;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ public class TokenGenerator {
         return jwtUtil.generateAccessToken(userId).getToken();
     }
 
-    @Transactional
     public String generateRefreshToken(Long userId) {
         UserToken token = jwtUtil.generateRefreshToken(userId);
         userTokenUpdater.upsert(userId, token.getToken(), token.getExpiresAt());

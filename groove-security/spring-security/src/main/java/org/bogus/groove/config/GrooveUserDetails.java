@@ -5,8 +5,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.ProviderType;
-import org.bogus.groove.domain.user.UserInfo;
-import org.bogus.groove.storage.entity.UserEntity;
+import org.bogus.groove.common.enumeration.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,19 +20,18 @@ public class GrooveUserDetails implements UserDetails {
     private final List<SecurityCode> securityCodes;
     private String password;
 
-    public GrooveUserDetails(UserInfo userInfo) {
-        this.userId = userInfo.getId();
-        this.email = userInfo.getEmail();
-        this.type = userInfo.getProviderType();
-        this.securityCodes = List.of(new SecurityCode(userInfo.getRole()));
-    }
-
-    public GrooveUserDetails(UserEntity userEntity) {
-        this.userId = userEntity.getId();
-        this.email = userEntity.getEmail();
-        this.password = userEntity.getPassword();
-        this.type = userEntity.getProviderType();
-        this.securityCodes = List.of(new SecurityCode(userEntity.getRole()));
+    public GrooveUserDetails(
+        Long id,
+        String email,
+        String password,
+        ProviderType providerType,
+        UserRole role
+    ) {
+        this.userId = id;
+        this.email = email;
+        this.password = password;
+        this.type = providerType;
+        this.securityCodes = List.of(new SecurityCode(role));
     }
 
     @Override
