@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Deprecated
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private final TokenValidator tokenValidator;
@@ -26,7 +27,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             var accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
             tokenValidator.validate(accessToken);
 
-            var userDetails = new GrooveUserDetails(userInfoFinder.find(accessToken));
+            var userInfo = userInfoFinder.find(accessToken);
+            var userDetails = new GrooveUserDetails(
+                userInfo.getId(),
+                userInfo.getEmail(),
+                null,
+                userInfo.getProviderType(),
+                userInfo.getRole()
+            );
+
             SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(
                     userDetails,

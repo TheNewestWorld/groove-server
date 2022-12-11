@@ -6,7 +6,9 @@ import org.bogus.groove.storage.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class GrooveUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
@@ -17,6 +19,13 @@ public class GrooveUserDetailsService implements UserDetailsService {
             .orElseThrow(() -> {
                 throw new UsernameNotFoundException("존재하지 않는 유저입니다.");
             });
-        return new GrooveUserDetails(userEntity);
+
+        return new GrooveUserDetails(
+            userEntity.getId(),
+            userEntity.getEmail(),
+            userEntity.getPassword(),
+            userEntity.getProviderType(),
+            userEntity.getRole()
+        );
     }
 }
