@@ -47,6 +47,8 @@ public class ReportController {
         PageRequest pageRequest = PageRequest.of(page, size);
         var result = reportService.getList(pageRequest);
         return CommonResponse.success(new PageResponse<>(result.getNumber(), result.getSize(),
-            result.map((report) -> new ReportResponse(report.getId(), report.getUserId(), report.getTargetId(), report.getReportTargetType(), report.getReportReasonType())).toList(), result.hasNext()));
+            result.map(
+                (report) -> new ReportResponse(report.getId(), report.getUserId(), report.getTargetId(), report.getReportTargetType(),
+                    report.getReportReasonType())).toList(), result.hasNext()));
     }
 }
