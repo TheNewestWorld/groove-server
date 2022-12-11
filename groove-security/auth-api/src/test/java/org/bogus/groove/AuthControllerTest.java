@@ -1,6 +1,7 @@
 package org.bogus.groove;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.Password;
 import org.bogus.groove.common.exception.UnauthorizedException;
@@ -12,6 +13,7 @@ import org.bogus.groove.domain.user.token.TokenValidator;
 import org.bogus.groove.endpoint.auth.TokenRefreshRequest;
 import org.bogus.groove.fixture.TestLoginRequest;
 import org.bogus.groove.fixture.TestUserRegisterRequest;
+import org.bogus.groove.util.JwtUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,7 @@ class AuthControllerTest extends BaseIntegrationTest {
     private final UserRegister userRegister;
     private final TokenGenerator tokenGenerator;
     private final TokenValidator tokenValidator;
+    private final JwtUtil jwtUtil;
 
     User user;
     String accessToken;
@@ -91,6 +94,41 @@ class AuthControllerTest extends BaseIntegrationTest {
                 MockMvcResultMatchers.status().isOk(),
                 MockMvcResultMatchers.jsonPath("data.accessToken").isString()
             )
+        ;
+    }
+
+    @Test
+    public void 만료_토큰_리프레쉬() throws Exception {
+        var refreshRequest = new TokenRefreshRequest(refreshToken);
+        var expiredAccessToken = jwtUtil.generateToken(user.getId(), LocalDateTime.now().minusSeconds(1), "access").getToken();
+
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/auth/refresh")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header(HttpHeaders.AUTHORIZATION, expiredAccessToken)
+                    .content(mapper.writeValueAsString(refreshRequest))
+            )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpectAll(
+                MockMvcResultMatchers.status().isOk(),
+                MockMvcResultMatchers.jsonPath("data.accessToken").isString()
+            )
+        ;
+    }
+
+    @Test
+    public void 리프레쉬_토큰_만료_시_예외를_던진다() throws Exception {
+        var expiredRefreshToken = jwtUtil.generateToken(user.getId(), LocalDateTime.now().minusSeconds(1), "refresh").getToken();
+        var refreshRequest = new TokenRefreshRequest(expiredRefreshToken);
+
+        mvc.perform(
+                MockMvcRequestBuilders.post("/api/auth/refresh")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header(HttpHeaders.AUTHORIZATION, accessToken)
+                    .content(mapper.writeValueAsString(refreshRequest))
+            )
+            .andDo(MockMvcResultHandlers.print())
+            .andExpect(MockMvcResultMatchers.status().isUnauthorized())
         ;
     }
 
