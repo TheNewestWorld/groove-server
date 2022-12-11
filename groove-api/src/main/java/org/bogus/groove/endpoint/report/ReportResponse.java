@@ -1,6 +1,5 @@
 package org.bogus.groove.endpoint.report;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.ReportReasonType;

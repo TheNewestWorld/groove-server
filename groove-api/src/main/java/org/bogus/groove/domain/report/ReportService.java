@@ -1,6 +1,5 @@
 package org.bogus.groove.domain.report;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.ReportReasonType;
 import org.bogus.groove.common.enumeration.ReportTargetType;
