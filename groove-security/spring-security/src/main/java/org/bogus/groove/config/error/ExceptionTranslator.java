@@ -20,22 +20,23 @@ public class ExceptionTranslator {
 
     public HttpStatus translateToHttpStatus(Throwable e) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        var exception = e.getCause() instanceof AppException ? e.getCause() : e;
 
-        if (e instanceof NotFoundException) {
+        if (exception instanceof NotFoundException) {
             status = HttpStatus.NOT_FOUND;
-            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
-        } else if (e instanceof BadRequestException) {
+            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), exception.getMessage());
+        } else if (exception instanceof BadRequestException) {
             status = HttpStatus.BAD_REQUEST;
-            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
-        } else if (e instanceof UnauthorizedException || e instanceof AuthenticationException) {
+            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), exception.getMessage());
+        } else if (exception instanceof UnauthorizedException || exception instanceof AuthenticationException) {
             status = HttpStatus.UNAUTHORIZED;
-            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
-        } else if (e instanceof ForbiddenException || e instanceof AccessDeniedException) {
+            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), exception.getMessage());
+        } else if (exception instanceof ForbiddenException || exception instanceof AccessDeniedException) {
             status = HttpStatus.FORBIDDEN;
-            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
-        } else if (e instanceof InternalServerException) {
+            logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), exception.getMessage());
+        } else if (exception instanceof InternalServerException) {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
-            logger.error("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
+            logger.error("[{}] {}, {}", status.value(), status.getReasonPhrase(), exception.getMessage());
         }
 
         return status;
@@ -46,6 +47,11 @@ public class ExceptionTranslator {
             return CommonResponse.error(
                 ((AppException) e).getError().code(),
                 e.getMessage()
+            );
+        } else if (e.getCause() instanceof AppException) {
+            return CommonResponse.error(
+                ((AppException) e.getCause()).getError().code(),
+                e.getCause().getMessage()
             );
         } else {
             return CommonResponse.error(
