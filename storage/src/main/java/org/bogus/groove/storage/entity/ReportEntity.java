@@ -4,12 +4,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.bogus.groove.common.enumeration.ReportReasonType;
 import org.bogus.groove.common.enumeration.ReportTargetType;
 
 @Entity
 @Table(name = "report")
 @Getter
+@NoArgsConstructor
 public class ReportEntity extends BaseEntity {
 
     @Column(name = "ref_user_id")
