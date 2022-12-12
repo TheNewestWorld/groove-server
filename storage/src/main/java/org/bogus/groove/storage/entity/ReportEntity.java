@@ -28,6 +28,7 @@ public class ReportEntity extends BaseEntity {
 
     public ReportEntity(Long userId, Long targetId, ReportTargetType reportTargetType,
                         ReportReasonType reportReasonType) {
+        super();
         this.userId = userId;
         this.targetId = targetId;
         this.reportTargetType = reportTargetType;

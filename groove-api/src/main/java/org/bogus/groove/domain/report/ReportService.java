@@ -19,7 +19,7 @@ public class ReportService {
     }
 
     public Slice<Report> getList(Pageable pageable) {
-        return reportReader.readAll(pageable.getPageNumber(), pageable.getPageSize());
+        return reportReader.readAll(pageable);
     }
 
     public Report get(Long reportId) {

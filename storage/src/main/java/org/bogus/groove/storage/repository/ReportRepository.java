@@ -6,5 +6,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReportRepository extends JpaRepository<ReportEntity, Long> {
-    Slice<ReportEntity> reportAllPosts(Pageable pageable);
+    Slice<ReportEntity> findAllByOrderByCreatedAtDesc(Pageable pageable);
 }
+
