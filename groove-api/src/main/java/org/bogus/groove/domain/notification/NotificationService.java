@@ -5,7 +5,6 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.NotificationType;
 import org.bogus.groove.storage.repository.EmitterRepository;
-import org.bogus.groove.storage.repository.NotificationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -16,9 +15,10 @@ public class NotificationService {
     private final NotificationCreator notificationCreator;
 
 
+
     public SseEmitter subscribe(Long userId, String lastEventId) {
-        String emitterId = userId + "_" + System.currentTimeMillis();
-        SseEmitter sseEmitter = emitterRepository.save(emitterId, new SseEmitter(timeout));
+        String emitterId = makeTimeIncludeId(userId);
+        SseEmitter sseEmitter = emitterRepository.save(emitterId, new SseEmitter(10 * 60 * 1000L));
         sseEmitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
         sseEmitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
 
@@ -34,6 +34,11 @@ public class NotificationService {
         return sseEmitter;
     }
 
+    private String makeTimeIncludeId(Long memberId) {
+        return memberId + "_" + System.currentTimeMillis();
+    }
+
+
     public void send(String content, NotificationType notificationType, Long targetId, Long userId) {
         Notification notification = notificationCreator.createNotification(content, notificationType, targetId, userId);
         String receiverId = String.valueOf(userId);
@@ -42,7 +47,7 @@ public class NotificationService {
         emitters.forEach(
             (key, emitter) -> {
                 emitterRepository.saveEventCache(key, notification);
-                sendNotification(emitter, eventId, key, No);
+                //sendNotification(emitter, eventId, key, NotificationResponseDto.create(notification));
             }
         );
     }
