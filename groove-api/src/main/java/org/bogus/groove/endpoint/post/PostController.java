@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.common.PageResponse;
+import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.common.enumeration.SortOrderType;
 import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.config.SecurityCode;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "post-controller")
 @RequestMapping("/api/community/post")
@@ -43,18 +45,19 @@ public class PostController {
     public CommonResponse<Void> createPost(
         @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestPart PostCreateRequest request,
-        @RequestPart(required = false) List<PostAttachment> attachments
+        @RequestPart(required = false) List<MultipartFile> attachments
     ) {
         List<PostAttachmentCreateParam> params = new ArrayList<>();
         if (attachments != null) {
-            for (PostAttachment attachment : attachments) {
+            for (MultipartFile attachment : attachments) {
                 try {
-                    InputStream input = attachment.getFile().getInputStream();
+                    InputStream input = attachment.getInputStream();
+
                     params.add(new PostAttachmentCreateParam(
                         input,
-                        attachment.getFile().getOriginalFilename(),
-                        attachment.getFile().getSize(),
-                        attachment.getType()
+                        attachment.getOriginalFilename(),
+                        attachment.getSize(),
+                        extCheck(attachment.getOriginalFilename())
                     ));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -108,18 +111,18 @@ public class PostController {
         @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestPart PostUpdateRequest request,
         @PathVariable Long postId,
-        @RequestPart(required = false) List<PostAttachment> attachments
+        @RequestPart(required = false) List<MultipartFile> attachments
     ) {
         List<PostAttachmentCreateParam> params = new ArrayList<>();
         if (attachments != null) {
-            for (PostAttachment attachment : attachments) {
+            for (MultipartFile attachment : attachments) {
                 try {
-                    InputStream input = attachment.getFile().getInputStream();
+                    InputStream input = attachment.getInputStream();
                     params.add(new PostAttachmentCreateParam(
                         input,
-                        attachment.getFile().getOriginalFilename(),
-                        attachment.getFile().getSize(),
-                        attachment.getType()
+                        attachment.getOriginalFilename(),
+                        attachment.getSize(),
+                        extCheck(attachment.getOriginalFilename())
                     ));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -139,5 +142,18 @@ public class PostController {
     ) {
         postService.deletePost(userDetails.getUserId(), postId);
         return CommonResponse.success();
+    }
+
+    private AttachmentType extCheck(String fileName) {
+        AttachmentType type;
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        if (ext == "jpg" || ext == "jpeg" || ext == "gif" || ext == "png") {
+            type = AttachmentType.POST_IMAGE;
+        } else {
+            type = AttachmentType.POST_RECORD;
+        }
+
+        return type;
     }
 }
