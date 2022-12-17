@@ -45,7 +45,7 @@ public class PostService {
                     param.getFileName(),
                     param.getSize(),
                     post.getId(),
-                    AttachmentType.POST
+                    param.getAttachmentType()
                 )
             );
         }
@@ -66,7 +66,7 @@ public class PostService {
                         userInfo.getProfileUri(),
                         !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
                         userId == post.getUserId() ? true : false,
-                        getAttachmentUri(post));
+                        getAttachments(post));
                 }
             ).toList(),
             posts.getPageable(),
@@ -83,7 +83,7 @@ public class PostService {
             userInfo.getProfileUri(),
             likeReader.checkLike(userId, postId),
             userId == post.getUserId() ? true : false,
-            getAttachmentUri(post)
+            getAttachments(post)
         );
         PostGetDetailResult postDetail = new PostGetDetailResult(result, post.getCreatedAt());
         return postDetail;
@@ -121,7 +121,8 @@ public class PostService {
 
     public void updatePost(Long userId, Long postId, String title, String content, Long categoryId,
                            List<PostAttachmentCreateParam> params) {
-        var attachments = attachmentReader.readAll(postId, AttachmentType.POST);
+        var attachments = attachmentReader.readAll(postId, AttachmentType.POST_IMAGE);
+        attachments.addAll(attachmentReader.readAll(postId, AttachmentType.POST_RECORD));
         attachments.forEach((attachment -> attachmentDeleter.delete(attachment.getId())));
         postUpdater.updatePost(userId, postId, title, content, categoryId);
 
@@ -132,7 +133,7 @@ public class PostService {
                     param.getFileName(),
                     param.getSize(),
                     postId,
-                    AttachmentType.POST
+                    param.getAttachmentType()
                 )
             );
         }
@@ -140,11 +141,15 @@ public class PostService {
 
     public void deletePost(Long userId, Long postId) {
         postDeleter.deletePost(userId, postId);
-        var attachments = attachmentReader.readAll(postId, AttachmentType.POST);
+        var attachments = attachmentReader.readAll(postId, AttachmentType.POST_IMAGE);
+        attachments.addAll(attachmentReader.readAll(postId, AttachmentType.POST_RECORD));
         attachments.forEach((attachment -> attachmentDeleter.delete(attachment.getId())));
     }
 
-    private List<String> getAttachmentUri(Post post) {
-        return attachmentReader.readAll(post.getId(), AttachmentType.POST).stream().map(Attachment::getUri).collect(Collectors.toList());
+
+    private List<Attachment> getAttachments(Post post) {
+        var attachments = attachmentReader.readAll(post.getId(), AttachmentType.POST_IMAGE);
+        attachments.addAll(attachmentReader.readAll(post.getId(), AttachmentType.POST_RECORD));
+        return attachments;
     }
 }
