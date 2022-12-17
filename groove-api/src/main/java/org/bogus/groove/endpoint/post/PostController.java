@@ -148,7 +148,7 @@ public class PostController {
         AttachmentType type;
         String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
 
-        if (ext == "jpg" || ext == "jpeg" || ext == "gif" || ext == "png") {
+        if (ext.equals("jpg") || ext.equals("jpeg") || ext.equals("gif") || ext.equals("png")) {
             type = AttachmentType.POST_IMAGE;
         } else {
             type = AttachmentType.POST_RECORD;
