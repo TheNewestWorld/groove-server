@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bogus.groove.domain.post.PostGetResult;
 import org.bogus.groove.object_storage.Attachment;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @AllArgsConstructor
