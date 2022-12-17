@@ -4,6 +4,8 @@ val queryDslVersion: String by project
 
 dependencies {
     api("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation(project(":common"))
 
     implementation("com.h2database:h2:$h2Version")
