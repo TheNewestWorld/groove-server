@@ -66,7 +66,7 @@ public class PostService {
                         userInfo.getProfileUri(),
                         !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
                         userId == post.getUserId() ? true : false,
-                        getAttachmentUri(post));
+                        getAttachments(post));
                 }
             ).toList(),
             posts.getPageable(),
@@ -83,7 +83,7 @@ public class PostService {
             userInfo.getProfileUri(),
             likeReader.checkLike(userId, postId),
             userId == post.getUserId() ? true : false,
-            getAttachmentUri(post)
+            getAttachments(post)
         );
         PostGetDetailResult postDetail = new PostGetDetailResult(result, post.getCreatedAt());
         return postDetail;
@@ -146,9 +146,10 @@ public class PostService {
         attachments.forEach((attachment -> attachmentDeleter.delete(attachment.getId())));
     }
 
-    private List<String> getAttachmentUri(Post post) {
+
+    private List<Attachment> getAttachments(Post post) {
         var attachments = attachmentReader.readAll(post.getId(), AttachmentType.POST_IMAGE);
         attachments.addAll(attachmentReader.readAll(post.getId(), AttachmentType.POST_RECORD));
-        return attachments.stream().map(Attachment::getUri).collect(Collectors.toList());
+        return attachments;
     }
 }
