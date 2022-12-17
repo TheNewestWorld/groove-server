@@ -13,7 +13,7 @@ public class PostDetailResponse {
     private String content;
     private Long userId;
     private String nickName;
-    private String profieUri;
+    private String profileUri;
     private boolean likeFlag;
     private Integer likeCount;
     private Integer commentCount;
@@ -28,7 +28,7 @@ public class PostDetailResponse {
         this.content = postDetail.getPost().getContent();
         this.userId = postDetail.getPost().getUserId();
         this.nickName = postDetail.getPost().getNickName();
-        this.profieUri = postDetail.getPost().getProfileUri();
+        this.profileUri = postDetail.getPost().getProfileUri();
         this.likeFlag = postDetail.getPost().isLikeFlag();
         this.likeCount = postDetail.getPost().getLikeCount();
         this.commentCount = postDetail.getPost().getCommentCount();
