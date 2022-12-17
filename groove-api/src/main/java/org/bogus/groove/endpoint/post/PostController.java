@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "post-controller")
 @RequestMapping("/api/community/post")
@@ -44,17 +43,18 @@ public class PostController {
     public CommonResponse<Void> createPost(
         @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestPart PostCreateRequest request,
-        @RequestPart(required = false) List<MultipartFile> attachments
+        @RequestPart(required = false) List<PostAttachment> attachments
     ) {
         List<PostAttachmentCreateParam> params = new ArrayList<>();
         if (attachments != null) {
-            for (MultipartFile attachment : attachments) {
+            for (PostAttachment attachment : attachments) {
                 try {
-                    InputStream input = attachment.getInputStream();
+                    InputStream input = attachment.getFile().getInputStream();
                     params.add(new PostAttachmentCreateParam(
                         input,
-                        attachment.getOriginalFilename(),
-                        attachment.getSize()
+                        attachment.getFile().getOriginalFilename(),
+                        attachment.getFile().getSize(),
+                        attachment.getType()
                     ));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -108,17 +108,18 @@ public class PostController {
         @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestPart PostUpdateRequest request,
         @PathVariable Long postId,
-        @RequestPart(required = false) List<MultipartFile> attachments
+        @RequestPart(required = false) List<PostAttachment> attachments
     ) {
         List<PostAttachmentCreateParam> params = new ArrayList<>();
         if (attachments != null) {
-            for (MultipartFile attachment : attachments) {
+            for (PostAttachment attachment : attachments) {
                 try {
-                    InputStream input = attachment.getInputStream();
+                    InputStream input = attachment.getFile().getInputStream();
                     params.add(new PostAttachmentCreateParam(
                         input,
-                        attachment.getOriginalFilename(),
-                        attachment.getSize()
+                        attachment.getFile().getOriginalFilename(),
+                        attachment.getFile().getSize(),
+                        attachment.getType()
                     ));
                 } catch (IOException e) {
                     e.printStackTrace();
