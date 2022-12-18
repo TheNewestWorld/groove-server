@@ -9,6 +9,7 @@ import org.bogus.groove.domain.attachment.AttachmentService;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ public class AttachmentController {
     private final AttachmentService attachmentService;
 
     @Hidden
+    @Secured("permitAll")
     @GetMapping("/attachments/{attachmentType}/{objectKey}")
     public ResponseEntity<StreamingResponseBody> download(
         @PathVariable AttachmentType attachmentType,
