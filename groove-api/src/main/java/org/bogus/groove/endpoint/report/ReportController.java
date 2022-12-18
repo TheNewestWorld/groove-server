@@ -26,6 +26,7 @@ public class ReportController {
 
     private final ReportService reportService;
 
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PostMapping("/reports")
     public CommonResponse<Void> createReport(@AuthenticationPrincipal GrooveUserDetails grooveUserDetails,
                                              @RequestBody ReportRequestParam reportRequestParam) {
