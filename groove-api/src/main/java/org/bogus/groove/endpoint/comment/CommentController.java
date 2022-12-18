@@ -28,6 +28,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @Operation(summary = "댓글 작성 (parentId, commentId가 동일하면 댓글 다르면 대댓글)")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PostMapping("/post/{postId}/comment")
     public CommonResponse<Void> createComment(@AuthenticationPrincipal GrooveUserDetails userDetails,
                                               @PathVariable Long postId,
@@ -37,6 +38,7 @@ public class CommentController {
     }
 
     @Operation(summary = "댓글 리스트 조회")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @GetMapping("/post/{postId}/comment")
     public CommonResponse<List<CommentResponse>> getCommentList(
         @AuthenticationPrincipal GrooveUserDetails userDetails,
