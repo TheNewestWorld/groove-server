@@ -6,7 +6,6 @@ import org.bogus.groove.common.enumeration.ReportTargetType;
 
 @Getter
 public class ReportRequestParam {
-    private Long userId;
     private Long postId;
     private ReportTargetType reportTargetType;
     private ReportReasonType reportReasonType;
