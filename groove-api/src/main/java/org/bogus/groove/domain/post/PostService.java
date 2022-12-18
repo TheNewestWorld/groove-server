@@ -59,14 +59,14 @@ public class PostService {
         return new SliceImpl<>(
             posts.map(
                 post -> {
-                    UserInfo userInfo = userClient.get(userId);
+                    UserInfo userInfo = userClient.get(post.getUserId());
                     return new PostGetResult(
                         post,
                         userInfo.getNickname(),
                         userInfo.getProfileUri(),
                         !likeList.stream().filter(like -> like.getPostId() == post.getId()).collect(Collectors.toList()).isEmpty(),
                         userId == post.getUserId() ? true : false,
-                        getAttachments(post));
+                        getAttachmentUri(post));
                 }
             ).toList(),
             posts.getPageable(),
@@ -75,15 +75,15 @@ public class PostService {
     }
 
     public PostGetDetailResult getPost(Long userId, Long postId) {
-        UserInfo userInfo = userClient.get(userId);
         Post post = postReader.readPost(postId);
+        UserInfo userInfo = userClient.get(post.getUserId());
         PostGetResult result = new PostGetResult(
             post,
             userInfo.getNickname(),
             userInfo.getProfileUri(),
             likeReader.checkLike(userId, postId),
             userId == post.getUserId() ? true : false,
-            getAttachments(post)
+            getAttachmentUri(post)
         );
         PostGetDetailResult postDetail = new PostGetDetailResult(result, post.getCreatedAt());
         return postDetail;
@@ -146,8 +146,7 @@ public class PostService {
         attachments.forEach((attachment -> attachmentDeleter.delete(attachment.getId())));
     }
 
-
-    private List<Attachment> getAttachments(Post post) {
+    private List<Attachment> getAttachmentUri(Post post) {
         var attachments = attachmentReader.readAll(post.getId(), AttachmentType.POST_IMAGE);
         attachments.addAll(attachmentReader.readAll(post.getId(), AttachmentType.POST_RECORD));
         return attachments;
