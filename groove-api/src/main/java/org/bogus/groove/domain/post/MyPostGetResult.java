@@ -19,7 +19,7 @@ public class MyPostGetResult {
 
     MyPostGetResult(Post post, UserInfo userInfo, boolean likeFlag, int likeCount, int commentCount) {
         this.postId = post.getId();
-        this.userId = userInfo.getId();
+        this.userId = post.getUserId();
         this.userNickname = userInfo.getNickname();
         this.userProfileUri = userInfo.getProfileUri();
         this.title = post.getTitle();
