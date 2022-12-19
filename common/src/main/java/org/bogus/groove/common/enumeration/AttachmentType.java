@@ -6,11 +6,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum AttachmentType {
-    PROFILE("profile"),
-    PRIVATE_RECORD("private-record"),
-    POST_IMAGE("post-image"),
-    POST_RECORD("post-record")
+    PROFILE("profile", true),
+    PRIVATE_RECORD("private-record", false),
+    POST_IMAGE("post-image", true),
+    POST_RECORD("post-record", true)
     ;
 
     private final String path;
+    private final boolean preAuthorized;
 }

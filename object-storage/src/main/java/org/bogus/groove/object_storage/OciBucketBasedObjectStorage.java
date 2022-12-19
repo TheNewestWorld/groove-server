@@ -71,6 +71,10 @@ class OciBucketBasedObjectStorage implements ObjectStorage {
     }
 
     private String getFilePath(String objectKey, AttachmentType attachmentType) {
-        return String.join("/", "upload", attachmentType.getPath(), objectKey);
+        return String.join("/",
+            attachmentType.isPreAuthorized() ? "upload/public" : "upload",
+            attachmentType.getPath(),
+            objectKey
+        );
     }
 }

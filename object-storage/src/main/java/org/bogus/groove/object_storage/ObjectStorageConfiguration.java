@@ -33,9 +33,9 @@ public class ObjectStorageConfiguration {
     @Profile("dev")
     @Primary
     @Bean
-    public ObjectUriMaker ociBucketBasedObjectUriMaker(@Value("${object-storage.prefix}") String prefix,
+    public ObjectUriMaker ociBucketBasedObjectUriMaker(@Value("${object-storage.pre-authorized-url}") String preAuthorizedUrl,
                                                        @Value("${application.domain}") String domain) {
-        return new OciBucketBasedObjectUriMaker(prefix, domain);
+        return new OciBucketBasedObjectUriMaker(preAuthorizedUrl, domain);
     }
 
     @Profile("dev")
