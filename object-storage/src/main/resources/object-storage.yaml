@@ -11,4 +11,4 @@ oci:
   bucket-name: ${OCI_BUCKET_NAME}
 
 object-storage:
-  prefix: ${OCI_OBJECT_PATH_PREFIX}
+  pre-authorized-url: ${OCI_PRE_AUTHORIZED_URL}
