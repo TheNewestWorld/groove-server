@@ -17,7 +17,7 @@ public class Attachment {
     private final String uri;
     private final LocalDateTime createdAt;
 
-    public Attachment(AttachmentEntity entity, String domain) {
+    public Attachment(AttachmentEntity entity, String uri) {
         this.id = entity.getId();
         this.objectKey = entity.getObjectKey();
         this.path = entity.getPath();
@@ -25,7 +25,7 @@ public class Attachment {
         this.size = entity.getSize();
         this.resourceId = entity.getResourceId();
         this.fileType = entity.getAttachmentType();
-        this.uri = String.format("%s/attachments/%s/%s", domain, entity.getAttachmentType().name(), objectKey);
+        this.uri = uri;
         this.createdAt = entity.getCreatedAt();
     }
 }

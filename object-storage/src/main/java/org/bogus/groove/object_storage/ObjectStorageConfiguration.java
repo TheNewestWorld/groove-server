@@ -8,6 +8,7 @@ import com.oracle.bmc.http.client.jersey.ApacheClientProperties;
 import com.oracle.bmc.objectstorage.ObjectStorageClient;
 import java.io.IOException;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -20,6 +21,21 @@ public class ObjectStorageConfiguration {
     @Bean
     public ObjectStorage fileSystemBasedObjectStorage() {
         return new FileSystemBasedObjectStorage();
+    }
+
+    @Profile({"local", "test"})
+    @Primary
+    @Bean
+    public ObjectUriMaker fileSystemBasedObjectUriMaker(@Value("${application.domain}") String domain) {
+        return new FileSystemBasedObjectUriMaker(domain);
+    }
+
+    @Profile("dev")
+    @Primary
+    @Bean
+    public ObjectUriMaker ociBucketBasedObjectUriMaker(@Value("${object-storage.prefix}") String prefix,
+                                                       @Value("${application.domain}") String domain) {
+        return new OciBucketBasedObjectUriMaker(prefix, domain);
     }
 
     @Profile("dev")
