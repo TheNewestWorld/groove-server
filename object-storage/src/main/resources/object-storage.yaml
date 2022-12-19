@@ -1,13 +1,14 @@
-application:
-  domain: http://localhost:8080
+application.domain: http://localhost:8080
 
 ---
 
 spring.config.activate.on-profile: dev
 
-application:
-  domain: ${DOMAIN}
+application.domain: ${DOMAIN}
 
 oci:
   config: ${OCI_CONFIG_PATH}
   bucket-name: ${OCI_BUCKET_NAME}
+
+object-storage:
+  prefix: ${OCI_OBJECT_PATH_PREFIX}
