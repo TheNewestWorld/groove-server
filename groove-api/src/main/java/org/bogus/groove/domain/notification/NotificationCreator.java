@@ -1,7 +1,6 @@
 package org.bogus.groove.domain.notification;
 
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.enumeration.NotificationType;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.InternalServerException;
 import org.bogus.groove.storage.entity.NotificationEntity;
@@ -13,9 +12,10 @@ import org.springframework.stereotype.Component;
 public class NotificationCreator {
     private final NotificationRepository notificationRepository;
 
-    public Notification createNotification(String content, NotificationType notificationType, Long targetId, Long userId) {
+    public Notification createNotification(Long receiver, TemplateSend dto) {
         try {
-            var entity = notificationRepository.save(new NotificationEntity(content, notificationType, targetId, userId));
+            var entity =
+                notificationRepository.save(new NotificationEntity(dto.getOutput(), dto.getNotificationType(), dto.getLinkUrl(), receiver));
             return new Notification(entity);
         } catch (IllegalArgumentException e) {
             throw new InternalServerException(ErrorType.FAILED_TO_CREATE_NOTIFICATION);

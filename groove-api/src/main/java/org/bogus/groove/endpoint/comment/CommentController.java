@@ -2,6 +2,7 @@ package org.bogus.groove.endpoint.comment;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class CommentController {
     @PostMapping("/post/{postId}/comment")
     public CommonResponse<Void> createComment(@AuthenticationPrincipal GrooveUserDetails userDetails,
                                               @PathVariable Long postId,
-                                              @RequestBody CommentCreateRequest request) {
+                                              @RequestBody CommentCreateRequest request) throws IOException {
         commentService.createComment(request.getContent(), request.getParentId(), userDetails.getUserId(), postId);
         return CommonResponse.success();
     }
