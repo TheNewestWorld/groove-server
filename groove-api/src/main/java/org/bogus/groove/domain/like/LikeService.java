@@ -3,7 +3,6 @@ package org.bogus.groove.domain.like;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.client.user.UserClient;
-import org.bogus.groove.domain.notification.NotificationCreator;
 import org.bogus.groove.domain.notification.NotificationTemplateFactory;
 import org.bogus.groove.domain.notification.TemplateSend;
 import org.bogus.groove.domain.notification.TemplateSender;

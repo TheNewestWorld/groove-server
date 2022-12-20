@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.common.enumeration.NotificationType;
 import org.bogus.groove.storage.repository.EmitterRepository;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
