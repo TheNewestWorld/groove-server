@@ -22,7 +22,7 @@ public class PostDeleter {
         var entity = postRepository.findById(postId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_POST));
         if (entity.getUserId() == userId) {
             entity.setDeleted(true);
-            List<CommentEntity> comments = commentRepository.findAllByPostIdAndIsDeletedFalse(postId);
+            List<CommentEntity> comments = commentRepository.findAllByPostIdAndIsDeletedFalseOrderByCreatedAt(postId);
             for (CommentEntity comment : comments) {
                 comment.setDeleted(true);
             }

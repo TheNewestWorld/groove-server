@@ -5,9 +5,9 @@ import org.bogus.groove.storage.entity.CommentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
-    List<CommentEntity> findAllByPostIdAndIsDeletedFalse(Long postId);
+    List<CommentEntity> findAllByPostIdAndIsDeletedFalseOrderByCreatedAt(Long postId);
 
     Integer countByPostIdAndIsDeletedFalse(Long postId);
 
-    List<CommentEntity> findAllByParentIdAndIsDeletedFalse(Long commentId);
+    List<CommentEntity> findAllByParentIdAndIsDeletedFalseOrderByCreatedAt(Long commentId);
 }
