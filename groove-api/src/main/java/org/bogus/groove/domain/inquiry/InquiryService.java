@@ -1,6 +1,7 @@
 package org.bogus.groove.domain.inquiry;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.domain.attachment.InquiryAttachmentCreateParam;
@@ -54,7 +55,8 @@ public class InquiryService {
         var inquiries = inquiryReader.readAll(userId, pageable);
         return new SliceImpl<>(inquiryReader.readAll(userId, pageable).stream()
             .map(inquiry -> new InquiryGetResult(inquiry, getAttachmentUri(inquiry), inquiryAnswerReader.read(inquiry.getAnswerId())))
-            .toList(), inquiries.getPageable(), inquiries.hasNext());
+            .collect(
+                Collectors.toList()), inquiries.getPageable(), inquiries.hasNext());
     }
 
     private List<Attachment> getAttachmentUri(Inquiry inquiry) {
