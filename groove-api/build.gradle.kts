@@ -25,6 +25,9 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")
     implementation("org.springdoc:springdoc-openapi-security:$springDocVersion")
 
+    //freemarker
+    implementation("org.springframework.boot:spring-boot-starter-freemarker")
+
     // auth
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation(project(":groove-security:spring-security"))
