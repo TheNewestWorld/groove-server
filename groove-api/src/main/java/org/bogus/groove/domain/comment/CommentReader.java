@@ -15,7 +15,8 @@ public class CommentReader {
 
     public List<Comment> readAllPostComment(Long postId) {
         checkPostIsExist(postId);
-        return commentRepository.findAllByPostIdAndIsDeletedFalseOrderByCreatedAt(postId).stream().filter(entity -> entity.getParentId() == 0)
+        return commentRepository.findAllByPostIdAndIsDeletedFalseOrderByCreatedAt(postId).stream()
+            .filter(entity -> entity.getParentId() == 0)
             .map(
                 Comment::new).collect(Collectors.toList());
     }
