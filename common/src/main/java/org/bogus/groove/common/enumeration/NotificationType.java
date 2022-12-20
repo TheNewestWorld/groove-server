@@ -1,7 +1,7 @@
 package org.bogus.groove.common.enumeration;
 
 public enum NotificationType {
-    POST,
+    LIKE,
     COMMENT,
     COACHING
 }

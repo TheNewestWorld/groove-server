@@ -2,6 +2,7 @@ package org.bogus.groove.endpoint.like;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.config.GrooveUserDetails;
@@ -25,7 +26,7 @@ public class LikeController {
     @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @Operation(summary = "게시글 좋아요")
     @PostMapping("/{postId}/like")
-    public CommonResponse<Void> like(@AuthenticationPrincipal GrooveUserDetails userDetails, @PathVariable Long postId) {
+    public CommonResponse<Void> like(@AuthenticationPrincipal GrooveUserDetails userDetails, @PathVariable Long postId) throws IOException {
         likeService.like(userDetails.getUserId(), postId);
         return CommonResponse.success();
     }
