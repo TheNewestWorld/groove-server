@@ -17,6 +17,8 @@ public enum ErrorType {
     NOT_FOUND_LIKE("해당 좋아요를 찾을 수 없습니다."),
     NOT_FOUND_TEMPLATE("템플릿을 찾을 수 없습니다."),
     NOT_FOUND_TEMPLATE_VARIABLE("템플릿 변수에 대한 값이 존재하지 않습니다."),
+    NOT_FOUND_INQUIRY("해당 문의 내용을 찾을 수 없습니다"),
+    NOT_FOUND_INQUIRY_ANSWER("해당 문의 내역의 답변을 찾을 수 없습니다"),
     FAILED_TO_CREATE_CATEGORY("카테고리 생성을 실패하였습니다."),
     NOT_FOUND_AUTHENTICATION_SESSION("인증 세션을 찾을 수 없습니다."),
     AUTHENTICATION_SESSION_EXPIRED("만료된 인증 세션입니다."),
