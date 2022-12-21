@@ -21,4 +21,4 @@ reset-password-path: /reset-password?sessionKey=
 
 spring.config.activate.on-profile: dev
 
-front-domain: http://193.122.106.249
+front-domain: https://bogus-dev.shop
