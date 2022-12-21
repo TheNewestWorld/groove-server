@@ -2,6 +2,7 @@ package org.bogus.groove.domain.user;
 
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.common.Password;
 import org.bogus.groove.common.enumeration.UserRole;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
@@ -18,7 +19,7 @@ public class UserUpdater {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void update(long userId, String nickname) {
+    public void update(Long userId, String nickname) {
         var entity = getEntity(userId);
         entity.setNickname(nickname);
     }
@@ -33,9 +34,9 @@ public class UserUpdater {
     }
 
     @Transactional
-    public void update(Long id, String password) {
+    public void update(Long id, Password password) {
         var entity = userRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_USER));
-        var encodedPassword = passwordEncoder.encode(password);
+        var encodedPassword = passwordEncoder.encode(password.getValue());
         entity.updatePassword(encodedPassword);
     }
 

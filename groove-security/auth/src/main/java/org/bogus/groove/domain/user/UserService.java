@@ -2,6 +2,7 @@ package org.bogus.groove.domain.user;
 
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.common.Password;
 import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.common.enumeration.ProviderType;
 import org.bogus.groove.common.exception.ErrorType;
@@ -50,7 +51,7 @@ public class UserService {
         emailAuthenticationCreator.create(user.getId(), user.getEmail(), EmailType.CHANGE_PASSWORD);
     }
 
-    public void updatePassword(String sessionKey, String password) {
+    public void updatePassword(String sessionKey, Password password) {
         EmailAuthentication emailAuthentication = emailAuthenticationReader.read(sessionKey);
 
         if (emailAuthentication.getExpiredAt().isBefore(LocalDateTime.now())) {
