@@ -27,4 +27,6 @@ public class Inquiry {
         this.isAnswer = inquiryEntity.isAnswer();
         this.answerId = inquiryEntity.getAnswerId();
     }
+
+
 }

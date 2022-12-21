@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InquiryCreateRequest {
     private final String title;
-
     private final String content;
 
 }
