@@ -5,6 +5,7 @@ import org.bogus.groove.common.Password;
 import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.common.exception.UnauthorizedException;
 import org.bogus.groove.domain.user.User;
+import org.bogus.groove.domain.user.UserInfoFinder;
 import org.bogus.groove.domain.user.UserReader;
 import org.bogus.groove.domain.user.UserRegister;
 import org.bogus.groove.domain.user.UserRegisterParam;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 class UserControllerTest extends BaseIntegrationTest {
     private final UserRegister userRegister;
     private final UserReader userReader;
+    private final UserInfoFinder userInfoFinder;
     private final TokenGenerator tokenGenerator;
     private final TokenValidator tokenValidator;
 
@@ -85,5 +87,11 @@ class UserControllerTest extends BaseIntegrationTest {
         Assertions.assertThrows(NotFoundException.class, () -> userReader.read(user.getId()));
         Assertions.assertThrows(NotFoundException.class, () -> userReader.read(user.getEmail(), user.getProviderType()));
         Assertions.assertThrows(UnauthorizedException.class, () -> tokenValidator.validate(accessToken));
+    }
+
+    @Test
+    public void 회원가입_시_기본_프로필로_보여준다() {
+        var userInfo = userInfoFinder.find(user.getId());
+        Assertions.assertTrue(userInfo.getProfileUri().endsWith("default"));
     }
 }
