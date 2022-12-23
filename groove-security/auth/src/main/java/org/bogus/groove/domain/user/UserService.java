@@ -30,11 +30,9 @@ public class UserService {
     private final TokenValidator tokenValidator;
 
     @Transactional
-    public User register(UserRegisterParam param) {
+    public void register(UserRegisterParam param) {
         User user = userRegister.register(param);
         sendAuthenticationMail(user.getEmail());
-
-        return user;
     }
 
     public void sendAuthenticationMail(String email) {
@@ -84,5 +82,11 @@ public class UserService {
     public void unregister(Long userId, String accessToken) {
         userUpdater.inactivate(userId);
         tokenValidator.invalidate(accessToken);
+    }
+
+    @Transactional
+    public void removeProfile(Long userId) {
+        var profiles = attachmentReader.readAll(userId, AttachmentType.PROFILE);
+        profiles.forEach((attachment -> attachmentDeleter.delete(attachment.getId())));
     }
 }

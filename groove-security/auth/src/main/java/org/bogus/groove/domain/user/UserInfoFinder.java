@@ -5,6 +5,7 @@ import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.common.enumeration.ProviderType;
 import org.bogus.groove.object_storage.Attachment;
 import org.bogus.groove.object_storage.AttachmentReader;
+import org.bogus.groove.object_storage.ObjectUriMaker;
 import org.bogus.groove.util.JwtUtil;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ public class UserInfoFinder {
     private final UserReader userReader;
     private final JwtUtil jwtUtil;
     private final AttachmentReader attachmentReader;
+    private final ObjectUriMaker objectUriMaker;
 
     public UserInfo find(String token) {
         var userId = jwtUtil.getUserIdByToken(token);
@@ -36,6 +38,6 @@ public class UserInfoFinder {
 
     private String getProfileUri(User user) {
         return attachmentReader.readAll(user.getId(), AttachmentType.PROFILE)
-            .stream().findFirst().map(Attachment::getUri).orElse(null);
+            .stream().findFirst().map(Attachment::getUri).orElse(objectUriMaker.make(AttachmentType.PROFILE, "default"));
     }
 }
