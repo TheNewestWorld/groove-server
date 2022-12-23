@@ -1,7 +1,7 @@
 package org.bogus.groove.domain.inquiry;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.domain.attachment.InquiryAttachmentCreateParam;
@@ -59,10 +59,16 @@ public class InquiryService {
     public Slice<InquiryGetResult> getList(Long userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         var inquiries = inquiryReader.readAll(userId, pageable);
-        return new SliceImpl<>(inquiryReader.readAll(userId, pageable).stream()
-            .map(inquiry -> new InquiryGetResult(inquiry, getAttachmentUri(inquiry), inquiryAnswerReader.read(inquiry.getId())))
-            .collect(
-                Collectors.toList()), inquiries.getPageable(), inquiries.hasNext());
+        List<InquiryGetResult> list = new ArrayList<>();
+        inquiryReader.readAll(userId, pageable).stream()
+            .forEach(inquiry -> {
+                if (inquiry.isHasAnswer()) {
+                    list.add(new InquiryGetResult(inquiry, getAttachmentUri(inquiry), inquiryAnswerReader.read(inquiry.getId())));
+                } else {
+                    list.add(new InquiryGetResult(inquiry, getAttachmentUri(inquiry), null));
+                }
+            });
+        return new SliceImpl<>(list, inquiries.getPageable(), inquiries.hasNext());
     }
 
     public void update(Long id, Long userId, String title, String content,
