@@ -30,11 +30,9 @@ public class UserService {
     private final TokenValidator tokenValidator;
 
     @Transactional
-    public User register(UserRegisterParam param) {
+    public void register(UserRegisterParam param) {
         User user = userRegister.register(param);
         sendAuthenticationMail(user.getEmail());
-
-        return user;
     }
 
     public void sendAuthenticationMail(String email) {
