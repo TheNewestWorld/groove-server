@@ -13,7 +13,7 @@ public class InquiryGetResult {
     private Long userId;
     private String title;
     private String content;
-    private boolean isAnswer;
+    private boolean hasAnswer;
     private List<Attachment> attachments;
     private InquiryAnswer inquiryAnswer;
 
@@ -23,7 +23,7 @@ public class InquiryGetResult {
         this.userId = inquiry.getUserId();
         this.title = inquiry.getTitle();
         this.content = inquiry.getContent();
-        this.isAnswer = inquiry.isAnswer();
+        this.hasAnswer = inquiry.isHasAnswer();
         this.attachments = getAttachments();
         this.inquiryAnswer = inquiryAnswer;
     }

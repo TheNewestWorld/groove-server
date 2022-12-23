@@ -24,7 +24,7 @@ public class InquiryEntity extends BaseEntity {
     private String content;
 
     @Column(name = "answer_flag")
-    private boolean isAnswer;
+    private boolean hasAnswer;
 
     @Column(name = "ref_answer_id")
     private Long answerId;
@@ -36,10 +36,10 @@ public class InquiryEntity extends BaseEntity {
         this.content = content;
     }
 
-    public InquiryEntity(Long userId, boolean isAnswer, Long answerId) {
+    public InquiryEntity(Long userId, boolean hasAnswer, Long answerId) {
         this();
         this.userId = userId;
-        this.isAnswer = isAnswer;
+        this.hasAnswer = hasAnswer;
         this.answerId = answerId;
     }
 
