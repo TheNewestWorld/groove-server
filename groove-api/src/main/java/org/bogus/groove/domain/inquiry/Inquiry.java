@@ -15,8 +15,6 @@ public class Inquiry {
 
     private boolean hasAnswer;
 
-    private Long answerId;
-
 
     public Inquiry(InquiryEntity inquiryEntity) {
         this.id = inquiryEntity.getId();
@@ -25,7 +23,6 @@ public class Inquiry {
         this.title = inquiryEntity.getTitle();
         this.content = inquiryEntity.getContent();
         this.hasAnswer = inquiryEntity.isHasAnswer();
-        this.answerId = inquiryEntity.getAnswerId();
     }
 
 

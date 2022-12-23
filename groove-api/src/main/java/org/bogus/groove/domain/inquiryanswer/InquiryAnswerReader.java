@@ -11,8 +11,9 @@ import org.springframework.stereotype.Component;
 public class InquiryAnswerReader {
     private final InquiryAnswerRepository inquiryAnswerRepository;
 
-    public InquiryAnswer read(Long id) {
-        var entity = inquiryAnswerRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_INQUIRY_ANSWER));
+    public InquiryAnswer read(Long inquiryId) {
+        var entity =
+            inquiryAnswerRepository.findByInquiryId(inquiryId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_INQUIRY_ANSWER));
         return new InquiryAnswer(entity);
     }
 }

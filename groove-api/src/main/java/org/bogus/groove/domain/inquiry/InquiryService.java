@@ -50,18 +50,17 @@ public class InquiryService {
     public InquiryGetResult get(Long id) {
         var inquiry = inquiryReader.read(id);
         if (inquiry.isHasAnswer()) {
-            var inquiryAnswer = inquiryAnswerReader.read(inquiry.getAnswerId());
+            var inquiryAnswer = inquiryAnswerReader.read(id);
             return new InquiryGetResult(inquiry, getAttachmentUri(inquiry), inquiryAnswer);
         }
         return new InquiryGetResult(inquiry, getAttachmentUri(inquiry), null);
-
     }
 
     public Slice<InquiryGetResult> getList(Long userId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         var inquiries = inquiryReader.readAll(userId, pageable);
         return new SliceImpl<>(inquiryReader.readAll(userId, pageable).stream()
-            .map(inquiry -> new InquiryGetResult(inquiry, getAttachmentUri(inquiry), inquiryAnswerReader.read(inquiry.getAnswerId())))
+            .map(inquiry -> new InquiryGetResult(inquiry, getAttachmentUri(inquiry), inquiryAnswerReader.read(inquiry.getId())))
             .collect(
                 Collectors.toList()), inquiries.getPageable(), inquiries.hasNext());
     }

@@ -5,10 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "inquiry")
 @NoArgsConstructor
@@ -26,8 +24,6 @@ public class InquiryEntity extends BaseEntity {
     @Column(name = "answer_flag")
     private boolean hasAnswer;
 
-    @Column(name = "ref_answer_id")
-    private Long answerId;
 
     public InquiryEntity(Long userId, String title, String content) {
         super();
@@ -36,12 +32,13 @@ public class InquiryEntity extends BaseEntity {
         this.content = content;
     }
 
-    public InquiryEntity(Long userId, boolean hasAnswer, Long answerId) {
-        this();
-        this.userId = userId;
-        this.hasAnswer = hasAnswer;
-        this.answerId = answerId;
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
+    public void setHasAnswer(boolean hasAnswer) {
+        this.hasAnswer = hasAnswer;
+    }
 
 }

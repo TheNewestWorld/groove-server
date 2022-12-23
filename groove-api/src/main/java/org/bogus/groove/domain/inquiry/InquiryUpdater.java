@@ -17,9 +17,7 @@ public class InquiryUpdater {
     public void update(Long id, Long userId, String title, String content) {
         var entity = inquiryRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_INQUIRY));
         if (userId == entity.getUserId()) {
-            entity.setTitle(title);
-            entity.setContent(content);
-
+            entity.update(title, content);
         } else {
             throw new UnauthorizedException(ErrorType.FORBIDDEN_NOT_ENOUGH_AUTHORITY);
         }

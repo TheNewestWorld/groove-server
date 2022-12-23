@@ -24,7 +24,7 @@ public class InquiryGetResult {
         this.title = inquiry.getTitle();
         this.content = inquiry.getContent();
         this.hasAnswer = inquiry.isHasAnswer();
-        this.attachments = getAttachments();
+        this.attachments = attachments;
         this.inquiryAnswer = inquiryAnswer;
     }
 }
