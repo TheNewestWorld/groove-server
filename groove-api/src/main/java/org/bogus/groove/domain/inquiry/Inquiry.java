@@ -13,7 +13,7 @@ public class Inquiry {
     private String title;
     private String content;
 
-    private boolean isAnswer;
+    private boolean hasAnswer;
 
     private Long answerId;
 
@@ -24,7 +24,7 @@ public class Inquiry {
         this.userId = inquiryEntity.getUserId();
         this.title = inquiryEntity.getTitle();
         this.content = inquiryEntity.getContent();
-        this.isAnswer = inquiryEntity.isAnswer();
+        this.hasAnswer = inquiryEntity.isHasAnswer();
         this.answerId = inquiryEntity.getAnswerId();
     }
 

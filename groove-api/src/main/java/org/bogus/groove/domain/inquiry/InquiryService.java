@@ -49,7 +49,7 @@ public class InquiryService {
 
     public InquiryGetResult get(Long id) {
         var inquiry = inquiryReader.read(id);
-        if (inquiry.isAnswer()) {
+        if (inquiry.isHasAnswer()) {
             var inquiryAnswer = inquiryAnswerReader.read(inquiry.getAnswerId());
             return new InquiryGetResult(inquiry, getAttachmentUri(inquiry), inquiryAnswer);
         }
