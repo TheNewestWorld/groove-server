@@ -109,22 +109,18 @@ public class InquiryController {
     public CommonResponse<Void> updateInquiry(@AuthenticationPrincipal GrooveUserDetails grooveUserDetails,
                                               @RequestPart InquiryUpdateRequest inquiryUpdateRequest, @PathVariable Long inquiryId,
                                               @RequestPart(required = false) List<MultipartFile> attachments) {
-        Long inquiryUserId = inquiryService.get(inquiryId).getUserId();
         List<InquiryAttachmentCreateParam> attachmentCreateParamList = new ArrayList<>();
-        if (grooveUserDetails.getUserId() == inquiryUserId) {
-            if (!attachments.isEmpty()) {
-                attachmentCreateParamList = attachments.stream().map(param -> {
-                    try {
-                        return new InquiryAttachmentCreateParam(param.getInputStream(), param.getName(), param.getSize(),
-                            extCheck(param.getName()));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }).collect(Collectors.toList());
-
-            }
+        if (!attachments.isEmpty()) {
+            attachmentCreateParamList = attachments.stream().map(param -> {
+                try {
+                    return new InquiryAttachmentCreateParam(param.getInputStream(), param.getName(), param.getSize(),
+                        extCheck(param.getName()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).collect(Collectors.toList());
         }
-        inquiryService.update(inquiryUserId, grooveUserDetails.getUserId(), inquiryUpdateRequest.getTitle(),
+        inquiryService.update(inquiryId, grooveUserDetails.getUserId(), inquiryUpdateRequest.getTitle(),
             inquiryUpdateRequest.getContent(), attachmentCreateParamList);
         return CommonResponse.success();
     }

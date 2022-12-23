@@ -20,7 +20,6 @@ public class InquiryAnswerCreator {
         var inquiryAnswer = inquiryAnswerRepository.save(new InquiryAnswerEntity(refInquiryId, title, content));
         var inquiryEntity = inquiryRepository.findById(refInquiryId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_INQUIRY));
         inquiryEntity.setHasAnswer(true);
-        inquiryEntity.setAnswerId(inquiryAnswer.getId());
         inquiryRepository.save(inquiryEntity);
         return new InquiryAnswer(inquiryAnswer);
     }
