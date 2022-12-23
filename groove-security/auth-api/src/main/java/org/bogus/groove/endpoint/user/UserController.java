@@ -116,6 +116,14 @@ public class UserController {
         return CommonResponse.success();
     }
 
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
+    @Operation(summary = "유저 프로필 제거 (기본 프로필로 설정)")
+    @DeleteMapping("/api/users/self/profile")
+    public CommonResponse<Void> remove(@AuthenticationPrincipal GrooveUserDetails userDetails) {
+        userService.removeProfile(userDetails.getUserId());
+        return CommonResponse.success();
+    }
+
     @Secured({SecurityCode.INACTIVE, SecurityCode.USER})
     @Operation(summary = "회원 탈퇴")
     @DeleteMapping("/api/users/self")

@@ -85,4 +85,10 @@ public class UserService {
         userUpdater.inactivate(userId);
         tokenValidator.invalidate(accessToken);
     }
+
+    @Transactional
+    public void removeProfile(Long userId) {
+        var profiles = attachmentReader.readAll(userId, AttachmentType.PROFILE);
+        profiles.forEach((attachment -> attachmentDeleter.delete(attachment.getId())));
+    }
 }
