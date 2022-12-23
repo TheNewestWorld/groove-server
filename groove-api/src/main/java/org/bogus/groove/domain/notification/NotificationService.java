@@ -8,7 +8,6 @@ import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.client.user.UserClient;
 import org.bogus.groove.client.user.UserInfo;
-import org.bogus.groove.domain.post.PostGetResult;
 import org.bogus.groove.storage.repository.EmitterRepository;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;

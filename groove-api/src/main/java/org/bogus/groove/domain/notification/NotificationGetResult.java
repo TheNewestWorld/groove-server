@@ -17,7 +17,7 @@ public class NotificationGetResult {
     private Long userId;
     private String profileUri;
 
-    public NotificationGetResult (Notification notification, String profileUri) {
+    public NotificationGetResult(Notification notification, String profileUri) {
         this.id = notification.getId();
         this.createdAt = notification.getCreatedAt();
         this.content = notification.getContent();
