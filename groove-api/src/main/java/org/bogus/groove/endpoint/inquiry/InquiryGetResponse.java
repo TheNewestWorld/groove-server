@@ -1,20 +1,23 @@
 package org.bogus.groove.endpoint.inquiry;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.domain.inquiry.InquiryGetResult;
 import org.bogus.groove.domain.inquiryanswer.InquiryAnswer;
+import org.bogus.groove.object_storage.Attachment;
 
 @RequiredArgsConstructor
 public class InquiryGetResponse {
-    private final Long id;
+    private Long id;
 
-    private final Long userId;
+    private Long userId;
 
-    private final String title;
+    private String title;
 
-    private final String content;
-    private final boolean isAnswer;
-    private final InquiryAnswer inquiryAnswer;
+    private String content;
+    private boolean isAnswer;
+    private InquiryAnswer inquiryAnswer;
+    private List<Attachment> attachments;
 
     public InquiryGetResponse(InquiryGetResult inquiryGetResult) {
         this.id = inquiryGetResult.getId();
@@ -23,6 +26,7 @@ public class InquiryGetResponse {
         this.content = inquiryGetResult.getContent();
         this.isAnswer = inquiryGetResult.isAnswer();
         this.inquiryAnswer = inquiryGetResult.getInquiryAnswer();
+        this.attachments = inquiryGetResult.getAttachments();
     }
 
 
