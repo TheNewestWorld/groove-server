@@ -43,15 +43,18 @@ public class InquiryController {
                                               @RequestPart(required = false) List<MultipartFile> attachments) {
         List<InquiryAttachmentCreateParam> attachmentCreateParamList = new ArrayList<>();
         if (attachments != null) {
-            attachments.stream().map(param -> {
+            for (MultipartFile attachment : attachments) {
                 try {
-                    return attachmentCreateParamList.add(
-                        new InquiryAttachmentCreateParam(param.getInputStream(), param.getName(), param.getSize(),
-                            AttachmentType.INQUIRY_IMAGE));
+                    attachmentCreateParamList.add(new InquiryAttachmentCreateParam(
+                        attachment.getInputStream(),
+                        attachment.getOriginalFilename(),
+                        attachment.getSize(),
+                        AttachmentType.INQUIRY_IMAGE)
+                    );
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
-            });
+            }
         }
         inquiryService.create(grooveUserDetails.getUserId(), request.getTitle(), request.getContent(), attachmentCreateParamList);
         return CommonResponse.success();
