@@ -45,8 +45,9 @@ public class InquiryController {
         if (attachments != null) {
             attachments.stream().map(param -> {
                 try {
-                    return attachmentCreateParamList.add(new InquiryAttachmentCreateParam(param.getInputStream(), param.getName(), param.getSize(),
-                        AttachmentType.INQUIRY_IMAGE));
+                    return attachmentCreateParamList.add(
+                        new InquiryAttachmentCreateParam(param.getInputStream(), param.getName(), param.getSize(),
+                            AttachmentType.INQUIRY_IMAGE));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
