@@ -40,9 +40,17 @@ public class InquiryService {
     public Inquiry create(Long userId, String title, String content, List<InquiryAttachmentCreateParam> inquiryAttachmentCreateParamList) {
         var inquiry = inquiryCreator.create(userId, title, content);
 
-        inquiryAttachmentCreateParamList.stream().map(param -> attachmentUploader.upload(
-            new AttachmentUploadParam(param.getInputStream(), param.getFileName(), param.getSize(), inquiry.getId(),
-                param.getAttachmentType())));
+        for (InquiryAttachmentCreateParam param : inquiryAttachmentCreateParamList) {
+            attachmentUploader.upload(
+                new AttachmentUploadParam(
+                    param.getInputStream(),
+                    param.getFileName(),
+                    param.getSize(),
+                    inquiry.getId(),
+                    param.getAttachmentType()
+                )
+            );
+        }
 
         return inquiry;
     }
