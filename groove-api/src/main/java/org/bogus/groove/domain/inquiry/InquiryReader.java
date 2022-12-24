@@ -22,6 +22,6 @@ public class InquiryReader {
     }
 
     public Slice<Inquiry> readAll(Long userId, Pageable pageable) {
-        return inquiryRepository.findAllByUserIdOrderByUpdateAtDescOrderByCreatedAtDesc(userId, pageable).map(Inquiry::new);
+        return inquiryRepository.findAllByUserIdOrderByCreatedAtDesc(userId, pageable).map(Inquiry::new);
     }
 }

@@ -6,5 +6,5 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InquiryRepository extends JpaRepository<InquiryEntity, Long> {
-    Slice<InquiryEntity> findAllByUserIdOrderByUpdateAtDescOrderByCreatedAtDesc(Long userId, Pageable pageable);
+    Slice<InquiryEntity> findAllByUserIdOrderByCreatedAtDesc(Long userId, Pageable pageable);
 }
