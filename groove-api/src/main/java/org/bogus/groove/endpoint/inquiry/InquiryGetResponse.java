@@ -1,5 +1,6 @@
 package org.bogus.groove.endpoint.inquiry;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.bogus.groove.object_storage.Attachment;
 @RequiredArgsConstructor
 public class InquiryGetResponse {
     private Long id;
+    private LocalDateTime createAt;
 
     private Long userId;
 
@@ -23,6 +25,7 @@ public class InquiryGetResponse {
 
     public InquiryGetResponse(InquiryGetResult inquiryGetResult) {
         this.id = inquiryGetResult.getId();
+        this.createAt = inquiryGetResult.getCreateAt();
         this.userId = inquiryGetResult.getUserId();
         this.title = inquiryGetResult.getTitle();
         this.content = inquiryGetResult.getContent();

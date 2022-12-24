@@ -43,14 +43,14 @@ public class InquiryController {
                                               @RequestPart(required = false) List<MultipartFile> attachments) {
         List<InquiryAttachmentCreateParam> attachmentCreateParamList = new ArrayList<>();
         if (attachments != null) {
-            attachmentCreateParamList = attachments.stream().map(param -> {
+            attachments.stream().map(param -> {
                 try {
-                    return new InquiryAttachmentCreateParam(param.getInputStream(), param.getName(), param.getSize(),
-                        extCheck(param.getName()));
+                    return attachmentCreateParamList.add(new InquiryAttachmentCreateParam(param.getInputStream(), param.getName(), param.getSize(),
+                        AttachmentType.INQUIRY_IMAGE));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            }).collect(Collectors.toList());
+            });
         }
         inquiryService.create(grooveUserDetails.getUserId(), request.getTitle(), request.getContent(), attachmentCreateParamList);
         return CommonResponse.success();
@@ -114,7 +114,7 @@ public class InquiryController {
             attachmentCreateParamList = attachments.stream().map(param -> {
                 try {
                     return new InquiryAttachmentCreateParam(param.getInputStream(), param.getName(), param.getSize(),
-                        extCheck(param.getName()));
+                        AttachmentType.INQUIRY_IMAGE);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -123,17 +123,5 @@ public class InquiryController {
         inquiryService.update(inquiryId, grooveUserDetails.getUserId(), inquiryUpdateRequest.getTitle(),
             inquiryUpdateRequest.getContent(), attachmentCreateParamList);
         return CommonResponse.success();
-    }
-
-    private AttachmentType extCheck(String fileName) {
-        AttachmentType type;
-        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
-
-        if (ext.equals("jpg") || ext.equals("jpeg") || ext.equals("gif") || ext.equals("png")) {
-            type = AttachmentType.POST_IMAGE;
-        } else {
-            type = AttachmentType.POST_RECORD;
-        }
-        return type;
     }
 }
