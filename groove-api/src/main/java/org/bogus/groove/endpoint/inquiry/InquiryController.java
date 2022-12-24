@@ -88,7 +88,7 @@ public class InquiryController {
             new PageResponse<>(
                 result.getNumber(),
                 result.getSize(),
-                result.getContent().stream().map(InquiryGetResponse::new).collect(Collectors.toList()),
+                result.map(InquiryGetResponse::new).toList(),
                 result.hasNext()));
     }
 

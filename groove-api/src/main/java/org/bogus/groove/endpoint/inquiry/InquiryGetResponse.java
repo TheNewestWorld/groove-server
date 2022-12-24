@@ -2,14 +2,14 @@ package org.bogus.groove.endpoint.inquiry;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bogus.groove.domain.inquiry.InquiryGetResult;
 import org.bogus.groove.domain.inquiryanswer.InquiryAnswer;
 import org.bogus.groove.object_storage.Attachment;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class InquiryGetResponse {
     private Long id;
     private LocalDateTime createAt;
