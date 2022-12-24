@@ -15,7 +15,8 @@ public class NotificationCreator {
     public Notification createNotification(Long sender, Long receiver, TemplateSend dto) {
         try {
             var entity =
-                notificationRepository.save(new NotificationEntity(dto.getOutput(), dto.getNotificationType(), dto.getLinkUrl(), sender, receiver));
+                notificationRepository.save(
+                    new NotificationEntity(dto.getOutput(), dto.getNotificationType(), dto.getLinkUrl(), sender, receiver));
             return new Notification(entity);
         } catch (IllegalArgumentException e) {
             throw new InternalServerException(ErrorType.FAILED_TO_CREATE_NOTIFICATION);
