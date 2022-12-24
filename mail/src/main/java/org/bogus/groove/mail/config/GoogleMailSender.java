@@ -1,18 +1,19 @@
 package org.bogus.groove.mail.config;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.InternalServerException;
+import org.bogus.groove.object_storage.ObjectUriMaker;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -33,6 +34,8 @@ public class GoogleMailSender {
 
     @Value("${reset-password-path}")
     private String resetPasswordPath;
+
+    private ObjectUriMaker objectUriMaker;
 
     private static final String DOMAIN = "http://localhost:8080";
 
@@ -76,16 +79,16 @@ public class GoogleMailSender {
     }
 
     private String getAuthenticationHtml(String sessionKey) throws IOException {
-        ClassPathResource resource = new ClassPathResource("mail-template.html");
+        ClassPathResource resource = new ClassPathResource("index.htm");
         Path path = Paths.get(resource.getURI());
         List<String> content = Files.readAllLines(path);
 
         StringBuilder sb = new StringBuilder();
         content.forEach(sb::append);
         String html = sb.toString();
-        html = html.replace("{{authenticationLink}}", getAuthenticationUrl(sessionKey));
+
+        html = html.replaceAll("\\{\\{authenticationLink}}", getAuthenticationUrl(sessionKey));
         html = html.replace("{{logoUrl}}", getLogoUrl());
-        html = html.replace("{{titleUrl}}", getTitleUrl());
 
         return html;
     }
@@ -100,12 +103,8 @@ public class GoogleMailSender {
         return sb.toString();
     }
 
-    private String getTitleUrl() {
-        return DOMAIN + "/static/title.png";
-    }
-
     private String getLogoUrl() {
-        return DOMAIN + "/static/logo.png";
+        return "https://objectstorage.ap-seoul-1.oraclecloud.com/p/OigtOseIyYGToUfjTgbPDbvEnnlJxR8DEGmaUnYr7NwNahnu_xUua8TN1tUZH2Ym/n/cngem3dmixup/b/bucket-20221202-0237/o/upload/public/logo.png";
     }
 
     public void sendMessage(String to, String sessionKey, EmailType type) {
