@@ -31,3 +31,9 @@ springdoc:
   group-configs:
     - group: v1
       paths-to-match: /api/**
+
+---
+
+spring.config.activate.on-profile: dev
+
+server.port: ${PORT}

@@ -45,7 +45,7 @@ public class PostService {
                     param.getFileName(),
                     param.getSize(),
                     post.getId(),
-                    AttachmentType.POST
+                    param.getAttachmentType()
                 )
             );
         }
@@ -59,7 +59,7 @@ public class PostService {
         return new SliceImpl<>(
             posts.map(
                 post -> {
-                    UserInfo userInfo = userClient.get(userId);
+                    UserInfo userInfo = userClient.get(post.getUserId());
                     return new PostGetResult(
                         post,
                         userInfo.getNickname(),
@@ -75,8 +75,8 @@ public class PostService {
     }
 
     public PostGetDetailResult getPost(Long userId, Long postId) {
-        UserInfo userInfo = userClient.get(userId);
         Post post = postReader.readPost(postId);
+        UserInfo userInfo = userClient.get(post.getUserId());
         PostGetResult result = new PostGetResult(
             post,
             userInfo.getNickname(),
@@ -90,13 +90,14 @@ public class PostService {
     }
 
     public Slice<MyPostGetResult> getMyPosts(Long userId, int page, int size) {
-        var userInfo = userClient.get(userId);
         var posts = postReader.readAllPosts(userId, page, size);
 
+        // TODO user entity 통합 & 조인하거나 병렬처리
         return posts.map((post) ->
             new MyPostGetResult(
                 post,
-                userInfo,
+                userClient.get(post.getUserId()),
+                likeReader.checkLike(userId, post.getId()),
                 likeReader.countPostLike(post.getId()),
                 commentReader.countPostComment(post.getId())
             )
@@ -104,13 +105,13 @@ public class PostService {
     }
 
     public Slice<MyPostGetResult> getLikedPosts(Long userId, int page, int size) {
-        var userInfo = userClient.get(userId);
         var posts = postReader.readAllLikedPosts(userId, page, size);
 
         return posts.map((post) ->
             new MyPostGetResult(
                 post,
-                userInfo,
+                userClient.get(post.getUserId()),
+                likeReader.checkLike(userId, post.getId()),
                 likeReader.countPostLike(post.getId()),
                 commentReader.countPostComment(post.getId())
             )
@@ -119,7 +120,8 @@ public class PostService {
 
     public void updatePost(Long userId, Long postId, String title, String content, Long categoryId,
                            List<PostAttachmentCreateParam> params) {
-        var attachments = attachmentReader.readAll(postId, AttachmentType.POST);
+        var attachments = attachmentReader.readAll(postId, AttachmentType.POST_IMAGE);
+        attachments.addAll(attachmentReader.readAll(postId, AttachmentType.POST_RECORD));
         attachments.forEach((attachment -> attachmentDeleter.delete(attachment.getId())));
         postUpdater.updatePost(userId, postId, title, content, categoryId);
 
@@ -130,7 +132,7 @@ public class PostService {
                     param.getFileName(),
                     param.getSize(),
                     postId,
-                    AttachmentType.POST
+                    param.getAttachmentType()
                 )
             );
         }
@@ -138,11 +140,14 @@ public class PostService {
 
     public void deletePost(Long userId, Long postId) {
         postDeleter.deletePost(userId, postId);
-        var attachments = attachmentReader.readAll(postId, AttachmentType.POST);
+        var attachments = attachmentReader.readAll(postId, AttachmentType.POST_IMAGE);
+        attachments.addAll(attachmentReader.readAll(postId, AttachmentType.POST_RECORD));
         attachments.forEach((attachment -> attachmentDeleter.delete(attachment.getId())));
     }
 
-    private List<String> getAttachmentUri(Post post) {
-        return attachmentReader.readAll(post.getId(), AttachmentType.POST).stream().map(Attachment::getUri).collect(Collectors.toList());
+    private List<Attachment> getAttachmentUri(Post post) {
+        var attachments = attachmentReader.readAll(post.getId(), AttachmentType.POST_IMAGE);
+        attachments.addAll(attachmentReader.readAll(post.getId(), AttachmentType.POST_RECORD));
+        return attachments;
     }
 }

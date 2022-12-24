@@ -6,7 +6,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.common.PageResponse;
-import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.record.RecordService;
 import org.bogus.groove.domain.record.RecordUploadParam;
@@ -29,15 +29,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class RecordController {
     private final RecordService recordService;
 
-    @Secured(SecurityCode.USER)
     @Operation(summary = "마이페이지 - 녹음파일 저장")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PostMapping(
         value = "/api/records",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public CommonResponse<Void> record(
         @RequestPart MultipartFile record,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) throws IOException {
         try (var input = record.getInputStream()) {
             recordService.upload(
@@ -52,13 +52,13 @@ public class RecordController {
         return CommonResponse.success();
     }
 
-    @Secured(SecurityCode.USER)
     @Operation(summary = "마이페이지 - 녹음파일 페이징")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @GetMapping("/api/records")
     public CommonResponse<PageResponse<List<RecordGetResponse>>> getRecords(
         @RequestParam int page,
         @RequestParam int size,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) {
         var result = recordService.getAll(userDetails.getUserId(), page, size);
         return CommonResponse.success(
@@ -78,24 +78,24 @@ public class RecordController {
         );
     }
 
-    @Secured(SecurityCode.USER)
     @Operation(summary = "마이페이지 - 녹음 삭제")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @DeleteMapping("/api/records/{recordId}")
     public CommonResponse<Void> deleteRecord(
         @PathVariable Long recordId,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) {
         recordService.delete(recordId, userDetails.getUserId());
         return CommonResponse.success();
     }
 
-    @Secured(SecurityCode.USER)
     @Operation(summary = "마이페이지 - 녹음 이름 변경")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PutMapping("/api/records/{recordId}")
     public CommonResponse<Void> updateRecordName(
         @PathVariable Long recordId,
         @RequestBody RecordNameUpdateRequest request,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal GrooveUserDetails userDetails
     ) {
         recordService.update(recordId, userDetails.getUserId(), request.getRecordName());
         return CommonResponse.success();

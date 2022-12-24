@@ -32,7 +32,7 @@ public class CategoryController {
     }
 
     @Operation(summary = "카테고리 그룹별 카테고리 리스트 조회 (COMMUNITY, TRAINING)")
-    @GetMapping("/category/{categoryGroup}")
+    @GetMapping("/{categoryGroup}")
     public CommonResponse<List<CategoryResponse>> getCategoryList(@PathVariable CategoryGroup categoryGroup) {
         return CommonResponse.success(
             categoryService.getCategoryList(categoryGroup).stream().map(CategoryResponse::new).collect(Collectors.toList()));

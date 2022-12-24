@@ -1,8 +1,9 @@
 package org.bogus.groove.domain.user;
 
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.storage.UserEntity;
-import org.bogus.groove.storage.UserRepository;
+import org.bogus.groove.common.enumeration.UserRole;
+import org.bogus.groove.storage.entity.UserEntity;
+import org.bogus.groove.storage.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,10 @@ public class UserCreator {
             new UserEntity(
                 param.getEmail(),
                 passwordEncoder.encode(param.getPassword().getValue()),
-                param.getUserType(),
-                param.getNickname())
+                param.getNickname(),
+                param.getProviderType(),
+                UserRole.INACTIVE
+            )
         );
         return new User(entity);
     }

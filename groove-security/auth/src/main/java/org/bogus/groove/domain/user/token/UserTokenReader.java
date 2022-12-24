@@ -4,7 +4,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.UnauthorizedException;
-import org.bogus.groove.storage.UserTokenRepository;
+import org.bogus.groove.storage.repository.UserTokenRepository;
 import org.springframework.stereotype.Component;
 
 @Component

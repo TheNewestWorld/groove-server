@@ -5,12 +5,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.InternalServerException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -22,9 +25,15 @@ public class GoogleMailSender {
 
     private final JavaMailSender sender;
 
-    // TODO : 프론트 상의 후 링크 변경 필요
-    private static final String CHANGE_PASSWORD_LINK = "http://localhost:8080";
-    private static final String EMAIL_AUTHENTICATION_LINK = "http://localhost:8080";
+    @Value("${front-domain}")
+    private String frontDomain;
+
+    @Value("${email-authentication-path}")
+    private String emailAuthenticationPath;
+
+    @Value("${reset-password-path}")
+    private String resetPasswordPath;
+
     private static final String DOMAIN = "http://localhost:8080";
 
 
@@ -36,8 +45,9 @@ public class GoogleMailSender {
             message.setSubject("[Groove] 비밀번호 변경 요청");
 
             StringBuilder sb = new StringBuilder();
-            sb.append(CHANGE_PASSWORD_LINK).append("/").append(sessionKey);
-
+            sb.append(frontDomain)
+                .append(resetPasswordPath)
+                .append(URLEncoder.encode(sessionKey, StandardCharsets.UTF_8));
             message.setText(sb.toString(), "utf-8");
             message.setFrom(new InternetAddress("noreply@groove.com", "groove"));
         } catch (Exception e) {
@@ -81,7 +91,13 @@ public class GoogleMailSender {
     }
 
     private String getAuthenticationUrl(String sessionKey) {
-        return String.format("%s/%s", EMAIL_AUTHENTICATION_LINK, sessionKey);
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(frontDomain)
+            .append(emailAuthenticationPath)
+            .append(URLEncoder.encode(sessionKey, StandardCharsets.UTF_8));
+
+        return sb.toString();
     }
 
     private String getTitleUrl() {

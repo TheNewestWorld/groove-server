@@ -2,7 +2,7 @@ package org.bogus.groove.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.bogus.groove.config.authentication.CustomDaoAuthenticationProvider;
+import org.bogus.groove.config.authentication.GrooveAuthenticationProvider;
 import org.bogus.groove.config.authentication.RestfulAuthenticationFailureHandler;
 import org.bogus.groove.config.authentication.RestfulAuthenticationFilter;
 import org.bogus.groove.config.authentication.RestfulAuthenticationSuccessHandler;
@@ -12,8 +12,6 @@ import org.bogus.groove.config.error.FilterChainExceptionHandlingFilter;
 import org.bogus.groove.domain.user.UserInfoFinder;
 import org.bogus.groove.domain.user.token.TokenGenerator;
 import org.bogus.groove.domain.user.token.TokenValidator;
-import org.bogus.groove.storage.UserAuthorityRepository;
-import org.bogus.groove.storage.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,7 +22,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -33,14 +30,13 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserRepository userRepository;
-    private final UserAuthorityRepository userAuthorityRepository;
     private final TokenGenerator tokenGenerator;
     private final TokenValidator tokenValidator;
     private final UserInfoFinder userInfoFinder;
     private final ObjectMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final ExceptionTranslator exceptionTranslator;
+    private final GrooveUserDetailsService userDetailsService;
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -65,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
             .addFilterBefore(getRestfulAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(getJwtAuthorizationFilter(), AuthorizationFilter.class)
+//            .addFilterBefore(getJwtAuthorizationFilter(), AuthorizationFilter.class)
             .addFilterBefore(securityFilterExceptionHandler(), LogoutFilter.class)
         ;
 
@@ -79,9 +75,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(getCustomDaoAuthenticationProvider());
     }
 
-    private CustomDaoAuthenticationProvider getCustomDaoAuthenticationProvider() {
-        var authenticationProvider = new CustomDaoAuthenticationProvider(passwordEncoder);
-        authenticationProvider.setUserDetailsService(new CustomUserDetailsService(userRepository, userAuthorityRepository));
+    private GrooveAuthenticationProvider getCustomDaoAuthenticationProvider() {
+        var authenticationProvider = new GrooveAuthenticationProvider(passwordEncoder);
+        authenticationProvider.setUserDetailsService(userDetailsService);
         return authenticationProvider;
     }
 

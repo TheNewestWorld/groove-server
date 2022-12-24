@@ -61,6 +61,6 @@ public class TokenValidator {
     }
 
     private void invalidateRefreshToken(Long userId) {
-        userTokenUpdater.updateExpiresAt(userId, LocalDateTime.now());
+        userTokenUpdater.update(userId, LocalDateTime.now());
     }
 }

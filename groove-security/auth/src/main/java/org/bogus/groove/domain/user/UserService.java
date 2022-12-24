@@ -3,8 +3,10 @@ package org.bogus.groove.domain.user;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
+import org.bogus.groove.common.enumeration.ProviderType;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
+import org.bogus.groove.domain.user.token.TokenValidator;
 import org.bogus.groove.mail.config.EmailType;
 import org.bogus.groove.object_storage.AttachmentDeleter;
 import org.bogus.groove.object_storage.AttachmentReader;
@@ -24,6 +26,7 @@ public class UserService {
     private final AttachmentDeleter attachmentDeleter;
     private final EmailAuthenticationCreator emailAuthenticationCreator;
     private final EmailAuthenticationReader emailAuthenticationReader;
+    private final TokenValidator tokenValidator;
 
     @Transactional
     public User register(UserRegisterParam param) {
@@ -34,7 +37,7 @@ public class UserService {
     }
 
     public void sendAuthenticationMail(String email) {
-        UserInfo user = userInfoFinder.find(email, UserType.GROOVE);
+        UserInfo user = userInfoFinder.find(email, ProviderType.GROOVE);
         emailAuthenticationCreator.create(user.getId(), user.getEmail(), EmailType.EMAIL_AUTHENTICATION);
     }
 
@@ -43,7 +46,7 @@ public class UserService {
     }
 
     public void sendPasswordUpdateLink(String email) {
-        UserInfo user = userInfoFinder.find(email, UserType.GROOVE);
+        UserInfo user = userInfoFinder.find(email, ProviderType.GROOVE);
         emailAuthenticationCreator.create(user.getId(), user.getEmail(), EmailType.CHANGE_PASSWORD);
     }
 
@@ -75,5 +78,10 @@ public class UserService {
                 AttachmentType.PROFILE
             )
         );
+    }
+
+    public void unregister(Long userId, String accessToken) {
+        userUpdater.inactivate(userId);
+        tokenValidator.invalidate(accessToken);
     }
 }

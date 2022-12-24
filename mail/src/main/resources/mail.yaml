@@ -17,3 +17,14 @@ spring:
   web:
     resources:
       static-locations: classpath:/
+
+front-domain: http://localhost:4000
+email-authentication-path: /active?sessionKey=
+reset-password-path: /reset-password?sessionKey=
+
+---
+
+spring.config.activate.on-profile: dev
+
+front-domain: http://193.122.106.249
+

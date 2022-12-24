@@ -25,7 +25,7 @@ public class CommentDeleter {
             entity.setDeleted(true);
             PostEntity post = postRepository.getById(entity.getPostId());
             post.setCommentCount(post.getCommentCount() - 1);
-            List<CommentEntity> reComments = commentRepository.findAllByParentIdAndIsDeletedFalse(entity.getId());
+            List<CommentEntity> reComments = commentRepository.findAllByParentIdAndIsDeletedFalseOrderByCreatedAt(entity.getId());
             for (CommentEntity reComment : reComments) {
                 reComment.setDeleted(true);
                 post.setCommentCount(post.getCommentCount() - 1);

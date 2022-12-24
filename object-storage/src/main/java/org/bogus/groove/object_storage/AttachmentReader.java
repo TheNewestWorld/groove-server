@@ -9,18 +9,15 @@ import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.storage.entity.AttachmentEntity;
 import org.bogus.groove.storage.repository.AttachmentRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class AttachmentReader {
     private final AttachmentRepository attachmentRepository;
-    @Value("${application.domain}")
-    private String domain;
+    private final ObjectUriMaker objectUriMaker;
 
     public List<Attachment> readAll(Long resourceId, AttachmentType attachmentType) {
         return attachmentRepository
@@ -33,11 +30,7 @@ public class AttachmentReader {
         var slice = attachmentRepository
             .findAllByResourceIdAndAttachmentTypeAndIsDeletedIsFalse(resourceId, attachmentType, pageable);
 
-        var content = slice
-            .stream().map(attachmentMapper())
-            .collect(Collectors.toList());
-
-        return new SliceImpl<>(content, slice.getPageable(), slice.hasNext());
+        return slice.map(attachmentMapper());
     }
 
     public Attachment read(String objectKey, AttachmentType attachmentType) {
@@ -52,6 +45,6 @@ public class AttachmentReader {
     }
 
     private Function<AttachmentEntity, Attachment> attachmentMapper() {
-        return (entity) -> new Attachment(entity, domain);
+        return (entity) -> new Attachment(entity, objectUriMaker.make(entity.getAttachmentType(), entity.getObjectKey()));
     }
 }

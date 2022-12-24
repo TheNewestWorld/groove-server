@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bogus.groove.domain.post.PostGetResult;
+import org.bogus.groove.object_storage.Attachment;
 
 @Getter
 @AllArgsConstructor
@@ -19,7 +20,7 @@ public class PostResponse {
     private Integer commentCount;
     private Long categoryId;
     private boolean authority;
-    private List<String> attachmentUris;
+    private List<Attachment> attachments;
 
     public PostResponse(PostGetResult post) {
         this.id = post.getId();
@@ -33,6 +34,6 @@ public class PostResponse {
         this.commentCount = post.getCommentCount();
         this.categoryId = post.getCategoryId();
         this.authority = post.isAuthority();
-        this.attachmentUris = post.getAttachmentUris();
+        this.attachments = post.getAttachments();
     }
 }

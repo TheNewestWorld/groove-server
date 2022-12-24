@@ -9,8 +9,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.common.PageResponse;
+import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.common.enumeration.SortOrderType;
-import org.bogus.groove.config.CustomUserDetails;
+import org.bogus.groove.config.GrooveUserDetails;
 import org.bogus.groove.config.SecurityCode;
 import org.bogus.groove.domain.attachment.PostAttachmentCreateParam;
 import org.bogus.groove.domain.post.PostService;
@@ -37,11 +38,12 @@ public class PostController {
     private final PostService postService;
 
     @Operation(summary = "게시글 작성")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PostMapping(
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public CommonResponse<Void> createPost(
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestPart PostCreateRequest request,
         @RequestPart(required = false) List<MultipartFile> attachments
     ) {
@@ -50,10 +52,12 @@ public class PostController {
             for (MultipartFile attachment : attachments) {
                 try {
                     InputStream input = attachment.getInputStream();
+
                     params.add(new PostAttachmentCreateParam(
                         input,
                         attachment.getOriginalFilename(),
-                        attachment.getSize()
+                        attachment.getSize(),
+                        extCheck(attachment.getOriginalFilename())
                     ));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -66,11 +70,12 @@ public class PostController {
     }
 
     @Operation(summary = "카테고리 별 게시글 리스트 조회")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @GetMapping("/category")
     public CommonResponse<PageResponse<List<PostResponse>>> getPostList(
         @RequestParam int page,
         @RequestParam int size,
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestParam SortOrderType sortOrderType,
         @RequestParam(required = false) String word,
         @RequestParam(required = false) Long categoryId) {
@@ -86,23 +91,24 @@ public class PostController {
     }
 
     @Operation(summary = "게시글 상세 조회")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @GetMapping("/{postId}")
     public CommonResponse<PostDetailResponse> getPost(
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @PathVariable Long postId) {
         return CommonResponse.success(
             new PostDetailResponse(postService.getPost(userDetails.getUserId(), postId))
         );
     }
 
-    @Secured(SecurityCode.USER)
     @Operation(summary = "게시글 수정")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @PutMapping(
         value = "/{postId}",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     public CommonResponse<Void> updatePost(
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @RequestPart PostUpdateRequest request,
         @PathVariable Long postId,
         @RequestPart(required = false) List<MultipartFile> attachments
@@ -115,7 +121,8 @@ public class PostController {
                     params.add(new PostAttachmentCreateParam(
                         input,
                         attachment.getOriginalFilename(),
-                        attachment.getSize()
+                        attachment.getSize(),
+                        extCheck(attachment.getOriginalFilename())
                     ));
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -126,14 +133,27 @@ public class PostController {
         return CommonResponse.success();
     }
 
-    @Secured(SecurityCode.USER)
     @Operation(summary = "게시글 삭제")
+    @Secured({SecurityCode.USER, SecurityCode.TRAINER, SecurityCode.ADMIN})
     @DeleteMapping("/{postId}")
     public CommonResponse<Void> deletePost(
-        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @AuthenticationPrincipal GrooveUserDetails userDetails,
         @PathVariable Long postId
     ) {
         postService.deletePost(userDetails.getUserId(), postId);
         return CommonResponse.success();
+    }
+
+    private AttachmentType extCheck(String fileName) {
+        AttachmentType type;
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        if (ext.equals("jpg") || ext.equals("jpeg") || ext.equals("gif") || ext.equals("png")) {
+            type = AttachmentType.POST_IMAGE;
+        } else {
+            type = AttachmentType.POST_RECORD;
+        }
+
+        return type;
     }
 }

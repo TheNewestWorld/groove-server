@@ -1,3 +1,5 @@
+spring.config.activate.on-profile: [ local ]
+
 spring:
   datasource:
     url: jdbc:h2:mem:testdb;MODE=MYSQL
@@ -27,19 +29,18 @@ spring:
 
 ---
 
-spring.config.activate.on-profile: dev
+spring.config.activate.on-profile: [ dev ]
 
-# heroku data resource
 spring:
   datasource:
-    url: jdbc:postgresql://${DATABASE_HOST}
-    driver-class-name: org.postgresql.Driver
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: ${ORACLE_URL}
+    driver-class-name: oracle.jdbc.OracleDriver
+    username: ${ORACLE_USERNAME}
+    password: ${ORACLE_PASSWORD}
   sql.init.mode: never
 
   jpa:
     hibernate:
       ddl-auto: update
     defer-datasource-initialization: true
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.Oracle12cDialect

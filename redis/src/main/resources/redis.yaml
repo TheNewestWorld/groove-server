@@ -10,4 +10,6 @@ spring.config.activate.on-profile: dev
 
 spring:
   redis:
-    url: ${REDIS_TLS_URL}
+#    url: ${REDIS_TLS_URL}
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
