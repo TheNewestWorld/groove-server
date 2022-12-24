@@ -45,9 +45,9 @@ public class NotificationService {
         return memberId + "_" + System.currentTimeMillis();
     }
 
-    public int send(Long receiver, TemplateSend dto) throws IOException {
+    public int send(Long sender, Long receiver, TemplateSend dto) throws IOException {
         freeMarkerService.generateOutput(dto);
-        Notification notification = saveNotification(receiver, dto);
+        Notification notification = saveNotification(sender, receiver, dto);
         String eventId = receiver + "_" + System.currentTimeMillis();
         Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(receiver));
         emitters.forEach(
@@ -82,7 +82,7 @@ public class NotificationService {
         return new SliceImpl<>(
             notifications.map(
                 notification -> {
-                    UserInfo userInfo = userClient.get(notification.getUserId());
+                    UserInfo userInfo = userClient.get(notification.getSendUserId());
                     return new NotificationGetResult(
                         notification,
                         userInfo.getProfileUri()
@@ -95,14 +95,14 @@ public class NotificationService {
     }
 
     @Transactional
-    public int sendOne(Long receiver, TemplateSend dto) throws IOException {
+    public int sendOne(Long sender, Long receiver, TemplateSend dto) throws IOException {
         freeMarkerService.generateOutput(dto);
-        saveNotification(receiver, dto);
+        saveNotification(sender, receiver, dto);
         return 1;
     }
 
     @Transactional
-    public int sendGroup(List<Long> receiverList, TemplateSend dto) throws IOException {
+    public int sendGroup(Long sender, List<Long> receiverList, TemplateSend dto) throws IOException {
         List<Long> receivers = receiverList.stream().distinct().collect(Collectors.toList());
         if (receivers.size() > 1) {
             dto.setAsGroupSend();
@@ -110,14 +110,14 @@ public class NotificationService {
 
         int result = 0;
         for (Long receiver : receivers) {
-            result += sendOne(receiver, dto);
+            result += sendOne(sender, receiver, dto);
         }
         return result;
     }
 
     @Transactional
-    public Notification saveNotification(Long receiver, TemplateSend dto) {
-        return notificationCreator.createNotification(receiver, dto);
+    public Notification saveNotification(Long sender, Long receiver, TemplateSend dto) {
+        return notificationCreator.createNotification(sender, receiver, dto);
     }
 
 }

@@ -25,7 +25,7 @@ public class LikeService {
         var commentUser = userClient.get(userId);
         Post post = postReader.readPost(postId);
         TemplateSend dto = templateFactory.likePost(commentUser.getNickname(), "/api/community/post/" + postId);
-        templateSender.notiAsync(post.getUserId(), dto);
+        templateSender.notiAsync(userId, post.getUserId(), dto);
     }
 
     public void unLike(Long userId, Long postId) {

@@ -16,25 +16,25 @@ public class TemplateSender {
     private final NotificationService notificationService;
 
     @Transactional
-    public int noti(Long userId, TemplateSend dto) throws IOException {
-        return notificationService.sendOne(userId, dto);
+    public int noti(Long sendUserId, Long targetUserId, TemplateSend dto) throws IOException {
+        return notificationService.sendOne(sendUserId, targetUserId, dto);
     }
 
     @Transactional
     @Async(value = "threadPoolTaskExecutor")
-    public Future<Integer> notiAsync(Long userId, TemplateSend dto) throws IOException {
-        return new AsyncResult<>(notificationService.send(userId, dto));
+    public Future<Integer> notiAsync(Long sendUserId, Long targetUserId, TemplateSend dto) throws IOException {
+        return new AsyncResult<>(notificationService.send(sendUserId, targetUserId, dto));
     }
 
     @Transactional
-    public int notiGroup(List<Long> userList, TemplateSend dto) throws IOException {
-        return notificationService.sendGroup(userList, dto);
+    public int notiGroup(Long sendUserId, List<Long> targetUserList, TemplateSend dto) throws IOException {
+        return notificationService.sendGroup(sendUserId, targetUserList, dto);
     }
 
     @Transactional
     @Async(value = "threadPoolTaskExecutor")
-    public Future<Integer> notiGroupAsync(List<Long> userList, TemplateSend dto) throws IOException {
-        return new AsyncResult<>(notiGroup(userList, dto));
+    public Future<Integer> notiGroupAsync(Long sendUserId, List<Long> targetUserList, TemplateSend dto) throws IOException {
+        return new AsyncResult<>(notiGroup(sendUserId, targetUserList, dto));
     }
 
 }

@@ -27,7 +27,7 @@ public class NotificationResponse {
         this.readFlag = notification.isReadFlag();
         this.deleteFlag = notification.isDeleteFlag();
         this.linkUrl = notification.getLinkUrl();
-        this.userId = notification.getUserId();
+        this.userId = notification.getTargetUserId();
         this.profileUri = notification.getProfileUri();
     }
 }

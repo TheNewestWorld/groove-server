@@ -14,7 +14,8 @@ public class NotificationGetResult {
     private boolean readFlag;
     private boolean deleteFlag;
     private String linkUrl;
-    private Long userId;
+    private Long sendUserId;
+    private Long targetUserId;
     private String profileUri;
 
     public NotificationGetResult(Notification notification, String profileUri) {
@@ -25,7 +26,8 @@ public class NotificationGetResult {
         this.readFlag = notification.isReadFlag();
         this.deleteFlag = notification.isDeleteFlag();
         this.linkUrl = notification.getLinkUrl();
-        this.userId = notification.getUserId();
+        this.sendUserId = notification.getSendUserId();
+        this.targetUserId = notification.getTargetUserId();
         this.profileUri = profileUri;
     }
 }
