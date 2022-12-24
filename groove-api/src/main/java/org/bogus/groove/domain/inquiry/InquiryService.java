@@ -97,8 +97,7 @@ public class InquiryService {
     }
 
     private List<Attachment> getAttachmentUri(Inquiry inquiry) {
-        var attachments = attachmentReader.readAll(inquiry.getId(), AttachmentType.POST_IMAGE);
-        attachments.addAll(attachmentReader.readAll(inquiry.getId(), AttachmentType.POST_RECORD));
+        var attachments = attachmentReader.readAll(inquiry.getId(), AttachmentType.INQUIRY_IMAGE);
         return attachments;
     }
 
