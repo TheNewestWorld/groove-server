@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 public class NotificationCreator {
     private final NotificationRepository notificationRepository;
 
-    public Notification createNotification(Long receiver, TemplateSend dto) {
+    public Notification createNotification(Long sender, Long receiver, TemplateSend dto) {
         try {
             var entity =
-                notificationRepository.save(new NotificationEntity(dto.getOutput(), dto.getNotificationType(), dto.getLinkUrl(), receiver));
+                notificationRepository.save(new NotificationEntity(dto.getOutput(), dto.getNotificationType(), dto.getLinkUrl(), sender, receiver));
             return new Notification(entity);
         } catch (IllegalArgumentException e) {
             throw new InternalServerException(ErrorType.FAILED_TO_CREATE_NOTIFICATION);

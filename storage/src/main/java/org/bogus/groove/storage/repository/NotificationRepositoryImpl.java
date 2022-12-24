@@ -22,7 +22,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
     public Slice<NotificationEntity> findAllNotifications(Long userId, Pageable pageable) {
         QNotificationEntity notification = QNotificationEntity.notificationEntity;
         List<NotificationEntity> results =
-            jpaQueryFactory.selectFrom(notification).where(notification.userId.eq(userId))
+            jpaQueryFactory.selectFrom(notification).where(notification.targetUserId.eq(userId))
                 .orderBy(new OrderSpecifier<>(Order.DESC, notification.createdAt))
                 .limit(pageable.getPageSize() + 1).offset(pageable.getOffset()).fetch();
 
