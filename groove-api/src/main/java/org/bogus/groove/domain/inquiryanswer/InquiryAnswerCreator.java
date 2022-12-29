@@ -16,8 +16,8 @@ public class InquiryAnswerCreator {
     private final InquiryRepository inquiryRepository;
 
     @Transactional
-    public InquiryAnswer create(Long refInquiryId, String title, String content) {
-        var inquiryAnswer = inquiryAnswerRepository.save(new InquiryAnswerEntity(refInquiryId, title, content));
+    public InquiryAnswer create(Long refInquiryId, Long userId, String title, String content) {
+        var inquiryAnswer = inquiryAnswerRepository.save(new InquiryAnswerEntity(refInquiryId, userId, title, content));
         var inquiryEntity = inquiryRepository.findById(refInquiryId).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_INQUIRY));
         inquiryEntity.setHasAnswer(true);
         inquiryRepository.save(inquiryEntity);
