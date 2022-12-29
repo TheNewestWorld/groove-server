@@ -22,7 +22,7 @@ public class InquiryAnswerController {
     private final InquiryAnswerService inquiryAnswerService;
 
     @Operation(summary = "문의사항 답글 작성")
-    @Secured({SecurityCode.USER, SecurityCode.ADMIN, SecurityCode.TRAINER})
+    @Secured({SecurityCode.ADMIN})
     @PostMapping("/api/inquiry/{inquiryId}/inquiryanswer/")
     public CommonResponse<Void> createInquiryAnswer(@AuthenticationPrincipal GrooveUserDetails grooveUserDetails,
                                                     @PathVariable Long inquiryId,
