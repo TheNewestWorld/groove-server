@@ -14,6 +14,9 @@ public class InquiryAnswerEntity extends BaseEntity {
 
     @Column(name = "ref_inquiry_id")
     private Long inquiryId;
+
+    @Column(name = "user_id")
+    private Long userId;
     @Column(name = "title")
     private String title;
 
@@ -21,8 +24,9 @@ public class InquiryAnswerEntity extends BaseEntity {
     private String content;
 
 
-    public InquiryAnswerEntity(Long inquiryId, String title, String content) {
+    public InquiryAnswerEntity(Long inquiryId, Long userId, String title, String content) {
         this.inquiryId = inquiryId;
+        this.userId = userId;
         this.title = title;
         this.content = content;
     }

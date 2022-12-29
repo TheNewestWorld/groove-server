@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 public class InquiryAnswerService {
     private final InquiryAnswerCreator inquiryAnswerCreator;
 
-    public InquiryAnswer create(Long refInquiryId, String title, String content) {
-        InquiryAnswer inquiryAnswer = inquiryAnswerCreator.create(refInquiryId, title, content);
+    public InquiryAnswer create(Long refInquiryId, Long userId, String title, String content) {
+        InquiryAnswer inquiryAnswer = inquiryAnswerCreator.create(refInquiryId, userId, title, content);
         return inquiryAnswer;
     }
 
