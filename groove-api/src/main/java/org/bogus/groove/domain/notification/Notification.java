@@ -16,7 +16,8 @@ public class Notification {
     private boolean readFlag;
     private boolean deleteFlag;
     private String linkUrl;
-    private Long userId;
+    private Long sendUserId;
+    private Long targetUserId;
 
     public Notification(NotificationEntity entity) {
         this.id = entity.getId();
@@ -26,6 +27,7 @@ public class Notification {
         this.readFlag = entity.isReadFlag();
         this.deleteFlag = entity.isDeleteFlag();
         this.linkUrl = entity.getLinkUrl();
-        this.userId = entity.getUserId();
+        this.sendUserId = entity.getSendUserId();
+        this.targetUserId = entity.getTargetUserId();
     }
 }

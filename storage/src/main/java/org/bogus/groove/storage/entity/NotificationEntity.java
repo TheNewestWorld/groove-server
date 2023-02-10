@@ -31,14 +31,18 @@ public class NotificationEntity extends BaseEntity {
     @Column(name = "link_url")
     private String linkUrl;
 
-    @Column(name = "ref_user_id")
-    private Long userId;
+    @Column(name = "ref_send_user_id")
+    private Long sendUserId;
 
-    public NotificationEntity(String content, NotificationType notificationType, String linkUrl, Long userId) {
+    @Column(name = "ref_target_user_id")
+    private Long targetUserId;
+
+    public NotificationEntity(String content, NotificationType notificationType, String linkUrl, Long sendUserId, Long targetUserId) {
         super();
         this.content = content;
         this.notificationType = notificationType;
         this.linkUrl = linkUrl;
-        this.userId = userId;
+        this.sendUserId = sendUserId;
+        this.targetUserId = targetUserId;
     }
 }

@@ -6,8 +6,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.client.user.UserClient;
+import org.bogus.groove.client.user.UserInfo;
 import org.bogus.groove.storage.repository.EmitterRepository;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -18,7 +21,7 @@ public class NotificationService {
     private final NotificationCreator notificationCreator;
     private final NotificationReader notificationReader;
     private final FreeMarkerService freeMarkerService;
-
+    private final UserClient userClient;
 
     public SseEmitter subscribe(Long userId, String lastEventId) {
         String emitterId = makeTimeIncludeId(userId);
@@ -42,9 +45,9 @@ public class NotificationService {
         return memberId + "_" + System.currentTimeMillis();
     }
 
-    public int send(Long receiver, TemplateSend dto) throws IOException {
+    public int send(Long sender, Long receiver, TemplateSend dto) throws IOException {
         freeMarkerService.generateOutput(dto);
-        Notification notification = saveNotification(receiver, dto);
+        Notification notification = saveNotification(sender, receiver, dto);
         String eventId = receiver + "_" + System.currentTimeMillis();
         Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(String.valueOf(receiver));
         emitters.forEach(
@@ -74,20 +77,32 @@ public class NotificationService {
             .forEach(entry -> sendNotification(sseEmitter, entry.getKey(), emitterId, entry.getValue()));
     }
 
-    public Slice<Notification> getNotificationList(Long userId, int page, int size) {
+    public Slice<NotificationGetResult> getNotificationList(Long userId, int page, int size) {
         var notifications = notificationReader.readAllNotifications(userId, page, size);
-        return notifications;
+        return new SliceImpl<>(
+            notifications.map(
+                notification -> {
+                    UserInfo userInfo = userClient.get(notification.getSendUserId());
+                    return new NotificationGetResult(
+                        notification,
+                        userInfo.getProfileUri()
+                    );
+                }
+            ).toList(),
+            notifications.getPageable(),
+            notifications.hasNext()
+        );
     }
 
     @Transactional
-    public int sendOne(Long receiver, TemplateSend dto) throws IOException {
+    public int sendOne(Long sender, Long receiver, TemplateSend dto) throws IOException {
         freeMarkerService.generateOutput(dto);
-        saveNotification(receiver, dto);
+        saveNotification(sender, receiver, dto);
         return 1;
     }
 
     @Transactional
-    public int sendGroup(List<Long> receiverList, TemplateSend dto) throws IOException {
+    public int sendGroup(Long sender, List<Long> receiverList, TemplateSend dto) throws IOException {
         List<Long> receivers = receiverList.stream().distinct().collect(Collectors.toList());
         if (receivers.size() > 1) {
             dto.setAsGroupSend();
@@ -95,14 +110,14 @@ public class NotificationService {
 
         int result = 0;
         for (Long receiver : receivers) {
-            result += sendOne(receiver, dto);
+            result += sendOne(sender, receiver, dto);
         }
         return result;
     }
 
     @Transactional
-    public Notification saveNotification(Long receiver, TemplateSend dto) {
-        return notificationCreator.createNotification(receiver, dto);
+    public Notification saveNotification(Long sender, Long receiver, TemplateSend dto) {
+        return notificationCreator.createNotification(sender, receiver, dto);
     }
 
 }

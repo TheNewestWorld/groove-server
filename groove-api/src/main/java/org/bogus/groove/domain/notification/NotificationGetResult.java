@@ -1,14 +1,12 @@
-package org.bogus.groove.endpoint.notification;
+package org.bogus.groove.domain.notification;
 
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bogus.groove.common.enumeration.NotificationType;
-import org.bogus.groove.domain.notification.NotificationGetResult;
 
 @Getter
-@AllArgsConstructor
-public class NotificationResponse {
+public class NotificationGetResult {
+
     private Long id;
     private LocalDateTime createdAt;
     private String content;
@@ -16,10 +14,11 @@ public class NotificationResponse {
     private boolean readFlag;
     private boolean deleteFlag;
     private String linkUrl;
-    private Long userId;
+    private Long sendUserId;
+    private Long targetUserId;
     private String profileUri;
 
-    public NotificationResponse(NotificationGetResult notification) {
+    public NotificationGetResult(Notification notification, String profileUri) {
         this.id = notification.getId();
         this.createdAt = notification.getCreatedAt();
         this.content = notification.getContent();
@@ -27,7 +26,8 @@ public class NotificationResponse {
         this.readFlag = notification.isReadFlag();
         this.deleteFlag = notification.isDeleteFlag();
         this.linkUrl = notification.getLinkUrl();
-        this.userId = notification.getTargetUserId();
-        this.profileUri = notification.getProfileUri();
+        this.sendUserId = notification.getSendUserId();
+        this.targetUserId = notification.getTargetUserId();
+        this.profileUri = profileUri;
     }
 }

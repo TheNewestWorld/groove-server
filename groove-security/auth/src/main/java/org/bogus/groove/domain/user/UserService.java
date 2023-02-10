@@ -2,6 +2,7 @@ package org.bogus.groove.domain.user;
 
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.bogus.groove.common.Password;
 import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.common.enumeration.ProviderType;
 import org.bogus.groove.common.exception.ErrorType;
@@ -29,11 +30,9 @@ public class UserService {
     private final TokenValidator tokenValidator;
 
     @Transactional
-    public User register(UserRegisterParam param) {
+    public void register(UserRegisterParam param) {
         User user = userRegister.register(param);
         sendAuthenticationMail(user.getEmail());
-
-        return user;
     }
 
     public void sendAuthenticationMail(String email) {
@@ -50,7 +49,7 @@ public class UserService {
         emailAuthenticationCreator.create(user.getId(), user.getEmail(), EmailType.CHANGE_PASSWORD);
     }
 
-    public void updatePassword(String sessionKey, String password) {
+    public void updatePassword(String sessionKey, Password password) {
         EmailAuthentication emailAuthentication = emailAuthenticationReader.read(sessionKey);
 
         if (emailAuthentication.getExpiredAt().isBefore(LocalDateTime.now())) {
@@ -83,5 +82,11 @@ public class UserService {
     public void unregister(Long userId, String accessToken) {
         userUpdater.inactivate(userId);
         tokenValidator.invalidate(accessToken);
+    }
+
+    @Transactional
+    public void removeProfile(Long userId) {
+        var profiles = attachmentReader.readAll(userId, AttachmentType.PROFILE);
+        profiles.forEach((attachment -> attachmentDeleter.delete(attachment.getId())));
     }
 }

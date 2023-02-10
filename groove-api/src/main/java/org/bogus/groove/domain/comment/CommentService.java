@@ -29,7 +29,7 @@ public class CommentService {
         Post post = postReader.readPost(postId);
         var commentUser = userClient.get(userId);
         TemplateSend dto = templateFactory.commentPost(commentUser.getNickname(), "/api/community/post/" + postId + "/comment");
-        templateSender.notiAsync(post.getUserId(), dto);
+        templateSender.notiAsync(userId, post.getUserId(), dto);
         return comment;
     }
 
