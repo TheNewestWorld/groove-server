@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-@ControllerAdvice
+@ControllerAdvice(basePackages = { "org.bogus.groove.endpoint" })
 public class AppControllerAdvice {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -36,7 +36,7 @@ public class AppControllerAdvice {
             logger.info("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
         } else if (e instanceof InternalServerException) {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
-            logger.error("[{}] {}, {}", status.value(), status.getReasonPhrase(), e.getMessage());
+            logger.error("[{}] {}, {} : {}", status.value(), status.getReasonPhrase(), e.getMessage(), e.getCause());
         }
 
         return ResponseEntity.status(status.value())

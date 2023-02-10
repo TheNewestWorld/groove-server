@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 
-@ControllerAdvice
+@ControllerAdvice(basePackages = { "org.bogus.groove.endpoint" })
 public class SystemControllerAdvice {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -22,7 +22,7 @@ public class SystemControllerAdvice {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CommonResponse<Void>> handleException(Exception e) {
-        logger.error(e.getMessage());
+        logger.error("{} : {}", e.getMessage(), e.getCause());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(CommonResponse.error(e.getClass().getSimpleName(), e.getMessage()));
     }

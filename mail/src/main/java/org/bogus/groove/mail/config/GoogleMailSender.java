@@ -61,7 +61,7 @@ public class GoogleMailSender {
             message.setText(sb.toString(), "utf-8");
             message.setFrom(new InternetAddress("noreply@groove.com", "groove"));
         } catch (Exception e) {
-            throw new InternalServerException(ErrorType.FAILED_TO_SEND_MAIL);
+            throw new InternalServerException(ErrorType.FAILED_TO_SEND_MAIL, e);
         }
 
         return message;
@@ -79,7 +79,7 @@ public class GoogleMailSender {
             message.setText(html, "utf-8", "html");
             message.setFrom(new InternetAddress("noreply@groove.com", "groove"));
         } catch (Exception e) {
-            throw new InternalServerException(ErrorType.FAILED_TO_SEND_MAIL);
+            throw new InternalServerException(ErrorType.FAILED_TO_SEND_MAIL, e);
         }
 
         return message;

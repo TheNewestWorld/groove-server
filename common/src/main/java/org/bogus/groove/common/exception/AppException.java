@@ -1,11 +1,8 @@
 package org.bogus.groove.common.exception;
 
 import java.util.Map;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AppException extends RuntimeException {
     @Getter
     private final ErrorType error;
@@ -19,5 +16,12 @@ public abstract class AppException extends RuntimeException {
         } else {
             return String.format("%s : %s", error.message(), extraMessage);
         }
+    }
+
+    protected AppException(ErrorType error, String extraMessage, Map<String, Object> extraData, Throwable throwable) {
+        super(throwable);
+        this.error = error;
+        this.extraMessage = extraMessage;
+        this.extraData = extraData;
     }
 }
