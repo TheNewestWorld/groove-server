@@ -6,12 +6,9 @@ import org.bogus.groove.config.authentication.GrooveAuthenticationProvider;
 import org.bogus.groove.config.authentication.RestfulAuthenticationFailureHandler;
 import org.bogus.groove.config.authentication.RestfulAuthenticationFilter;
 import org.bogus.groove.config.authentication.RestfulAuthenticationSuccessHandler;
-import org.bogus.groove.config.authorization.JwtAuthorizationFilter;
 import org.bogus.groove.config.error.ExceptionTranslator;
 import org.bogus.groove.config.error.FilterChainExceptionHandlingFilter;
-import org.bogus.groove.domain.user.UserInfoFinder;
 import org.bogus.groove.domain.user.token.TokenGenerator;
-import org.bogus.groove.domain.user.token.TokenValidator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -31,8 +28,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenGenerator tokenGenerator;
-    private final TokenValidator tokenValidator;
-    private final UserInfoFinder userInfoFinder;
     private final ObjectMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final ExceptionTranslator exceptionTranslator;
@@ -87,10 +82,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authFilter.setAuthenticationSuccessHandler(new RestfulAuthenticationSuccessHandler(tokenGenerator, mapper));
         authFilter.setAuthenticationFailureHandler(new RestfulAuthenticationFailureHandler());
         return authFilter;
-    }
-
-    private JwtAuthorizationFilter getJwtAuthorizationFilter() {
-        return new JwtAuthorizationFilter(tokenValidator, userInfoFinder);
     }
 
     private FilterChainExceptionHandlingFilter securityFilterExceptionHandler() {

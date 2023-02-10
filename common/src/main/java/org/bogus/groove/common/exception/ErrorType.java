@@ -40,7 +40,8 @@ public enum ErrorType {
     DUPLICATED_NICKNAME("이미 등록된 닉네임이에요."),
     FILE_UPLOAD("파일 업로드에 실패했습니다."),
     TEMPLATE_TYPE_WRONG("템플릿 타입이 올바르지 않습니다."),
-    TEMPLATE_VARIABLES_EMPTY("템플릿 변수에 대한 파라미터가 존재하지 않습니다.");
+    TEMPLATE_VARIABLES_EMPTY("템플릿 변수에 대한 파라미터가 존재하지 않습니다."),
+    NOT_SUPPORTED("지원하지 않는 기능입니다.");
 
     private final String message;
 

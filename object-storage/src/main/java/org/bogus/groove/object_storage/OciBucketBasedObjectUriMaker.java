@@ -1,5 +1,6 @@
 package org.bogus.groove.object_storage;
 
+import java.nio.file.Path;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
 
@@ -12,14 +13,9 @@ class OciBucketBasedObjectUriMaker implements ObjectUriMaker {
     @Override
     public String make(AttachmentType attachmentType, String objectKey) {
         if (attachmentType.isPreAuthorized()) {
-            return String.format(
-                "%s/upload/public/%s/%s",
-                preAuthorizedUrl,
-                attachmentType.getPath(),
-                objectKey
-            );
+            return Path.of(preAuthorizedUrl, "/upload/public", attachmentType.getPath(), objectKey).toString();
         } else {
-            return String.format("%s/attachments/%s/%s", domain, attachmentType, objectKey);
+            return Path.of(domain, "attachments", attachmentType.name(), objectKey).toString();
         }
     }
 }
