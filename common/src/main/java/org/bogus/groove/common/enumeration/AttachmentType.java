@@ -11,7 +11,8 @@ public enum AttachmentType {
     PRIVATE_RECORD("private-record", true),
     POST_IMAGE("post-image", true),
     POST_RECORD("post-record", true),
-    INQUIRY_IMAGE("inquiry-image", true)
+    INQUIRY_IMAGE("inquiry-image", true),
+    MISCELLANEOUS("", true)
     ;
 
     private final String path;

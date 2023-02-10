@@ -11,12 +11,20 @@ public class AttachmentDownloader {
     private final ObjectStorage objectStorage;
 
     public AttachmentDownload download(String objectKey, AttachmentType attachmentType) {
-        var attachment = attachmentReader.read(objectKey, attachmentType);
         var input = objectStorage.download(objectKey, attachmentType);
 
         return new AttachmentDownload(
             input,
-            attachment.getFileName()
+            getFileName(attachmentType, objectKey)
         );
+    }
+
+    private String getFileName(AttachmentType attachmentType, String objectKey) {
+        if (attachmentType.equals(AttachmentType.MISCELLANEOUS)) {
+            return objectKey;
+        } else {
+            var attachment = attachmentReader.read(objectKey, attachmentType);
+            return attachment.getFileName();
+        }
     }
 }

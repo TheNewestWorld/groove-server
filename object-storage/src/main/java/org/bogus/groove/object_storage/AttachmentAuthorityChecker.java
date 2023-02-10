@@ -20,6 +20,9 @@ public class AttachmentAuthorityChecker {
     }
 
     public boolean check(String objectKey, AttachmentType attachmentType, Long resourceId) {
+        if (attachmentType.equals(AttachmentType.MISCELLANEOUS)) {
+            return true;
+        }
         var record = attachmentReader.read(objectKey, attachmentType);
         return hasAuthority(resourceId, record);
     }
