@@ -3,16 +3,13 @@ package org.bogus.groove.object_storage;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.storage.entity.AttachmentEntity;
 import org.bogus.groove.storage.repository.AttachmentRepository;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class AttachmentCreator {
     private final AttachmentRepository attachmentRepository;
-
-    @Value("${application.domain}")
-    private String domain;
+    private final ObjectUriMaker objectUriMaker;
 
     public Attachment create(AttachmentCreateParam param) {
         var entity = attachmentRepository.save(
@@ -25,6 +22,6 @@ public class AttachmentCreator {
                 param.getAttachmentType()
             )
         );
-        return new Attachment(entity, domain);
+        return new Attachment(entity, objectUriMaker.make(entity.getAttachmentType(), entity.getObjectKey()));
     }
 }
