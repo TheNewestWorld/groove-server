@@ -50,7 +50,6 @@ public class AuthController {
     }
 
     @Operation(summary = "유저 이메일 인증")
-    @Secured({SecurityCode.INACTIVE})
     @PostMapping("/api/auth/email-authentications/{sessionKey}")
     public CommonResponse<Void> authenticateEmail(@PathVariable String sessionKey) {
         authService.authenticateEmail(sessionKey);

@@ -37,6 +37,16 @@ public class GoogleMailSender {
     @Value("${reset-password-path}")
     private String resetPasswordPath;
 
+    public void sendMessage(String to, String sessionKey, EmailType type) {
+        if (EmailType.EMAIL_AUTHENTICATION.equals(type)) {
+            sender.send(emailAuthenticationMessage(to, sessionKey));
+        } else if (EmailType.CHANGE_PASSWORD.equals(type)) {
+            sender.send(getPasswordChangeMessage(to, sessionKey));
+        } else {
+            throw new InternalServerException(ErrorType.NOT_SUPPORTED);
+        }
+    }
+
     private MimeMessage getPasswordChangeMessage(String to, String sessionKey) {
         MimeMessage message = sender.createMimeMessage();
 
@@ -102,19 +112,5 @@ public class GoogleMailSender {
 
     private String getLogoUrl() {
         return objectUriMaker.make(AttachmentType.MISCELLANEOUS, "logo.png");
-    }
-
-    public void sendMessage(String to, String sessionKey, EmailType type) {
-        MimeMessage message = null;
-
-        if (EmailType.EMAIL_AUTHENTICATION.equals(type)) {
-            message = emailAuthenticationMessage(to, sessionKey);
-        } else if (EmailType.CHANGE_PASSWORD.equals(type)) {
-            message = getPasswordChangeMessage(to, sessionKey);
-        } else {
-            throw new InternalServerException(ErrorType.NOT_SUPPORTED);
-        }
-
-        sender.send(message);
     }
 }
