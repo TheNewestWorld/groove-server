@@ -8,10 +8,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "email_authentication")
+@Table(name = "mail_session")
 @Getter
 @NoArgsConstructor
-public class EmailAuthenticationEntity extends BaseEntity {
+public class MailSessionEntity extends BaseEntity {
     @Column(name = "ref_user_id")
     private long userId;
 
@@ -21,21 +21,9 @@ public class EmailAuthenticationEntity extends BaseEntity {
     @Column(name = "expired_at")
     private LocalDateTime expiredAt;
 
-    @Column(name = "verified")
-    private boolean verified = false;
-
-    @Column(name = "verified_at")
-    private LocalDateTime verifiedAt;
-
-    public EmailAuthenticationEntity(long userId, String sessionKey, LocalDateTime expiredAt) {
+    public MailSessionEntity(long userId, String sessionKey, LocalDateTime expiredAt) {
         this.userId = userId;
         this.sessionKey = sessionKey;
         this.expiredAt = expiredAt;
     }
-
-    public void updateAuthentication(boolean verified, LocalDateTime verifiedAt) {
-        this.verified = verified;
-        this.verifiedAt = verifiedAt;
-    }
-
 }

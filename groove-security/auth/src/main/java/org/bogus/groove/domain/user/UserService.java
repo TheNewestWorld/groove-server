@@ -25,8 +25,8 @@ public class UserService {
     private final AttachmentUploader attachmentUploader;
     private final AttachmentReader attachmentReader;
     private final AttachmentDeleter attachmentDeleter;
-    private final EmailAuthenticationCreator emailAuthenticationCreator;
-    private final EmailAuthenticationReader emailAuthenticationReader;
+    private final MailSessionCreator mailSessionCreator;
+    private final MailSessionReader mailSessionReader;
     private final TokenValidator tokenValidator;
 
     @Transactional
@@ -37,7 +37,7 @@ public class UserService {
 
     public void sendAuthenticationMail(String email) {
         UserInfo user = userInfoFinder.find(email, ProviderType.GROOVE);
-        emailAuthenticationCreator.create(user.getId(), user.getEmail(), EmailType.EMAIL_AUTHENTICATION);
+        mailSessionCreator.create(user.getId(), user.getEmail(), EmailType.EMAIL_AUTHENTICATION);
     }
 
     public UserInfo getUserInfo(Long userId) {
@@ -46,17 +46,17 @@ public class UserService {
 
     public void sendPasswordUpdateLink(String email) {
         UserInfo user = userInfoFinder.find(email, ProviderType.GROOVE);
-        emailAuthenticationCreator.create(user.getId(), user.getEmail(), EmailType.CHANGE_PASSWORD);
+        mailSessionCreator.create(user.getId(), user.getEmail(), EmailType.CHANGE_PASSWORD);
     }
 
     public void updatePassword(String sessionKey, Password password) {
-        EmailAuthentication emailAuthentication = emailAuthenticationReader.read(sessionKey);
+        MailSession mailSession = mailSessionReader.read(sessionKey);
 
-        if (emailAuthentication.getExpiredAt().isBefore(LocalDateTime.now())) {
+        if (mailSession.getExpiredAt().isBefore(LocalDateTime.now())) {
             throw new NotFoundException(ErrorType.AUTHENTICATION_SESSION_EXPIRED);
         }
 
-        userUpdater.update(emailAuthentication.getUserId(), password);
+        userUpdater.update(mailSession.getUserId(), password);
     }
 
     public void updateNickname(long userId, String nickname) {
