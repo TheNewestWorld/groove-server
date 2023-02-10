@@ -11,6 +11,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bogus.groove.common.enumeration.AttachmentType;
 import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.InternalServerException;
 import org.bogus.groove.object_storage.ObjectUriMaker;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Service;
 public class GoogleMailSender {
 
     private final JavaMailSender sender;
+    private final ObjectUriMaker objectUriMaker;
 
     @Value("${front-domain}")
     private String frontDomain;
@@ -34,11 +36,6 @@ public class GoogleMailSender {
 
     @Value("${reset-password-path}")
     private String resetPasswordPath;
-
-    private ObjectUriMaker objectUriMaker;
-
-    private static final String DOMAIN = "http://localhost:8080";
-
 
     private MimeMessage getPasswordChangeMessage(String to, String sessionKey) {
         MimeMessage message = sender.createMimeMessage();
@@ -104,7 +101,7 @@ public class GoogleMailSender {
     }
 
     private String getLogoUrl() {
-        return "https://objectstorage.ap-seoul-1.oraclecloud.com/p/OigtOseIyYGToUfjTgbPDbvEnnlJxR8DEGmaUnYr7NwNahnu_xUua8TN1tUZH2Ym/n/cngem3dmixup/b/bucket-20221202-0237/o/upload/public/logo.png";
+        return objectUriMaker.make(AttachmentType.MISCELLANEOUS, "logo.png");
     }
 
     public void sendMessage(String to, String sessionKey, EmailType type) {
