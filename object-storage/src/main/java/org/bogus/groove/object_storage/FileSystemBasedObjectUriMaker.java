@@ -1,6 +1,5 @@
 package org.bogus.groove.object_storage;
 
-import java.nio.file.Path;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.enumeration.AttachmentType;
 
@@ -10,7 +9,7 @@ class FileSystemBasedObjectUriMaker implements ObjectUriMaker {
 
     @Override
     public String make(AttachmentType attachmentType, String objectKey) {
-        return Path.of(domain, "attachments", attachmentType.name(), objectKey).toString();
+        return buildUri(domain, "attachments", attachmentType.name(), objectKey);
     }
 }
 
