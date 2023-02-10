@@ -13,7 +13,7 @@ AdminMail:
   id: mr.bogus2023@gmail.com
   password: pukslnhirkdgfovd
 
-front-domain: http://localhost:4000
+front-domain: http://localhost:3000
 email-authentication-path: /active?sessionKey=
 reset-password-path: /reset-password?sessionKey=
 

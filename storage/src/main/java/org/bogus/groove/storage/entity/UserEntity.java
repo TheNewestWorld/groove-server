@@ -64,6 +64,7 @@ public class UserEntity extends BaseEntity {
     public void updateAuthentication(boolean isAuthenticated, LocalDateTime authenticatedAt) {
         this.isAuthenticated = isAuthenticated;
         this.authenticatedAt = authenticatedAt;
+        this.role = isAuthenticated ? UserRole.USER : UserRole.INACTIVE;
     }
 
     public void updatePassword(String password) {

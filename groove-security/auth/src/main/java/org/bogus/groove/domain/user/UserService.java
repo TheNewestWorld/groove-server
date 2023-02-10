@@ -9,6 +9,7 @@ import org.bogus.groove.common.exception.ErrorType;
 import org.bogus.groove.common.exception.NotFoundException;
 import org.bogus.groove.domain.user.token.TokenValidator;
 import org.bogus.groove.mail.config.EmailType;
+import org.bogus.groove.mail.config.GoogleMailSender;
 import org.bogus.groove.object_storage.AttachmentDeleter;
 import org.bogus.groove.object_storage.AttachmentReader;
 import org.bogus.groove.object_storage.AttachmentUploadParam;
@@ -25,9 +26,10 @@ public class UserService {
     private final AttachmentUploader attachmentUploader;
     private final AttachmentReader attachmentReader;
     private final AttachmentDeleter attachmentDeleter;
-    private final EmailAuthenticationCreator emailAuthenticationCreator;
-    private final EmailAuthenticationReader emailAuthenticationReader;
+    private final MailSessionCreator mailSessionCreator;
+    private final MailSessionReader mailSessionReader;
     private final TokenValidator tokenValidator;
+    private final GoogleMailSender googleMailSender;
 
     @Transactional
     public void register(UserRegisterParam param) {
@@ -35,28 +37,32 @@ public class UserService {
         sendAuthenticationMail(user.getEmail());
     }
 
+    @Transactional
     public void sendAuthenticationMail(String email) {
         UserInfo user = userInfoFinder.find(email, ProviderType.GROOVE);
-        emailAuthenticationCreator.create(user.getId(), user.getEmail(), EmailType.EMAIL_AUTHENTICATION);
+        var session = mailSessionCreator.create(user.getId());
+        googleMailSender.sendMessage(email, session.getSessionKey(), EmailType.EMAIL_AUTHENTICATION);
     }
 
     public UserInfo getUserInfo(Long userId) {
         return userInfoFinder.find(userId);
     }
 
+    @Transactional
     public void sendPasswordUpdateLink(String email) {
         UserInfo user = userInfoFinder.find(email, ProviderType.GROOVE);
-        emailAuthenticationCreator.create(user.getId(), user.getEmail(), EmailType.CHANGE_PASSWORD);
+        var session = mailSessionCreator.create(user.getId());
+        googleMailSender.sendMessage(email, session.getSessionKey(), EmailType.CHANGE_PASSWORD);
     }
 
     public void updatePassword(String sessionKey, Password password) {
-        EmailAuthentication emailAuthentication = emailAuthenticationReader.read(sessionKey);
+        MailSession mailSession = mailSessionReader.read(sessionKey);
 
-        if (emailAuthentication.getExpiredAt().isBefore(LocalDateTime.now())) {
+        if (mailSession.getExpiredAt().isBefore(LocalDateTime.now())) {
             throw new NotFoundException(ErrorType.AUTHENTICATION_SESSION_EXPIRED);
         }
 
-        userUpdater.update(emailAuthentication.getUserId(), password);
+        userUpdater.update(mailSession.getUserId(), password);
     }
 
     public void updateNickname(long userId, String nickname) {
@@ -79,6 +85,7 @@ public class UserService {
         );
     }
 
+    @Transactional
     public void unregister(Long userId, String accessToken) {
         userUpdater.inactivate(userId);
         tokenValidator.invalidate(accessToken);
