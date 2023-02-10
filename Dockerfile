@@ -1,6 +1,6 @@
 FROM openjdk:11 as builder
 COPY . .
-RUN ./gradlew build --parallel
+RUN ./gradlew clean build --parallel
 
 FROM openjdk:11
 COPY --from=builder ./groove-api/build /api
