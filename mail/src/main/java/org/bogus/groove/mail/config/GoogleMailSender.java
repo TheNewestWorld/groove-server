@@ -76,7 +76,7 @@ public class GoogleMailSender {
     }
 
     private String getAuthenticationHtml(String sessionKey) throws IOException {
-        ClassPathResource resource = new ClassPathResource("index.htm");
+        ClassPathResource resource = new ClassPathResource("authentication-template.htm");
         Path path = Paths.get(resource.getURI());
         List<String> content = Files.readAllLines(path);
 
