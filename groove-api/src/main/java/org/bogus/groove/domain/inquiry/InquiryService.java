@@ -79,17 +79,25 @@ public class InquiryService {
         return new SliceImpl<>(list, inquiries.getPageable(), inquiries.hasNext());
     }
 
-    public void update(Long id, Long userId, String title, String content,
+    public void update(Long id, String title, String content,
                        List<InquiryAttachmentCreateParam> inquiryAttachmentCreateParamList) {
 
         var attachments = attachmentReader.readAll(id, AttachmentType.POST_IMAGE);
         attachments.addAll(attachmentReader.readAll(id, AttachmentType.POST_RECORD));
         attachments.forEach((attachment -> attachmentDeleter.delete(attachment.getId())));
-        inquiryUpdater.update(id, userId, title, content);
+        inquiryUpdater.update(id, title, content);
 
-        inquiryAttachmentCreateParamList.stream().map(param -> attachmentUploader.upload(
-            new AttachmentUploadParam(param.getInputStream(), param.getFileName(), param.getSize(), id,
-                param.getAttachmentType())));
+        for (InquiryAttachmentCreateParam param : inquiryAttachmentCreateParamList) {
+            attachmentUploader.upload(
+                new AttachmentUploadParam(
+                    param.getInputStream(),
+                    param.getFileName(),
+                    param.getSize(),
+                    id,
+                    param.getAttachmentType()
+                )
+            );
+        }
     }
 
     public void delete(Long id) {

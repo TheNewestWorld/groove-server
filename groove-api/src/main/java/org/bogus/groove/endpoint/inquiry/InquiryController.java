@@ -110,8 +110,7 @@ public class InquiryController {
     @Secured({SecurityCode.USER, SecurityCode.ADMIN, SecurityCode.TRAINER})
     @PutMapping(path = "/api/inquiry/{inquiryId}",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public CommonResponse<Void> updateInquiry(@AuthenticationPrincipal GrooveUserDetails grooveUserDetails,
-                                              @RequestPart InquiryUpdateRequest inquiryUpdateRequest, @PathVariable Long inquiryId,
+    public CommonResponse<Void> updateInquiry(@RequestPart InquiryUpdateRequest inquiryUpdateRequest, @PathVariable Long inquiryId,
                                               @RequestPart(required = false) List<MultipartFile> attachments) {
         List<InquiryAttachmentCreateParam> attachmentCreateParamList = new ArrayList<>();
         if (!attachments.isEmpty()) {
@@ -124,7 +123,7 @@ public class InquiryController {
                 }
             }).collect(Collectors.toList());
         }
-        inquiryService.update(inquiryId, grooveUserDetails.getUserId(), inquiryUpdateRequest.getTitle(),
+        inquiryService.update(inquiryId, inquiryUpdateRequest.getTitle(),
             inquiryUpdateRequest.getContent(), attachmentCreateParamList);
         return CommonResponse.success();
     }
