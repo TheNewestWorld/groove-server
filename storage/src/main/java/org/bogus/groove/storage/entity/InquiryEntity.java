@@ -5,10 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
 @Table(name = "inquiry")
+@Setter
 @NoArgsConstructor
 public class InquiryEntity extends BaseEntity {
 
