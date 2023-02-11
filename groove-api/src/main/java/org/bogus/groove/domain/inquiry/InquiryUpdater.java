@@ -15,6 +15,7 @@ public class InquiryUpdater {
     @Transactional
     public void update(Long id, String title, String content) {
         var entity = inquiryRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorType.NOT_FOUND_INQUIRY));
-        entity.update(title, content);
+        entity.setTitle(title);
+        entity.setContent(content);
     }
 }
