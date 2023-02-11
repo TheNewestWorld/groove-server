@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.bogus.groove.common.CommonResponse;
 import org.bogus.groove.common.PageResponse;
@@ -113,15 +112,19 @@ public class InquiryController {
     public CommonResponse<Void> updateInquiry(@RequestPart InquiryUpdateRequest inquiryUpdateRequest, @PathVariable Long inquiryId,
                                               @RequestPart(required = false) List<MultipartFile> attachments) {
         List<InquiryAttachmentCreateParam> attachmentCreateParamList = new ArrayList<>();
-        if (!attachments.isEmpty()) {
-            attachmentCreateParamList = attachments.stream().map(param -> {
+        if (attachments != null) {
+            for (MultipartFile attachment : attachments) {
                 try {
-                    return new InquiryAttachmentCreateParam(param.getInputStream(), param.getName(), param.getSize(),
-                        AttachmentType.INQUIRY_IMAGE);
+                    attachmentCreateParamList.add(new InquiryAttachmentCreateParam(
+                        attachment.getInputStream(),
+                        attachment.getOriginalFilename(),
+                        attachment.getSize(),
+                        AttachmentType.INQUIRY_IMAGE)
+                    );
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
-            }).collect(Collectors.toList());
+            }
         }
         inquiryService.update(inquiryId, inquiryUpdateRequest.getTitle(),
             inquiryUpdateRequest.getContent(), attachmentCreateParamList);
