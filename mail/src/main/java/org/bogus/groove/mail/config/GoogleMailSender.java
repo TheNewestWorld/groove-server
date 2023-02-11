@@ -1,12 +1,10 @@
 package org.bogus.groove.mail.config;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -86,15 +85,9 @@ public class GoogleMailSender {
     }
 
     private String getAuthenticationHtml(String sessionKey) throws IOException {
-        ClassPathResource resource = new ClassPathResource("authentication-template.htm");
-        Path path = Paths.get(resource.getURI());
-        List<String> content = Files.readAllLines(path);
-
-        StringBuilder sb = new StringBuilder();
-        content.forEach(sb::append);
-        String html = sb.toString();
-
-        html = html.replaceAll("\\{\\{authenticationLink}}", getAuthenticationUrl(sessionKey));
+        var templateFile = new ClassPathResource("authentication-template.htm");
+        var html = FileCopyUtils.copyToString(new BufferedReader(new InputStreamReader(templateFile.getInputStream())));
+        html = html.replace("{{authenticationLink}}", getAuthenticationUrl(sessionKey));
         html = html.replace("{{logoUrl}}", getLogoUrl());
 
         return html;
