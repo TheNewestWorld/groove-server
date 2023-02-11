@@ -33,6 +33,4 @@ public class InquiryGetResponse {
         this.inquiryAnswer = inquiryGetResult.getInquiryAnswer();
         this.attachments = inquiryGetResult.getAttachments();
     }
-
-
 }
